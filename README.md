@@ -15,6 +15,13 @@ tuesdays 4.00 - 5.30 AND/OR
 wednesdays 5.30 - 8.00 AND/OR
 fridays after class
 
+milestones (total 5 weeks):
+
+start: week 10 (29/04)
+coding & data retrieval: week 10 - 14 (27/05) effort: 2 days
+demo: week 15 (03/05) -- effort: 1 day
+final touch & end: week 16 (10/05) -- effort: 1.5 days
+
 indexing and search technology  -- Apache Lucene (~ 83 MB)  -- Java	-- Python (Apache PyLucene)
 	-- ElasticSearch (free trial) [basis of StackOverflow, sophisticated clustered solution -> possibly too much for our use case]
 	-- Apache Solr [focus on distributed indexing -> maybe useful as a feature but not as basic functionality, however built on Apache Lucene]	-- IN: REST via JSON, XML, CSV or binary over HTTP / OUT: HTTP GET and receive JSON, XML, CSV or binary results
