@@ -8,6 +8,7 @@ tasks:
 
 to be discussed:
 - what is a keyword (cf project description)?
+- is our database static or dynamic? will we crawl in production? -> not necessary acording to project description
 
 pm:
 tuesdays 4.00 - 5.30 AND/OR
