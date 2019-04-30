@@ -1,0 +1,11 @@
+1. crawler or API? both
+2. what kind of data do we exclude (e.g. errors)?
+3. what about links (directed to StackOverflow)? rank these pages (cf. PageRank)
+4. what about outward links? drop
+5. spellchecking? not mandatory
+6. what is a keyword? terms minus stopwords etc.
+7. basic or advanced search? build everything from scratch
+8. rank questions and answers
+9. is our database static or dynamic? static, crawl once
+10. what is the frond end? web page, local server
+11. Zero results? did you mean...suggestions
