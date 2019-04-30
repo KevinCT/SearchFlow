@@ -1,2 +1,0 @@
--- Apache Lucene (~ 83 MB)  -- Java	-- Python (Apache PyLuce-- ElasticSearch (free trial) [basis of StackOverflow, sophisticated clustered solution -> possibly too much for our use case]
--- Apache Solr [focus on distributed indexing -> maybe useful as a feature but not as basic functionality, however built on Apache Lucene]	-- IN: REST via JSON, XML, CSV or binary over HTTP / OUT: HTTP GET and receive JSON, XML, CSV or binary results
