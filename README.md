@@ -1,4 +1,4 @@
-# Stoogle
+# Searchflow
 
 tasks:
 1. retrieve stack overflow data and propose logical data view (Pritom)
