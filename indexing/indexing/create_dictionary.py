@@ -6,3 +6,5 @@ word_list = words.words()
 
 for word in word_list:
     print(word)
+
+# word_list.add(computer science terms)
