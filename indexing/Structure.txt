@@ -1,0 +1,22 @@
+Several indices needed for each search area. A general index indexing all information
+could be necessary for the first question. This could also be solved by searching through
+all created indices for a general query.
+
+Suggested indices include:
+    * Questions
+    * Tags
+    * Answers
+    * Comments
+    * Titles
+    * From a specific user
+
+Finding keywords to index:
+    Either we index all terms, or simply add those found in computer science dictionaries.
+    Simply indexing those keywords found in a computer science dictionary is enough to
+    satisfy requirement 2, however it is not enough for the first requirement.
+    It might therefore be advisable to index terms from a standard dictionary as well as
+    computer science terms.
+
+
+Creating dictionary:
+    nltk is a good start. However, it is missing computer science terms,
