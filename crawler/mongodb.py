@@ -34,16 +34,16 @@ class Connection:
         if data is already existed then it will update the data
         """
 
-        unique_query = {"question_url": data.get("question_url")}  # search for same title
+        unique_query = {"question_id": data.get("question_id")}  # search for same title
         try:
             elements = self.db_col.find(unique_query)
         except errors as e:
-            self.dbag.debug_print("Errors in finding MongoDb elements " + e)
+            self.dbug.debug_print("Errors in finding MongoDb elements " + e)
         try:
             if elements.count() == 0:
-                self.dbag.debug_print("Inserted Data...")
+                self.dbug.debug_print("Inserted Data...")
                 self.db_col.insert_one(data)
             else:
-                self.dbag.debug_print("Data Already Existed...")
+                self.dbug.debug_print("Data Already Existed...")
         except errors as e:
-            self.dbag.debug_print("Problem with insert or update...", e)
+            self.dbug.debug_print("Problem with insert or update...", e)
