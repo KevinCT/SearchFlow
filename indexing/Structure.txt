@@ -22,6 +22,9 @@ Finding keywords to index:
     Spellchecking could be added while preprocessing to reduce the amount of terms created,
     however it takes an estimated 2-3 s to spell check. So this step will be skipped for now.
 
+    Solution 2:
+    Only add words from tags to the dictionary in addition to the ones in the standard dictionary.
+
 
 Creating dictionary:
     nltk is a good start. However, it is missing computer science terms,
