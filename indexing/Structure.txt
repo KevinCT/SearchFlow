@@ -17,6 +17,11 @@ Finding keywords to index:
     It might therefore be advisable to index terms from a standard dictionary as well as
     computer science terms.
 
+    If we index all terms, we can still get a moderately sized dictionary by joining together synonyms
+    as well as other techniques.
+    Spellchecking could be added while preprocessing to reduce the amount of terms created,
+    however it takes an estimated 2-3 s to spell check. So this step will be skipped for now.
+
 
 Creating dictionary:
     nltk is a good start. However, it is missing computer science terms,
