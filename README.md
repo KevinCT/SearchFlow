@@ -1,22 +1,21 @@
 # Searchflow
 
 tasks:
-1. develop IN data view (Oliver)
 2. sample user queries (i.e. define page regions) (3 each)
 3. crawl StackOverflow and output as JSON and MongoDB (Pritom)
-4. JSON processing (Petros)
-4. set up development environment / propose user experience (Kevin/Oliver)
+4. search engine backend (Petros)
+4. create front-end (Kevin/Oliver)
 
 
 tuesdays 4.00 - 5.30
 
-fridays after class [this week on Sunday]
+fridays after class
 
 (wednesdays 5.30 - 8.00)
 
 
 
-coding & data retrieval: week 10 - 14 (27/05)
+coding & data retrieval: week x10x 11 12 13 14 (27/05)
 
 demo: week 15 (03/06)
 
