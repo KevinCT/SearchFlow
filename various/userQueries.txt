@@ -1,0 +1,26 @@
+Query 1 : what is polymorphism?
+
+Result 1 : https://stackoverflow.com/questions/1031273/what-is-polymorphism-what-is-it-for-and-how-is-it-used
+
+Result 2: Redirects to first result (marked as duplicate)
+ 
+Result 3: https://stackoverflow.com/questions/2723439/what-is-polymorphism (marked as duplicate)
+-----------------------------------------------
+Query 2: java.lang.NullPointerException
+
+Result 1: https://stackoverflow.com/questions/28622719/java-lang-nullpointerexception
+
+Result 2: https://stackoverflow.com/questions/4635715/java-lang-nullpointerexception
+
+Result 3: https://stackoverflow.com/questions/14701483/primefaces-java-lang-nullpointerexception
+
+Comment : The first two are marked as duplicates but has a link to a suitable answer.
+
+---------------------------------------------
+Query 3: using django with mongodb
+
+Result 1: https://stackoverflow.com/questions/48648001/use-django-with-mongodb
+
+Result 2: https://stackoverflow.com/questions/20954300/django-nonrel-vs-django-with-pymongo-ming-for-use-with-mongodb
+
+Result 3: https://stackoverflow.com/questions/29248659/django-with-mongodb-but-using-rawsql-view-on-design
