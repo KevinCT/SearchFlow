@@ -8,8 +8,8 @@ def index(request):
     return render(request, 'searchengine/query.html')
 
 def query(request):
-    if request.method == 'POST':
-        query = request.POST.get('queryField', None)
+    if request.method == 'GET':
+        query = request.GET.get('queryField', None)
         if query is not None:
             #Manipulate query here and return the search results.
             return HttpResponse(query)
