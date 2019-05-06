@@ -1,14 +1,21 @@
 import pymongo
 import nltk
 from nltk.corpus import words
+from nltk.corpus import wordnet
 from spellchecker import SpellChecker
 import time
+from vocabulary.vocabulary import Vocabulary as vb
 
 spell = SpellChecker()
 
 
 misspelled = spell.unknown(['jaka', 'is', 'hapenning', 'here'])
 
+start = time.time()
+syns = wordnet.synsets('car')
+end = time.time()
+print("first")
+print(end - start)
 
 
 
