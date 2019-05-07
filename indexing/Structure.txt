@@ -27,4 +27,12 @@ Finding keywords to index:
 
 
 Creating dictionary:
-    nltk is a good start. However, it is missing computer science terms,
+    nltk is a good start. However, it is missing computer science terms.
+
+Structure of index:
+    HashMap(term, postinglist)
+    Sorted list of terms with each term having an identifiable position in array.
+
+    Posting list: ArrayList or similar would make sense for jump search. Otherwise, linkedlist also makes sense.
+                    As we do not edit the list beyond creation in this case, linkedlist however doesn't have a lot of
+                    advantages.

@@ -1,6 +1,9 @@
 # find all tags
 
 import json
+import pymongo as pm
+
+print(pm.version)
 
 
 def tag_processing(file):
