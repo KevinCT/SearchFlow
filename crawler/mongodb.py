@@ -56,5 +56,11 @@ class Connection:
         return list
 
 conn = Connection(db_name="StackOverflow", db_col="Question_URL")
-print(conn.test_get_inf(data_type="question_id"))
+#print(conn.test_get_inf(data_type="question_id"))
+var = conn.db_col.find({'crawled': 'True'})
+for x in var:
+    print(x['question_id'])
+    x["crawled"] = "False"
+    #conn.db_col.update_one({"question_id": x['question_id']}, {"$set": {"crawled":"True"}})
+
 
