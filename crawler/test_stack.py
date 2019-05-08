@@ -1,5 +1,6 @@
 import requests
 import crawler.mongodb as mongodb
+import threading
 
 
 def get_page_id(main, sub):
