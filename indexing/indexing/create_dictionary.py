@@ -45,6 +45,17 @@ print(word_list.index('base'))
 class Dictionary:
     map = dict()
 
+    def __init__(self, file):
+        self.file = file
+
+    def update_dict(self, key, posting_list):
+        map[key] = posting_list
+
+    def intersect(self, keys):
+        return map[keys[0]]
+
+    
+
 
 class PostingList:
 
