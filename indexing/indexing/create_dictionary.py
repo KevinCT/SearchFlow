@@ -54,16 +54,22 @@ class Dictionary:
     def intersect(self, keys):
         return map[keys[0]]
 
-    
+
 
 
 class PostingList:
 
-    def __init__(self, start):
-        self.start = start
+    def __init__(self, start_position):
+        self.start = PostingNode(start_position, None, None)
 
-    #def update(self, position):
-    #    while
+    def update(self, position):
+        if position <= self.start.gap:
+            self.start.prev = PostingNode(position, None, self.start)
+            self.start.prev.next = self.start
+            self.start.gap = self.start.gap - position
+            self.start = self.start.prev
+        else:
+            self.start.update(position)
 
 
 class PostingNode:
@@ -99,16 +105,15 @@ class PostingNode:
         current.gap = current.gap - current.prev.gap
 
 
-a = [5, 4, 6, 2, 1, 6, 91, 53, 3, 3, 3, 43, 1001]
-test = PostingNode(98)
+a = [5, 4, 6, 2, 1, 6, 91, 53, 3, 3, 3, 43, 1001, -8, 0]
+test = PostingList(98)
 
 for up in a:
     test.update(up)
-    while test.prev is not None:
-        test = test.prev
 
-currentscore = 0
+score = 0
+test = test.start
 while test is not None:
-    currentscore += test.gap
-    print(currentscore)
+    score += test.gap
+    print(score)
     test = test.next
