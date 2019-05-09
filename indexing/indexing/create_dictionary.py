@@ -43,14 +43,84 @@ print(word_list.index('base'))
 class Dictionary:
     map = dict()
 
+    def __init__(self, file):
+        self.file = file
+
+    def update_dict(self, key, posting_list):
+        map[key] = posting_list
+
+    def intersect(self, keys):
+        '''
+        lists = []
+        list_score = []
+
+        for key in keys:
+            temp_node = map[key].start
+            if temp_node is not None:
+                lists.append(temp_node)
+                list_score.append(temp_node.gap)
+
+        min_score = list_score[0]
+        min_index = 0
+        current_score
+        for x in range(1, len(list_score)):
+            if list_score[x] < min_score:
+                min_score = list_score[x]
+                min_index
+
+        while len(lists) != 0:
+
+
+
+        query_dict = dict()
+
+        for key in keys:
+            score = 0
+            posting_list = map[key]
+
+            while posting_list is not None:
+                score += test.gap
+                print(score)
+                test = test.next
+        return map[keys[0]]
+        '''
+
+        doc_scores = dict()
+        lists = []
+
+        for key in keys:
+            temp_node = map[key].start
+            if temp_node is not None:
+                lists.append(temp_node)
+                # list_score.append(temp_node.gap)
+
+        # could use a max heap
+        for elem in lists:
+            current_score = elem.gap
+            while elem is not None:
+                if doc_scores[current_score] is not None:
+                    doc_scores[current_score] = doc_scores[current_score] + self.get_score(elem)
+                else:
+                    doc_scores[current_score] = self.get_score(elem)
+
+    # return tf-idf score of element
+    def get_score(self, elem):
+        return 1
+
 
 class PostingList:
 
-    def __init__(self, start):
-        self.start = start
+    def __init__(self, start_position):
+        self.start = PostingNode(start_position, None, None)
 
-    # def update(self, position):
-    #    while
+    def update(self, position):
+        if position <= self.start.gap:
+            self.start.prev = PostingNode(position, None, self.start)
+            self.start.prev.next = self.start
+            self.start.gap = self.start.gap - position
+            self.start = self.start.prev
+        else:
+            self.start.update(position)
 
 
 class PostingNode:
@@ -86,16 +156,15 @@ class PostingNode:
         current.gap = current.gap - current.prev.gap
 
 
-a = [5, 4, 6, 2, 1, 6, 91, 53, 3, 3, 3, 43, 1001]
-test = PostingNode(98)
+a = [5, 4, 6, 2, 1, 6, 91, 53, 3, 3, 3, 43, 1001, -8, 0]
+test = PostingList(98)
 
 for up in a:
     test.update(up)
-    while test.prev is not None:
-        test = test.prev
 
-currentscore = 0
+score = 0
+test = test.start
 while test is not None:
-    currentscore += test.gap
-    print(currentscore)
+    score += test.gap
+    print(score)
     test = test.next
