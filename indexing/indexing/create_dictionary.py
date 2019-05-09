@@ -41,13 +41,14 @@ print(word_list.index('base'))
 
 
 class Dictionary:
-    map = dict()
+
 
     def __init__(self, file):
         self.file = file
+        self.map = dict()
 
     def update_dict(self, key, posting_list):
-        map[key] = posting_list
+        self.map[key] = posting_list
 
     def intersect(self, keys):
         '''
@@ -89,7 +90,7 @@ class Dictionary:
         lists = []
 
         for key in keys:
-            temp_node = map[key].start
+            temp_node = self.map[key].start
             if temp_node is not None:
                 lists.append(temp_node)
                 # list_score.append(temp_node.gap)
@@ -98,10 +99,15 @@ class Dictionary:
         for elem in lists:
             current_score = elem.gap
             while elem is not None:
-                if doc_scores[current_score] is not None:
+                if current_score in doc_scores:
                     doc_scores[current_score] = doc_scores[current_score] + self.get_score(elem)
                 else:
                     doc_scores[current_score] = self.get_score(elem)
+                elem = elem.next
+                if elem is not None:
+                    current_score += elem.gap
+
+        return doc_scores
 
     # return tf-idf score of element
     def get_score(self, elem):
@@ -156,15 +162,23 @@ class PostingNode:
         current.gap = current.gap - current.prev.gap
 
 
-a = [5, 4, 6, 2, 1, 6, 91, 53, 3, 3, 3, 43, 1001, -8, 0]
-test = PostingList(98)
+def test_method():
+    a = [5, 4, 6, 2, 1, 6, 91, 53, 3, 3, 3, 43, 1001, -8, 0]
+    test_a = PostingList(98)
+    for elem in a:
+        test_a.update(elem)
+    b = [5, 4, 6, 2, 1, 63, 911, 503, 437, 101, 8, 0]
+    test_b = PostingList(91)
+    for elem in b:
+        test_b.update(elem)
 
-for up in a:
-    test.update(up)
+    dictionary = Dictionary("test")
+    dictionary.update_dict("test_a", test_a)
+    dictionary.update_dict("test_b", test_b)
 
-score = 0
-test = test.start
-while test is not None:
-    score += test.gap
-    print(score)
-    test = test.next
+    test = dictionary.intersect(["test_a", "test_b"])
+
+    print(test)
+
+
+test_method()

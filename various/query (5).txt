@@ -1,0 +1,5 @@
+using django with mongodb
+
+https://stackoverflow.com/questions/46498449/unable-to-setup-mongodb-with-django
+https://stackoverflow.com/questions/48243517/setting-up-django-and-mongodb 
+https://stackoverflow.com/questions/52659981/connect-mongodb-with-django

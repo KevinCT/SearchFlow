@@ -1,14 +1,14 @@
 import json
-# encoding=utf8
-import sys
 
 import requests
 from bs4 import BeautifulSoup
 
 import crawler.mongodb as mongodb
 
+# encoding=utf8
+
 # reload(sys)
-sys.setdefaultencoding('utf8')
+# sys.setdefaultencoding('utf8')
 
 main_url = "https://stackoverflow.com"
 sub_url = "/questions?sort=newest&page="
@@ -140,6 +140,6 @@ def all_info():
 # crawl_question_url(main_url,sub_url)
 # print(question_url.__len__())
 url_connection = mongodb.Connection(db_name="StackOverflow", db_col="Test_Question_URL")
-# print(detail_question_info("/questions/55990000/run-the-savina-code-https-github-com-shamsimam-savina"))
+print(detail_question_info("/questions/43113349"))
 # json_to_mongodb("stack.json")
-all_info()
+#all_info()

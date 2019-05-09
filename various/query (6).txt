@@ -1,0 +1,5 @@
+java.lang.NullPointerException
+
+https://stackoverflow.com/questions/52189134/getresponse-java-lang-nullpointerexception
+https://stackoverflow.com/questions/47055568/getting-java-lang-nullpointerexception-error 
+https://stackoverflow.com/questions/46635591/java-lang-nullpointerexception-whats-wrong
