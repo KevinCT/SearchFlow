@@ -1,10 +1,8 @@
-import pymongo
-import nltk
-from nltk.corpus import words
-from nltk.corpus import wordnet
-from spellchecker import SpellChecker
 import time
-from vocabulary.vocabulary import Vocabulary as vb
+
+from nltk.corpus import wordnet
+from nltk.corpus import words
+from spellchecker import SpellChecker
 
 spell = SpellChecker()
 
@@ -110,7 +108,6 @@ class Dictionary:
                     current_score += elem.gap
 
         return doc_scores
-
 
     # return tf-idf score of element
     def get_score(self, elem):

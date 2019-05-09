@@ -1,0 +1,5 @@
+java ide
+
+https://stackoverflow.com/questions/51803184/ide-debugging-with-docker-nginx-php7-fpm-and-xdebug
+https://stackoverflow.com/questions/48130268/nginx-proxy-pass-https-to-another-nginx-http
+https://stackoverflow.com/questions/51843303/debug-react-app-running-behind-a-nginx-proxy

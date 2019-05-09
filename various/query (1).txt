@@ -1,0 +1,5 @@
+stack overflow connectionless internet protocol
+
+https://stackoverflow.com/questions/46794420/how-do-tcp-ip-and-http-work-together
+https://stackoverflow.com/questions/52874021/uwp-c-sharp-streamsocket-tcp-sending-heartbeat-message-to-monitor-devices
+https://stackoverflow.com/questions/52214657/connected-unix-sock-dgram-sockets

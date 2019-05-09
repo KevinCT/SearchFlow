@@ -1,5 +1,6 @@
 from pymongo import MongoClient, errors
-from debug import debug
+
+from crawler.debug import debug
 
 DEFAULT_MONGO_DB_PORT = 27017
 DEFAULT_MONGO_DB_ADDRESS = 'localhost'
@@ -56,11 +57,9 @@ class Connection:
         return list
 
 conn = Connection(db_name="StackOverflow", db_col="Question_URL")
-#print(conn.test_get_inf(data_type="question_id"))
+# print(conn.test_get_inf(data_type="question_id"))
 var = conn.db_col.find({'crawled': 'True'})
 for x in var:
     print(x['question_id'])
     x["crawled"] = "False"
-    #conn.db_col.update_one({"question_id": x['question_id']}, {"$set": {"crawled":"True"}})
-
-
+    # conn.db_col.update_one({"question_id": x['question_id']}, {"$set": {"crawled":"True"}})

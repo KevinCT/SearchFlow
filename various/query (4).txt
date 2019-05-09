@@ -1,0 +1,5 @@
+what is polymorphism?
+
+https://stackoverflow.com/questions/47483673/polymorphism-vs-abstraction-is-polymorphism-one-of-the-way-to-achieve-abstract
+https://stackoverflow.com/questions/51798777/what-is-polymorphic-behavior-in-adaptor-pattern
+https://stackoverflow.com/questions/51840560/is-polymorphism-same-in-java-c

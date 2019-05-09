@@ -1,0 +1,5 @@
+nginx reverse-proxy
+
+https://stackoverflow.com/questions/54151255/why-do-i-get-404-on-nginx-reverse-proxy
+https://stackoverflow.com/questions/54038561/nginx-to-proxy-elk
+https://stackoverflow.com/questions/54123858/nginx-reverse-proxy-for-nextcloud-not-work
