@@ -36,7 +36,7 @@ class QuestionInfo:
         question_soup = BeautifulSoup(str(page_soup.find("div", {"class": "question"})))
         self.question_title = str(page_soup.find("title").text).split("-")[1].strip()
         self.question_ask_time = page_soup.find("time").get("datetime")
-        self.question_views = self.question_views(page_soup)
+        self.question_view = self.question_views(page_soup)
         self.question_tags = self.question_tags(question_soup)
         self.question_upvote = int(question_soup.find("div", {
             "class": "js-vote-count grid--cell fc-black-500 fs-title grid fd-column ai-center"}).text)
@@ -46,7 +46,7 @@ class QuestionInfo:
 
         question_json = {"question_id": self.question_id, "question_title": self.question_title,
                          "question_asked_time": self.question_ask_time,
-                         "question_tags": self.question_tags, "question_views": self.question_views,
+                         "question_tags": self.question_tags, "question_views": self.question_view,
                          "question_upvote": self.question_upvote,
                          "question_text": self.question_text, "question_code": self.question_code,
                          "related_questions": self.related_questions}
@@ -54,11 +54,9 @@ class QuestionInfo:
         return question_json
 
     def question_views(self, soup):
-        views = soup.find("p", {"class": "label-key"}).text
-        for v in views:
-            if str(v).__contains__("times"):
-                return str(v).split(" ")[0]
-
+        views = soup.find_all("p", {"class": "label-key"})[3].text
+        print("views", views)
+        return int(str(views).split(" ")[0].strip())
     def question_code(self, soup):
         question_code_arr = []
         for code in soup.find("div", {"id": "question"}).find_all("code"):
