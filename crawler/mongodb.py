@@ -1,4 +1,4 @@
-from pymongo import MongoClient, errors
+from pymongo import MongoClient
 
 from crawler.debug import debug
 
@@ -25,7 +25,7 @@ class Connection:
             self.db_name = self.client[db_name]
             self.db_col = self.db_name[db_col]
             self.dbug = debug(name=self.__class__, flag=True)
-        except errors as e:
+        except Exception as e:
             self.dbug.debug_print("MongoDb Connection error: " + e)
 
     def insert(self, data):
@@ -38,7 +38,7 @@ class Connection:
         unique_query = {"Question.question_id": data.get("Question").get("question_id")}  # search for same title
         try:
             elements = self.db_col.find(unique_query)
-        except errors as e:
+        except Exception as e:
             self.dbug.debug_print("Errors in finding MongoDb elements " + e)
         try:
             if elements.count() == 0:
@@ -46,7 +46,7 @@ class Connection:
                 self.db_col.insert_one(data)
             else:
                 self.dbug.debug_print("Data Already Existed...")
-        except errors as e:
+        except Exception as e:
             self.dbug.debug_print("Problem with insert or update...", e)
 
     # def get_data(self, data_type="question_id"):
