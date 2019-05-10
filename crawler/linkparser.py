@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from crawler.debug import debug
 
 MAIN_URL = "https://stackoverflow.com"
-SUB_URL = ""
+SUB_URL = "/questions?sort=newest&page="
 
 
 # given the question id this function creates the url
@@ -25,6 +25,10 @@ def url_link_status(url):
     """
     return requests.get(url).status_code == 200
 
+
+# creates url for a page
+def page_url_creator(page_id):
+    return MAIN_URL + SUB_URL + str(page_id)
 
 class LinkParser:
     """
