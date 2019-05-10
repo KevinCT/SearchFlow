@@ -5,8 +5,7 @@ from crawler.linkparser import LinkParser
 from crawler.linkparser import page_url_creator
 from crawler.mongodb import Connection
 
-db_connection = Connection()
-json_data = "{'Question': {'question_id': 56056337, 'question_title': 'How can I check if the date already exists using code Behind?', 'question_asked_time': '2019-05-09T09:34:28', 'question_tags': ['c#', 'sql-server'], 'question_views': 'None', 'question_upvote': 0, 'question_text': 'I have a date just one " 'DateOfyear' " and i want to check before inserting the date in the textbox is already exists in DB but using Code Behind in c#.\nI will give a example like what i want to do, i know is not the right code or what i need, but is just a example because i don\'t want peoples to past or give solution with SQLCommand /SqlServer and other thing i want something like that code and thanks.\n            DateTime InvoiceDateTo = new DateTime();\n            InvoiceDateFrom = Convert.ToDateTime(txtDatRiferiment.Text);\n            InvoiceDateTo = Convert.ToDateTime(txtDatRiferiment.Text);\n            if (InvoiceDateFrom == InvoiceDateTo)\n            {\n                errorMessage = vea.ErrorMessage;\n            }', 'question_code': ['            DateTime InvoiceDateTo = new DateTime();\n            InvoiceDateFrom = Convert.ToDateTime(txtDatRiferiment.Text);\n            InvoiceDateTo = Convert.ToDateTime(txtDatRiferiment.Text);\n            if (InvoiceDateFrom == InvoiceDateTo)\n            {\n                errorMessage = vea.ErrorMessage;\n            }\n'], 'related_questions': [{'related_question_id': '18932', 'related_question': 'How can I remove duplicate rows?'}, {'related_question_id': '52797', 'related_question': 'How do I get the path of the assembly the code is in?'}, {'related_question_id': '113045', 'related_question': 'How to return only the Date from a SQL Server DateTime datatype'}, {'related_question_id': '133031', 'related_question': 'How to check if a column exists in a SQL Server table?'}, {'related_question_id': '167576', 'related_question': 'Check if table exists in SQL Server'}, {'related_question_id': '659051', 'related_question': 'Check if a temporary table exists and delete if it exists before creating a temporary table'}, {'related_question_id': '1293330', 'related_question': 'How can I do an UPDATE statement with JOIN in SQL?'}, {'related_question_id': '11790710', 'related_question': 'If not exists then insert else show message “Already exists”'}, {'related_question_id': '13513932', 'related_question': 'Algorithm to detect overlapping periods'}, {'related_question_id': '21692193', 'related_question': 'Why not inherit from List<T>?'}]}, 'Answer': {'total_answers': '1', 'answer_code': ['if(InvoiceDateFrom.CompareTo(InvoiceDateTo) == 0){\n    errorMessage = vea.ErrorMessage;\n}\n'], 'answers': [{'answer_upvote': '0', 'answer': '\nYou can use the DateTime.compareTo method:\nif(InvoiceDateFrom.CompareTo(InvoiceDateTo) == 0){\n    errorMessage = vea.ErrorMessage;\n}\n\nMore info here.\n', 'answer_accepted': 'False'}]}}"
+db_connection = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 TOTAL_PAGES = 280000
 
 
@@ -18,21 +17,23 @@ def thread_url(page_id):
     debug(thread_url).debug_print("Thread %s: finishing", threading.current_thread().name)
 
 
-def data_process_for_db(data):
+def data_process_for_db(page_id, data):
     all_link_data = []
     print(len(data))
     for d in data:
-        info = {"Question": {}, "Answer": {}, "crawled": False}
-        info["Question"] = d
-        # print(info)
-        all_link_data.append(info)
-    print(all_link_data[0])
+        info = {"Question": d, "Answer": {}, "crawled": False}
+        print(info.get("Question").get("question_id"))
+        db_connection.insert(info)
+        # all_link_data.append(info)
+    # db_connection.db_col.insert_many(all_link_data)
+    debug(data_process_for_db).debug_print("Insert Done for page " + str(page_id))
 
 
 def Test_data_process_for_db():
     page_url = page_url_creator(page_id=1)
     question_ids = LinkParser().question_id_extractor(page_url=page_url)
-    data_process_for_db(question_ids)
+    data_process_for_db(page_id=1, data=question_ids)
+
 
 if __name__ == '__main__':
     threads = list()
