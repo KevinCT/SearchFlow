@@ -4,44 +4,41 @@ from nltk.corpus import wordnet
 from nltk.corpus import words
 from spellchecker import SpellChecker
 
-spell = SpellChecker()
 
-
-misspelled = spell.unknown(['jaka', 'is', 'hapenning', 'here'])
-
-start = time.time()
-syns = wordnet.synsets('car')
-end = time.time()
-print("first")
-print(end - start)
-
-
-
-for word in ['jaka', 'is', 'hapenning', 'here']:
-    # Get the one `most likely` answer
+def spell_check_test():
+    spell = SpellChecker()
+    misspelled = spell.unknown(['jaka', 'is', 'hapenning', 'here'])
     start = time.time()
-    print(spell.correction(word))
+    syns = wordnet.synsets('car')
     end = time.time()
     print("first")
     print(end - start)
-    # Get a list of `likely` options
-
-    start = time.time()
-    print(spell.candidates(word))
-    end = time.time()
-    print("end")
-    print(end - start)
-
-word_list = words.words()
-# prints 236736
-
-print(word_list.index('base'))
-
-# word_list.add(computer science terms)
 
 
-class Dictionary:
+    for word in ['jaka', 'is', 'hapenning', 'here']:
+        # Get the one `most likely` answer
+        start = time.time()
+        print(spell.correction(word))
+        end = time.time()
+        print("first")
+        print(end - start)
+        # Get a list of `likely` options
 
+        start = time.time()
+        print(spell.candidates(word))
+        end = time.time()
+        print("end")
+        print(end - start)
+
+    word_list = words.words()
+    # prints 236736
+
+    print(word_list.index('base'))
+
+    # word_list.add(computer science terms)
+
+
+class Index:
 
     def __init__(self, file):
         self.file = file
@@ -49,6 +46,17 @@ class Dictionary:
 
     def update_dict(self, key, posting_list):
         self.map[key] = posting_list
+
+    def get_posting_list(self, key):
+        return self.map[key]
+
+    def populate_index(self, posts):
+
+        # remove colons, dots etc
+        for index in range(0, len(posts)):
+            for word in posts[index].split():
+                if word in self.map:
+                    self.map[word].update(index)
 
     def intersect(self, keys):
         doc_scores = dict()
@@ -143,7 +151,7 @@ def test_method():
     for elem in b:
         test_b.update(elem)
 
-    dictionary = Dictionary("test")
+    dictionary = Index("test")
     dictionary.update_dict("test_a", test_a)
     dictionary.update_dict("test_b", test_b)
 
@@ -157,7 +165,6 @@ def test_method():
         print(current_score)
         print(test_a.frequency)
         test_a = test_a.next
-
 
 
 test_method()
