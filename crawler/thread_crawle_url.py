@@ -64,7 +64,7 @@ if __name__ == '__main__':
         if count % 30 == 0:
             print("Going to sleep")
             time.sleep(2)
-    for index, thread in enumerate(threads):
-        thread.join()
+        for index, thread in enumerate(threads):
+            thread.join()
         count += 1
     print("Final Time:", time.time() - time1)
