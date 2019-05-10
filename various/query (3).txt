@@ -1,5 +1,11 @@
 java ide
+title
+https://stackoverflow.com/questions/48017077/is-there-any-lightweight-ide-for-java-programming-using-maven-and-hibernate-spri 
 
-https://stackoverflow.com/questions/51803184/ide-debugging-with-docker-nginx-php7-fpm-and-xdebug
-https://stackoverflow.com/questions/48130268/nginx-proxy-pass-https-to-another-nginx-http
-https://stackoverflow.com/questions/51843303/debug-react-app-running-behind-a-nginx-proxy
+https://stackoverflow.com/questions/50483974/how-to-quickly-run-a-static-code-snippet-in-java-using-an-ide 
+
+https://stackoverflow.com/questions/48316786/how-can-i-run-a-java-ide-from-a-docker-container-similar-to-rstudio-server
+
+https://stackoverflow.com/questions/48939289/reliable-and-simple-online-ide-for-java
+
+https://stackoverflow.com/questions/46576083/adding-c-c-language-to-eclipse-oxygen-ide-for-java-developers
