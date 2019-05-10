@@ -111,7 +111,7 @@ class Dictionary:
 
     # return tf-idf score of element
     def get_score(self, elem):
-        return 1
+        return elem.frequency
 
 
 class PostingList:
@@ -120,21 +120,24 @@ class PostingList:
         self.start = PostingNode(start_position, None, None)
 
     def update(self, position):
-        if position <= self.start.gap:
+        if position < self.start.gap:
             self.start.prev = PostingNode(position, None, self.start)
             self.start.prev.next = self.start
             self.start.gap = self.start.gap - position
             self.start = self.start.prev
+        elif position == self.start.gap:
+            self.start.frequency += 1
         else:
             self.start.update(position)
 
 
 class PostingNode:
 
-    def __init__(self, gap, prev=None, next=None):
+    def __init__(self, gap, prev=None, next=None, frequency=1):
         self.gap = gap
         self.prev = prev
         self.next = next
+        self.frequency = frequency
 
     def update(self, position):
         current_score = self.gap
@@ -150,6 +153,9 @@ class PostingNode:
             return
 
         while current_score <= position:
+            if current_score == position:
+                current.frequency = current.frequency + 1
+                return
             if current.next is not None:
                 current = current.next
                 current_score += current.gap
@@ -163,8 +169,8 @@ class PostingNode:
 
 
 def test_method():
-    a = [5, 4, 6, 2, 1, 6, 91, 53, 3, 3, 3, 43, 1001, -8, 0]
-    test_a = PostingList(98)
+    a = [5, 4, 6, -8, 1, 6, 91, 53, 3, 3, 3, 43, 1001, -8, 0]
+    test_a = PostingList(53)
     for elem in a:
         test_a.update(elem)
     b = [5, 4, 6, 2, 1, 63, 911, 503, 437, 101, 8, 0]
@@ -179,6 +185,14 @@ def test_method():
     test = dictionary.intersect(["test_a", "test_b"])
 
     print(test)
+    test_a = test_a.start
+    current_score = 0
+    while test_a is not None:
+        current_score += test_a.gap
+        print(current_score)
+        print(test_a.frequency)
+        test_a = test_a.next
+
 
 
 test_method()
