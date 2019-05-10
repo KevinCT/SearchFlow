@@ -47,7 +47,7 @@ class Connection:
             else:
                 self.dbug.debug_print("Data Already Existed...")
         except Exception as e:
-            self.dbug.debug_print("Problem with insert or update...", e)
+            self.dbug.debug_print("Problem with insert or update..." + str(e))
 
     # def get_data(self, data_type="question_id"):
     def test_get_inf(self, data_type=""):
