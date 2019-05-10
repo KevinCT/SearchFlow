@@ -7,8 +7,8 @@ from crawler.linkparser import page_url_creator
 from crawler.mongodb import Connection
 
 db_connection = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
-START_PAGE = 201
-END_PAGE = 400
+START_PAGE = 401
+END_PAGE = 4000
 TOTAL_PAGES = END_PAGE - START_PAGE
 
 
@@ -45,11 +45,11 @@ if __name__ == '__main__':
     time1 = time.time()
 
     count = 0
-    for index in mylist:
-        t1 = threading.Thread(target=thread_url, args=(index + 1,))
-        t2 = threading.Thread(target=thread_url, args=(index + 2,))
-        t3 = threading.Thread(target=thread_url, args=(index + 3,))
-        t4 = threading.Thread(target=thread_url, args=(index + 4,))
+    while count < TOTAL_PAGES:
+        t1 = threading.Thread(target=thread_url, args=(mylist[count] + 1,))
+        t2 = threading.Thread(target=thread_url, args=(mylist[count] + 2,))
+        t3 = threading.Thread(target=thread_url, args=(mylist[count] + 3,))
+        t4 = threading.Thread(target=thread_url, args=(mylist[count] + 4,))
 
         threads.append(t1)
         threads.append(t2)
@@ -61,10 +61,10 @@ if __name__ == '__main__':
         t3.start()
         t4.start()
 
-        if count == 30:
+        if count % 30 == 0:
             print("Going to sleep")
             time.sleep(2)
-            count = 0
     for index, thread in enumerate(threads):
         thread.join()
+        count += 1
     print("Final Time:", time.time() - time1)
