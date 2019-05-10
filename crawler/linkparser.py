@@ -56,12 +56,11 @@ class LinkParser:
         :return list: of question IDs
         """
         question_id_info = []
-        flag, soup = self.link_info(page_url, flag=True)
+        soup = self.link_info(page_url)
         main_bar = BeautifulSoup(str(soup.find("div", {"id": "mainbar"})))
-        if flag:
-            for q_id in main_bar.find_all("div", {"class": "question-summary"}):
-                question_id = str(q_id.get("id")).split("-")[2]
-                question_id_info.append({"question_id": question_id, "crawled_info": False})
+        for q_id in main_bar.find_all("div", {"class": "question-summary"}):
+            question_id = int(str(q_id.get("id")).split("-")[2])
+            question_id_info.append({"question_id": question_id})
         self.dbug.debug_print(question_id_info)
         return question_id_info
 
