@@ -51,41 +51,6 @@ class Dictionary:
         self.map[key] = posting_list
 
     def intersect(self, keys):
-        '''
-        lists = []
-        list_score = []
-
-        for key in keys:
-            temp_node = map[key].start
-            if temp_node is not None:
-                lists.append(temp_node)
-                list_score.append(temp_node.gap)
-
-        min_score = list_score[0]
-        min_index = 0
-        current_score
-        for x in range(1, len(list_score)):
-            if list_score[x] < min_score:
-                min_score = list_score[x]
-                min_index
-
-        while len(lists) != 0:
-
-
-
-        query_dict = dict()
-
-        for key in keys:
-            score = 0
-            posting_list = map[key]
-
-            while posting_list is not None:
-                score += test.gap
-                print(score)
-                test = test.next
-        return map[keys[0]]
-        '''
-
         doc_scores = dict()
         lists = []
 
