@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from crawler.debug import debug
 
 MAIN_URL = "https://stackoverflow.com"
-SUB_URL = ""
+SUB_URL = "/questions?sort=newest&page="
 
 
 # given the question id this function creates the url
@@ -25,6 +25,10 @@ def url_link_status(url):
     """
     return requests.get(url).status_code == 200
 
+
+# creates url for a page
+def page_url_creator(page_id):
+    return MAIN_URL + SUB_URL + str(page_id)
 
 class LinkParser:
     """
@@ -52,12 +56,11 @@ class LinkParser:
         :return list: of question IDs
         """
         question_id_info = []
-        flag, soup = self.link_info(page_url, flag=True)
+        soup = self.link_info(page_url)
         main_bar = BeautifulSoup(str(soup.find("div", {"id": "mainbar"})))
-        if flag:
-            for q_id in main_bar.find_all("div", {"class": "question-summary"}):
-                question_id = str(q_id.get("id")).split("-")[2]
-                question_id_info.append({"question_id": question_id, "crawled_info": False})
+        for q_id in main_bar.find_all("div", {"class": "question-summary"}):
+            question_id = int(str(q_id.get("id")).split("-")[2])
+            question_id_info.append({"question_id": question_id})
         self.dbug.debug_print(question_id_info)
         return question_id_info
 

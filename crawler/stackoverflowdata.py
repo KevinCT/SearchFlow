@@ -57,6 +57,7 @@ class QuestionInfo:
         views = soup.find_all("p", {"class": "label-key"})[3].text
         print("views", views)
         return int(str(views).split(" ")[0].strip())
+
     def question_code(self, soup):
         question_code_arr = []
         for code in soup.find("div", {"id": "question"}).find_all("code"):
@@ -114,8 +115,9 @@ class AnswersInfo:
         return answers_array, answer_code_arr
 
 
-connection = Connection(db_name="StackOverflow", db_col="Final_Test_Question_URL")
-test = StackOverflowInfo(56056337)
-info = test.all_info()
-print(info)
-connection.db_col.insert(info)
+def Test():
+    connection = Connection(db_name="StackOverflow", db_col="Final_Test_Question_URL")
+    test = StackOverflowInfo(56056337)
+    info = test.all_info()
+    print(info)
+    connection.db_col.insert(info)
