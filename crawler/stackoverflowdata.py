@@ -1,3 +1,5 @@
+import time
+
 import dateutil.parser
 from bs4 import BeautifulSoup
 
@@ -39,24 +41,32 @@ class QuestionInfo:
         self.question_id = question_id
 
     def get_all_question_info(self, page_soup):
-        question_soup = BeautifulSoup(str(page_soup.find("div", {"class": "question"})))
-        self.question_title = str(page_soup.find("title").text).split("-")[1].strip()
-        self.question_ask_time = dateutil.parser.parse(str(page_soup.find("time").get("datetime")).strip())
-        self.question_view = self.question_views(page_soup)
-        self.question_tags = self.question_tags(question_soup)
-        self.question_upvote = int(question_soup.find("div", {
-            "class": "js-vote-count grid--cell fc-black-500 fs-title grid fd-column ai-center"}).text)
-        self.question_text = str(question_soup.find("div", {"class": "post-text"}).text).strip()
-        self.question_code = self.question_code(question_soup)
-        self.related_questions = self.related_questions(page_soup)
+        try:
+            question_soup = BeautifulSoup(str(page_soup.find("div", {"class": "question"})))
+            question_title = str(page_soup.find("title").text).split("-")[1].strip()
+            question_ask_time = dateutil.parser.parse(str(page_soup.find("time").get("datetime")).strip())
+            question_view = self.question_views(page_soup)
+            question_tags = self.question_tags(question_soup)
+            question_upvote = int(question_soup.find("div", {
+                "class": "js-vote-count grid--cell fc-black-500 fs-title grid fd-column ai-center"}).text)
+            question_text = str(question_soup.find("div", {"class": "post-text"}).text).strip()
+            question_code = self.question_code(question_soup)
+            related_questions = self.related_questions(page_soup)
 
-        question_json = {"question_id": self.question_id, "question_title": self.question_title,
-                         "question_asked_time": self.question_ask_time, "question_text": self.question_text,
-                         "question_tags": self.question_tags, "question_views": self.question_view,
-                         "question_upvote": self.question_upvote, "question_code": self.question_code,
-                         "related_questions": self.related_questions}
-        self.dbug.debug_print(question_json)
-        return question_json
+            question_json = {"question_id": self.question_id, "question_title": question_title,
+                             "question_asked_time": question_ask_time, "question_text": question_text,
+                             "question_tags": question_tags, "question_views": question_view,
+                             "question_upvote": question_upvote, "question_code": question_code,
+                             "related_questions": related_questions}
+            self.dbug.debug_print(question_json)
+            return question_json
+        except Exception as e:
+            self.dbug.debug_print("Error in Link, for the id " + str(self.question_id))
+            self.dbug.debug_print(question_soup)
+            time.sleep(3)
+            question_json = {"question_id": self.question_id}
+        finally:
+            return question_json
 
     def question_views(self, soup):
         views = soup.find_all("p", {"class": "label-key"})[3].text
@@ -94,13 +104,20 @@ class AnswersInfo:
         self.question_id = question_id
 
     def get_all_answer_info(self, soup):
-        answer_soup = BeautifulSoup(str(soup.find("div", {"id": "answers"})))
-        self.total_answers = int(str(answer_soup.find("h2").get("data-answercount")).strip())
-        self.answer_details, self.answer_code = self.answers_detail(self.total_answers, answer_soup)
-        answer_json = {"total_answers": self.total_answers, "answer_code": self.answer_code,
-                       "answers": self.answer_details}
-        self.dbug.debug_print(answer_json)
-        return answer_json
+        try:
+            answer_soup = BeautifulSoup(str(soup.find("div", {"id": "answers"})))
+            self.total_answers = int(str(answer_soup.find("h2").get("data-answercount")).strip())
+            self.answer_details, self.answer_code = self.answers_detail(self.total_answers, answer_soup)
+            answer_json = {"total_answers": self.total_answers, "answer_code": self.answer_code,
+                           "answers": self.answer_details}
+            self.dbug.debug_print(answer_json)
+        except Exception as e:
+            self.dbug.debug_print("Error in Link, for the id " + str(self.question_id))
+            self.dbug.debug_print(answer_soup)
+            time.sleep(3)
+            answer_json = {}
+        finally:
+            return answer_json
 
     def answers_detail(self, total_answers, answer_soup):
         answers_array = []
