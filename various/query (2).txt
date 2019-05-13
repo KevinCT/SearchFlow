@@ -1,0 +1,11 @@
+nginx reverse-proxy
+tags
+https://stackoverflow.com/questions/45380854/configure-nginx-to-reverse-proxy-requests-to-backend-server-based-on-port-number
+
+https://stackoverflow.com/questions/53454955/nginx-reverse-proxy-only-working-with-curl 
+
+https://stackoverflow.com/questions/54123858/nginx-reverse-proxy-for-nextcloud-not-work
+
+https://stackoverflow.com/questions/54151255/why-do-i-get-404-on-nginx-reverse-proxy 
+
+https://stackoverflow.com/questions/54038561/nginx-to-proxy-elk 

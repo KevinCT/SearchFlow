@@ -1,0 +1,11 @@
+java.lang.NullPointerException
+-
+https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it
+
+https://stackoverflow.com/questions/52189134/getresponse-java-lang-nullpointerexception 
+
+https://stackoverflow.com/questions/50640056/java-lang-nullpointerexception-error-when-submit-the-form
+
+https://stackoverflow.com/questions/46635591/java-lang-nullpointerexception-whats-wrong
+
+https://stackoverflow.com/questions/53563495/java-lang-nullpointerexception-occurs-whenever-a-new-file-is-loaded-in-eclipse
