@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% csrf_token %}
+  {% load static %}
+  {% if latest_question_list %}
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+
+<body>
+  <div id="searchBar2">
+    <form method="GET" action="query">
+      <input type="text" name="queryField" placeholder= "Search...">
+    </form>
+  </div>
+
+  <div id="resultList">
+    <dl>
+      {% for question in latest_question_list %}
+        <dt id="title"><a href="http://www.stackoverflow.com">{{question}}</a></dt>
+        <dd id="link"><a href="http://www.stackoverflow.com">http://www.stackoverflow.com</a></dd>
+        <dd id="description">This page shows how to remove the hyperlink underline with CSS by using the text-decoration property. Did you know that removing the underline allows you to ...</dd>
+      {% endfor %}
+    </dl>
+     {% else %}
+        <p>No results available.</p>
+     {% endif %}
+  </div>
+
+  <div id="pagination">
+    <a href="#">&laquo;</a>
+    <a href="#">1</a>
+    <a href="#">2</a>
+    <a href="#">3</a>
+    <a href="#">4</a>
+    <a href="#">5</a>
+    <a href="#">6</a>
+    <a href="#">&raquo;</a>
+
+
+  </div>
+</body>
+</html>
