@@ -1,24 +1,28 @@
 # find all tags
-
+from crawler.mongodb import Connection
 import json
 
 import pymongo as pm
+conn = Connection(db_name="StackOverflow", db_col="Test_Data")
 
-print(pm.version)
 
+def create_json():
+    data_arr = []
+    for i in conn.db_col.find({}):
+        data_arr.append(i)
+    return data_arr
 
 def tag_processing(file):
     tags = set()
     data = []
-    with open(file, encoding="utf8") as f:
+    data2 = []
+    with open("C:/SearchFlow/SearchFlow/crawler/test.json", encoding="utf8") as f:
+        data2.append(json.load(f))
+        print(data2[0])
         for line in f:
             data.append(json.loads(line))
-    for word in data:
-        for tag in word['items'][0]['tags']:
-            tags.add(tag)
-
-    return tags
-
+            print(data[0])
+            break
 
 def tag_file_edit(tags):
     file = open('tags.txt', 'a')
@@ -28,4 +32,6 @@ def tag_file_edit(tags):
     file.close()
 
 
-tag_file_edit(tag_processing('C:\SearchFlow\SearchFlow\crawler\_Data.json'))
+#tag_processing('C:\SearchFlow\SearchFlow\crawler\test.json')
+print(create_json()[0])
+#tag_file_edit(tag_processing('C:\SearchFlow\SearchFlow\crawler\demo_data.json'))
