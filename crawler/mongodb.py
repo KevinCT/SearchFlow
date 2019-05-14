@@ -50,14 +50,27 @@ class Connection:
             self.dbug.debug_print("Problem with insert or update..." + str(e))
 
     # def get_data(self, data_type="question_id"):
-    def test_get_inf(self, data_type=""):
+    def test_get_info(self, data_type=""):
         list = []
         for i in self.db_col.find({}, {data_type: 1, "_id": 0}):
             list.append(i)
         return list
 
-# conn = Connection(db_name="StackOverflow", db_col="Question_URL")
-# print(conn.test_get_inf(data_type="question_id"))
+    def search_data(self, data=""):
+        list = []
+        for i in self.db_col.find({"Question.question_title": {"$regex": "/" + data + "/"}}):
+            list.append(i)
+        return list
+
+    def get_distinct_data(self, tag_name=""):
+        return self.db_col.distinct(tag_name)
+
+
+conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+# print(conn.search_data("data"))
+# print(conn.get_distinct_data(tag_name="Question.question_tags"))
+print(conn.test_get_info("Question.question_id"))
+
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:
 #     print(x['question_id'])
