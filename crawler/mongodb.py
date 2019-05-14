@@ -13,9 +13,8 @@ class Connection:
     def __init__(self, db_name=DEFAULT_MONGO_DB_NAME, db_col=DEFAULT_TARGET_COLLECTION_NAME,
                  db_address=DEFAULT_MONGO_DB_ADDRESS, db_port=DEFAULT_MONGO_DB_PORT):
         """
-
-        :param db_name:
-        :param db_col:
+        :param db_name: string, Name of the database
+        :param db_col: string, Name of the collection
         :param db_address:
         :param db_port:
         """
@@ -39,7 +38,7 @@ class Connection:
         try:
             elements = self.db_col.find(unique_query)
         except Exception as e:
-            self.dbug.debug_print("Errors in finding MongoDb elements " + e)
+            self.dbug.debug_print("Errors in finding MongoDB elements " + e)
         try:
             if elements.count() == 0:
                 self.dbug.debug_print("Inserted Data...")
@@ -49,14 +48,27 @@ class Connection:
         except Exception as e:
             self.dbug.debug_print("Problem with insert or update..." + str(e))
 
-    # def get_data(self, data_type="question_id"):
+
     def test_get_inf(self, data_type=""):
         list = []
         for i in self.db_col.find({}, {data_type: 1, "_id": 0}):
             list.append(i)
         return list
 
-# conn = Connection(db_name="StackOverflow", db_col="Question_URL")
+    def search_ans_data(self, data=""):
+        list = []
+        for i in self.db_col.distinct({"Question.question_title": '//' + data + '//'}):
+            list.append(i)
+        return list
+
+    def delete_null_text(self):
+        total = self.db_col.delete_many({{"crawled": True, "Question.question_text": None}})
+        self.dbug.debug_print("total deleted items: " + str(total))
+        return total.deleted_count
+
+
+conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+
 # print(conn.test_get_inf(data_type="question_id"))
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:
