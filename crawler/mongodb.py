@@ -27,21 +27,23 @@ class Connection:
         except Exception as e:
             self.dbug.debug_print("MongoDb Connection error: " + e)
 
-    def insert(self, data):
+    def insert(self, data, typical_query=None):
         """
 
         :param data: (json) is the data you want to insert
         if data is already existed then it will update the data
         """
-
-        unique_query = {"Question.question_id": data.get("Question").get("question_id")}  # search for same title
+        if typical_query is None:
+            unique_query = {"Question.question_id": data.get("Question").get("question_id")}  # search for same title
+        else:
+            unique_query = {"TagName": data}
         try:
             elements = self.db_col.find(unique_query)
         except Exception as e:
             self.dbug.debug_print("Errors in finding MongoDB elements " + e)
         try:
             if elements.count() == 0:
-                self.dbug.debug_print("Inserted Data...")
+                #self.dbug.debug_print("Inserted Data...")
                 self.db_col.insert_one(data)
             else:
                 self.dbug.debug_print("Data Already Existed...")

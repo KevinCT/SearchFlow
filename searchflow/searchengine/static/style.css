@@ -1,0 +1,85 @@
+input:focus {
+    outline:none;
+}
+
+body {
+}
+#searchBar {
+  text-align: center;
+}
+#searchBar input {
+  margin-top: 100px;
+  width: 50%;
+  padding: 6px;
+  border: 1px solid lightgray;
+  font-size: 17px;
+  border-radius: 10px;
+  input:focus {outline:none;}
+
+}
+
+#searchBar2 input {
+  margin-left: 50px;
+  margin-top: 50px;
+  width: 50%;
+  padding: 6px;
+  border: 1px solid lightgray;
+  font-size: 17px;
+  border-radius: 10px;
+  input:focus {outline:none;}
+
+}
+
+#resultList {
+  margin-left: 50px;
+  width: 25%;
+}
+
+#link {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  color: green
+  a:lin
+}
+
+#description {
+  margin-left: 0px;
+}
+
+#title{
+  font-size: 125%;
+}
+
+#link a:link{
+    color: green;
+    text-decoration: none;
+}
+
+
+#link a:visited{
+    color: green;
+    text-decoration: none;
+}
+
+#pagination {
+  display: inline-block;
+}
+
+#pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+#pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+#pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}

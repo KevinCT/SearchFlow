@@ -1,0 +1,322 @@
+[{
+  "_id": {
+    "$oid": "5cd55310a43cd23488d29ed5"
+  },
+  "Question": {
+    "question_id": {
+      "$numberInt": "56075703"
+    },
+    "question_title": "How to remove the 3d effect in the font",
+    "question_asked_time": {
+      "$date": {
+        "$numberLong": "1557484596000"
+      }
+    },
+    "question_text": "I don't know why I am getting this 3d effect in words. How can I remove the effect and flatten the words?\nThe font family is Poppins\n   body {font-family: \"Poppins\";}",
+    "question_tags": [
+      "html",
+      "css",
+      "fonts"
+    ],
+    "question_views": {
+      "$numberInt": "30"
+    },
+    "question_upvote": {
+      "$numberInt": "-1"
+    },
+    "question_code": [
+      "body {font-family: \"Poppins\";}"
+    ],
+    "related_questions": [
+      {
+        "related_question_id": {
+          "$numberInt": "114543"
+        },
+        "related_question": "How to horizontally center a <div>?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "596351"
+        },
+        "related_question": "How can I know which radio button is selected via jQuery?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "806000"
+        },
+        "related_question": "How do I give text or an image a transparent background using CSS?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "826782"
+        },
+        "related_question": "How to disable text selection highlighting?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "901712"
+        },
+        "related_question": "How to check whether a checkbox is checked in jQuery?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "2436749"
+        },
+        "related_question": "How to add multiple font files for the same font?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "5078239"
+        },
+        "related_question": "How do I remove the space between inline-block elements?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "5235142"
+        },
+        "related_question": "How to disable resizable property of textarea?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "8865458"
+        },
+        "related_question": "How do I vertically center text with CSS?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "16056591"
+        },
+        "related_question": "Font scaling based on width of container"
+      }
+    ]
+  },
+  "crawled": true,
+  "Answer": {
+    "total_answers": {
+      "$numberInt": "2"
+    },
+    "answer_code": [
+      "a {font-style: normal;}",
+      "text-shadow: none;\n\n\n.text-class\n{\n    text-shadow: none;\n    background: #333;\n    color: #fff;\n}"
+    ],
+    "answers": [
+      {
+        "answer_upvote": {
+          "$numberInt": "0"
+        },
+        "answer": "\nYou can do any formatting with CSS.\na {font-style: normal;}\n\nwill make font style as normal\n",
+        "answer_accepted": false
+      },
+      {
+        "answer_upvote": {
+          "$numberInt": "0"
+        },
+        "answer": "\nThere may be a CSS conflict. Try this. Change class & the colors as suitable.\nadd \ntext-shadow: none;\n\n\n.text-class\n{\n    text-shadow: none;\n    background: #333;\n    color: #fff;\n}\n\n",
+        "answer_accepted": false
+      }
+    ]
+  }
+},
+{
+  "_id": {
+    "$oid": "5cd55310a43cd23488d29ed6"
+  },
+  "Question": {
+    "question_id": {
+      "$numberInt": "56075701"
+    },
+    "question_title": "Create a new list column based on conditions with data.table",
+    "question_asked_time": {
+      "$date": {
+        "$numberLong": "1557484025000"
+      }
+    },
+    "question_text": "I currently have a table that has the following column:\nID, Letter_Date, Dates_for_ID\nwith the formats:\nChr, Date, list(of dates)\nI want to create a new column that has a revised list of dates where the dates are the ones in the list IF before the 'Date' column\nI have tried looping as below:\nThis approach works but is extremely slow - I was wondering what a quicker way of doing it is?\nI have looked at map with purrr but unsure how it would work here. \ndf$Revised_List<-vector('list', nrow(df)) \n\nand \nfor (i in 1:nrow(df)) {\n df$Revised_List[i]<- list(df$Dates_for_ID[[i]][df$Letter_Date[i]>df$Dates_for_id[[i]]) \n}\n\nI would ideally like an ouptut as list column with the new dates.",
+    "question_tags": [
+      "r",
+      "list"
+    ],
+    "question_views": {
+      "$numberInt": "22"
+    },
+    "question_upvote": {
+      "$numberInt": "0"
+    },
+    "question_code": [
+      "ID, Letter_Date, Dates_for_ID",
+      "df$Revised_List<-vector('list', nrow(df))",
+      "for (i in 1:nrow(df)) {\n df$Revised_List[i]<- list(df$Dates_for_ID[[i]][df$Letter_Date[i]>df$Dates_for_id[[i]]) \n}"
+    ],
+    "related_questions": [
+      {
+        "related_question_id": {
+          "$numberInt": "403421"
+        },
+        "related_question": "How to sort a list of objects based on an attribute of the objects?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "858572"
+        },
+        "related_question": "How to make a new List in Java"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "8892360"
+        },
+        "related_question": "Convert Set to List without creating new List"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "13983874"
+        },
+        "related_question": "Fast grouping by list column subsets in data.table"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "31277047"
+        },
+        "related_question": "Create a new column in dataframe by indexing into a list using another column?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "39966565"
+        },
+        "related_question": "Create new R dataframe column based on conditions in other columns"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "44336733"
+        },
+        "related_question": "How to 'unlist' a column in a data.table"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "51701953"
+        },
+        "related_question": "How to extract the element in a list column based on the value in another column using purrr"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "52259906"
+        },
+        "related_question": "Create new column based on conditions in another columns"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "53827073"
+        },
+        "related_question": "Distribute a vector over a column in list of lists in R"
+      }
+    ]
+  },
+  "Answer": {
+    "total_answers": {
+      "$numberInt": "0"
+    },
+    "answer_code": [],
+    "answers": []
+  },
+  "crawled": true
+},
+{
+  "_id": {
+    "$oid": "5cd55310a43cd23488d29ed7"
+  },
+  "Question": {
+    "question_id": {
+      "$numberInt": "56075803"
+    },
+    "question_title": "using swift can we airplay photos on Apple TV programmatically?",
+    "question_asked_time": {
+      "$date": {
+        "$numberLong": "1557484318000"
+      }
+    },
+    "question_text": "I want to build a simple app in iOS using swift which shows the photos of the album in my app and on button click it should airplay on my Apple TV.\nI read so many documents and articles but not sure if we can do it for photos. Few have said for audio/video it is possible but not sure about photos.\nAt least any links or sample code would be helpful.\nThanks",
+    "question_tags": [
+      "ios",
+      "swift",
+      "tvos",
+      "apple-tv",
+      "airplay"
+    ],
+    "question_views": {
+      "$numberInt": "23"
+    },
+    "question_upvote": {
+      "$numberInt": "0"
+    },
+    "question_code": [],
+    "related_questions": [
+      {
+        "related_question_id": {
+          "$numberInt": "5391403"
+        },
+        "related_question": "Supporting AirPlay for Photos and Videos in 3rd party iPhone app"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "5892022"
+        },
+        "related_question": "AVAudioPlayer and AirPlay - possible?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "8460399"
+        },
+        "related_question": "Airplay, Apple TV and Remote Events - is it only for streaming audio/video?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "15198079"
+        },
+        "related_question": "How to find available screens with AirPlay?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "17651224"
+        },
+        "related_question": "iOS: Audio and Video tap from Airplay"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "24017316"
+        },
+        "related_question": "#pragma mark in Swift?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "26761745"
+        },
+        "related_question": "MPMoviePlayerController custom airplay button"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "34115251"
+        },
+        "related_question": "How to programmatically discover the iOS devices list and Connect for mirroring using airplay?"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "47514019"
+        },
+        "related_question": "Airplay background streaming like Spotify / Amazon Music"
+      },
+      {
+        "related_question_id": {
+          "$numberInt": "55727226"
+        },
+        "related_question": "Add overlay on video streamed via Apple AirPlay"
+      }
+    ]
+  },
+  "Answer": {
+    "total_answers": {
+      "$numberInt": "0"
+    },
+    "answer_code": [],
+    "answers": []
+  },
+  "crawled": true
+},]

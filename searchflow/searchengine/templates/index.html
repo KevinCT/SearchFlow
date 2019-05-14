@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% csrf_token %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div id="searchBar">
+      <form method="GET" action="query">
+        <input type="text" name="queryField" placeholder= "Search...">
+      </form>
+    </div>
+</body>
+</html>
