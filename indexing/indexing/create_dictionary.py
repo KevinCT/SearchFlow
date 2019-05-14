@@ -1,12 +1,12 @@
+import re
 import time
 
+import pymongo
 from nltk.corpus import wordnet
 from nltk.corpus import words
 from spellchecker import SpellChecker
-import pymongo
-import json
+
 from crawler.mongodb import Connection
-import re
 
 conn = Connection(db_name="StackOverflow", db_col="Test_Data")
 conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_test")
@@ -38,7 +38,6 @@ def spell_check_test():
     print("first")
     print(end - start)
 
-
     for word in ['jaka', 'is', 'hapenning', 'here']:
         # Get the one `most likely` answer
         start = time.time()
@@ -60,6 +59,7 @@ def spell_check_test():
     print(word_list.index('base'))
 
     # word_list.add(computer science terms)
+
 
 def create_dict():
     word_list = words.words()
@@ -330,7 +330,8 @@ def basic_search(query):
     return static_intersect(query, "question_title_test")
 
 
-# print(basic_search(["and", "java", "on", "swift"]))
+print(basic_search(["and", "java", "on", "swift"]))
+
 '''
 
 

@@ -43,7 +43,7 @@ class QuestionInfo:
     def get_all_question_info(self, page_soup):
         try:
             question_soup = BeautifulSoup(str(page_soup.find("div", {"class": "question"})))
-            question_title = str(page_soup.find("title").text).split("-")[1].strip()
+            question_title = str(page_soup.find("a", {"class": "question-hyperlink"}).text).strip()
             question_ask_time = dateutil.parser.parse(str(page_soup.find("time").get("datetime")).strip())
             question_view = self.question_views(page_soup)
             question_tags = self.question_tags(question_soup)
@@ -61,9 +61,8 @@ class QuestionInfo:
             self.dbug.debug_print(question_json)
             return question_json
         except Exception as e:
-            self.dbug.debug_print("Error in Link, for the id " + str(self.question_id))
-            self.dbug.debug_print(question_soup)
-            time.sleep(3)
+            self.dbug.debug_print("Error in Link, for the id " + str(self.question_id) + " Exception " + str(e))
+            time.sleep(2)
             question_json = {"question_id": self.question_id}
         finally:
             return question_json
@@ -113,8 +112,7 @@ class AnswersInfo:
             self.dbug.debug_print(answer_json)
         except Exception as e:
             self.dbug.debug_print("Error in Link, for the id " + str(self.question_id))
-            self.dbug.debug_print(answer_soup)
-            time.sleep(3)
+            time.sleep(2)
             answer_json = {}
         finally:
             return answer_json
