@@ -1,7 +1,7 @@
 # Searchflow
 
 tasks:
-1. sample user queries (Oliver) - output as txt
+1. sample user queries (Oliver)
 3. crawl StackOverflow and output as JSON and MongoDB (Pritom)
 4. indexing (Petros)
 5. scoring methods (Kevin) - automate methods according to sample user queries
@@ -16,7 +16,7 @@ fridays after class
 
 
 
-coding & data retrieval: week x10x x11x 12 13 14 (27/05)
+coding & data retrieval: week x10x x11x x12x 13 14 (27/05)
 
 demo: week 15 (03/06)
 
