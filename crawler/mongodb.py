@@ -58,8 +58,12 @@ class Connection:
             list.append(i)
         return list
 
+    def get_distinct_element(self, tag_name=""):
+        return self.db_col.distinct(tag_name)
+
+
 # conn = Connection(db_name="StackOverflow", db_col="Question_URL")
-# print(conn.test_get_inf(data_type="question_id"))
+# print(conn.get_distinct_element("Question.question_tags"))
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:
 #     print(x['question_id'])
