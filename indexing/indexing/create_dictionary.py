@@ -1,14 +1,16 @@
+import re
 import time
 
+import pymongo
 from nltk.corpus import wordnet
 from nltk.corpus import words
 from spellchecker import SpellChecker
-import pymongo
-import json
+
 from crawler.mongodb import Connection
-import re
 
 conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+conn_dictionary = Connection(db_name="StackOverflow", db_col="dictionary")
+
 
 
 def create_json():
@@ -223,6 +225,14 @@ def clear_db():
     conn.db_col.delete_many({"Question.question_text": None})
 
 
+def add_word_to_dictionary():
+    for word in words.words():
+        conn_dictionary.insert({"TagName": word}, {"TagName": word})
+
+
+add_word_to_dictionary()
+
+'''
 data_file = create_json()
 question_title_index = Index("test")
 
@@ -239,3 +249,4 @@ end = time.time()
 
 print(end - start)
 print(data_file[189])
+'''
