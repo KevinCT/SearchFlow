@@ -25,7 +25,7 @@ class Connection:
             self.db_col = self.db_name[db_col]
             self.dbug = debug(name=self.__class__, flag=True)
         except Exception as e:
-            self.dbug.debug_print("MongoDb Connection error: " + e)
+            self.dbug.debug_print("MongoDB Connection error: " + e)
 
     def insert(self, data, typical_query=None):
         """
@@ -43,19 +43,18 @@ class Connection:
             self.dbug.debug_print("Errors in finding MongoDB elements " + e)
         try:
             if elements.count() == 0:
-                #self.dbug.debug_print("Inserted Data...")
+                self.dbug.debug_print("Inserted Data...")
                 self.db_col.insert_one(data)
             else:
                 self.dbug.debug_print("Data Already Existed...")
         except Exception as e:
             self.dbug.debug_print("Problem with insert or update..." + str(e))
 
-
-    def test_get_inf(self, data_type=""):
+    def test_get_info(self, data_type=""):
         list = []
         for i in self.db_col.find({}, {data_type: 1, "_id": 0}):
             list.append(i)
-        return list
+        return list29149
 
     def search_ans_data(self, data=""):
         list = []
@@ -63,13 +62,13 @@ class Connection:
             list.append(i)
         return list
 
+    # be sure before you use this method
     def delete_null_text(self):
         total = self.db_col.delete_many({{"crawled": True, "Question.question_text": None}})
         self.dbug.debug_print("total deleted items: " + str(total))
         return total.deleted_count
 
-
-conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 
 # print(conn.test_get_inf(data_type="question_id"))
 # var = conn.db_col.find({'crawled': 'True'})
