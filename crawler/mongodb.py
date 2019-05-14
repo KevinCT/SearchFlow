@@ -54,7 +54,7 @@ class Connection:
         list = []
         for i in self.db_col.find({}, {data_type: 1, "_id": 0}):
             list.append(i)
-        return list29149
+        return list
 
     def search_ans_data(self, data=""):
         list = []
