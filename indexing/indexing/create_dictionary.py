@@ -5,7 +5,7 @@ import pymongo
 from nltk.corpus import wordnet
 from nltk.corpus import words
 from spellchecker import SpellChecker
-
+from searchflow.searchengine.scoring import getScore
 from crawler.mongodb import Connection
 
 conn = Connection(db_name="StackOverflow", db_col="Test_Data")
@@ -345,6 +345,17 @@ def push_idf():
 #push_idf()
 
 
+def pull_idf(query):
+    query_to_idf = dict()
+
+    for key in query:
+        temp = conn_idf.db_col.find_one({"Term": key})
+        if temp is not None:
+            query_to_idf[key] = temp.get("IDF_Score")
+
+    return query_to_idf
+
+
 def basic_search(query):
     # posting_lists = []
     # for word in query:
@@ -353,7 +364,8 @@ def basic_search(query):
     return static_intersect(query, "question_title_test")
 
 
-print(basic_search(["and", "java", "on", "swift", "the"]))
+query = ["and", "on", "swift", "the"]
+print(getScore(pull_idf(query), basic_search(query), query))
 
 '''
 

@@ -33,6 +33,7 @@ def tfidf(idfDictionary, documents):
         tempDictionary = {}
         for term in tfDictionary:
             tempDictionary[term] = tfDictionary[term] * idfDictionary[term]
+
         tfidfList.append(tempDictionary)
 
     return tfidfList
