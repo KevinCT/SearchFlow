@@ -58,6 +58,13 @@ class Connection:
             list.append(i)
         return list
 
+    def get_distinct_element(self, tag_name=""):
+        return self.db_col.distinct(tag_name)
+
+
+# conn = Connection(db_name="StackOverflow", db_col="Question_URL")
+# print(conn.get_distinct_element("Question.question_tags"))
+
     # be sure before you use this method
     def delete_null_text(self):
         total = self.db_col.delete_many({{"crawled": True, "Question.question_text": None}})
@@ -77,6 +84,7 @@ class Connection:
         :return: boolean
         """
         return self.db_col.find({data_type: data}).count() > 0
+
 
 conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 # print(conn.data_exist(data_type="Question.question_id", data=56075703))
