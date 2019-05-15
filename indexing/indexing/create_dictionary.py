@@ -13,6 +13,7 @@ conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_tes
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
+conn_idf = Connection(db_name="StackOverflow", db_col="idf_scores")
 
 
 def create_json():
@@ -198,7 +199,7 @@ class PostingNode:
 
 
 def deserialize_node(node_dict):
-    print(node_dict.get("gap"))
+    # print(node_dict.get("gap"))
     return PostingNode(node_dict.get("gap"), None, None, node_dict.get("frequency"))
 
 
@@ -289,7 +290,7 @@ def deserialize_test():
 
 def static_intersect(keys, index):
     doc_scores = dict()
-    lists = []
+    term_posting = dict()
     index_connection = Connection(db_name="StackOverflow", db_col=index)
     tag_connection = Connection(db_name="StackOverflow", db_col="tag_dictionary")
 
@@ -300,17 +301,21 @@ def static_intersect(keys, index):
             if data is not None:
                 temp_node = deserialize_list(data.get("PostingList")).start
                 if temp_node is not None:
-                    lists.append(temp_node)
+                    term_posting[key] = temp_node
                     #   list_score.append(temp_node.gap)
 
     # could use a max heap for ranking
-    for elem in lists:
+    for key in term_posting.keys():
+        elem = term_posting[key]
         current_score = elem.gap
         while elem is not None:
             if current_score in doc_scores:
-                doc_scores[current_score] = doc_scores[current_score] + static_get_score(elem)
+                temp_dict = doc_scores.get(current_score)
+                if temp_dict is None:
+                    doc_scores[current_score][key] = static_get_score(elem)
             else:
-                doc_scores[current_score] = static_get_score(elem)
+                doc_scores[current_score] = dict()
+                doc_scores[current_score][key] = static_get_score(elem)
             elem = elem.next
             if elem is not None:
                 current_score += elem.gap
@@ -322,6 +327,24 @@ def static_get_score(elem):
     return elem.frequency
 
 
+def find_idf(posting_node, total_docs):
+    total = 1
+    while posting_node.has_next():
+        total += 1
+        posting_node = posting_node.next
+    return total / total_docs
+
+
+def push_idf():
+    total_docs = conn_title_test.db_col.count()
+    for i in conn_title_test.db_col.find({}):
+        idf = find_idf(deserialize_list(i.get("PostingList")).start, total_docs)
+        conn_idf.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
+
+
+#push_idf()
+
+
 def basic_search(query):
     # posting_lists = []
     # for word in query:
@@ -330,7 +353,7 @@ def basic_search(query):
     return static_intersect(query, "question_title_test")
 
 
-print(basic_search(["and", "java", "on", "swift"]))
+print(basic_search(["and", "java", "on", "swift", "the"]))
 
 '''
 
