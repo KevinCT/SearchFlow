@@ -72,14 +72,14 @@ class Connection:
     def data_exist(self, data_type="", data=None):
 
         """
-        :param data_type: string, The name/type of the data in mongoDB
+        :param data_type: string, The name/type of the data in mongoDB. Ex. Question.question_id, Answer.answer_upvote
         :param data: anytype, The value of the data
         :return: boolean
         """
         return self.db_col.find({data_type: data}).count() > 0
 
-conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
-# print(conn.data_exist(data_type="Question.question_id", data=56075703))
+# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+# print(conn.get_individual_value(data_type="Question.question_id"))
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:
 #     print(x['question_id'])

@@ -46,7 +46,7 @@ class LinkParser:
         :param url: string is an URL
         :return BeautifulSoup: as string of an URL
         """
-        proxy = next(pool_of_proxy())  # getting the proxy from pool
+        proxy = '104.248.7.88:8080'  # default proxy
         while True:
             try:
                 proxies = {
