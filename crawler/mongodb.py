@@ -61,9 +61,8 @@ class Connection:
     def get_distinct_element(self, tag_name=""):
         return self.db_col.distinct(tag_name)
 
-
-# conn = Connection(db_name="StackOverflow", db_col="Question_URL")
-# print(conn.get_distinct_element("Question.question_tags"))
+    # conn = Connection(db_name="StackOverflow", db_col="Question_URL")
+    # print(conn.get_distinct_element("Question.question_tags"))
 
     # be sure before you use this method
     def delete_null_text(self):
@@ -79,14 +78,13 @@ class Connection:
     def data_exist(self, data_type="", data=None):
 
         """
-        :param data_type: string, The name/type of the data in mongoDB
+        :param data_type: string, The name/type of the data in mongoDB. Ex. Question.question_id, Answer.answer_upvote
         :param data: anytype, The value of the data
         :return: boolean
         """
         return self.db_col.find({data_type: data}).count() > 0
 
-
-conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 # print(conn.data_exist(data_type="Question.question_id", data=56075703))
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:

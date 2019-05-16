@@ -7,14 +7,14 @@ from crawler.linkparser import page_url_creator
 from crawler.mongodb import Connection
 
 db_connection = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
-START_PAGE = 290000
+START_PAGE = 284700
 END_PAGE = 2000
 TOTAL_PAGES = END_PAGE - START_PAGE
 
 
 # this is the function invoked by the thread
 def thread_url(page_id):
-    debug(thread_url, flag=True).debug_print("Thread %s: starting" + threading.current_thread().name)
+    debug(thread_url, flag=True).debug_print("Thread " + threading.current_thread().name + " starting")
     page_url = page_url_creator(page_id=page_id)
     question_ids = LinkParser().question_id_extractor(page_url=page_url)
     debug(thread_url, flag=True).debug_print(str(question_ids))
@@ -50,9 +50,9 @@ if __name__ == '__main__':
         t3.start()
         t4.start()
 
-        if count % 50 == 0:
+        if count % 1000 == 0:
             print("Going to sleep")
-            time.sleep(1)
+            time.sleep(0.5)
         for index, thread in enumerate(threads):
             thread.join()
     print("Final Time:", time.time() - time1)

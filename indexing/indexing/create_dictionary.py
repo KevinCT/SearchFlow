@@ -8,7 +8,7 @@ from spellchecker import SpellChecker
 from searchflow.searchengine.scoring import getScore
 from crawler.mongodb import Connection
 
-conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+conn = Connection(db_name="StackOverflow", db_col="Test_Data")
 conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
@@ -282,9 +282,6 @@ def index_to_mongodb():
         conn_title_test.db_col.insert_one({"PostingList": question_title_index.map.get(word).serialize(), "Term": word})
 
 
-# index_to_mongodb()
-
-
 def deserialize_test():
     for i in conn_title_test.db_col.find({}):
         print(deserialize_list(i.get("PostingList")).start.gap)
@@ -300,6 +297,7 @@ def static_intersect(keys, index):
     for key in keys:
         if tag_connection.db_col.count({"TagName": key}, limit=1) != 0:
             data = index_connection.db_col.find_one({"Term": key})
+            print(data)
             if data is not None:
                 temp_node = deserialize_list(data.get("PostingList")).start
                 if temp_node is not None:
@@ -344,7 +342,7 @@ def push_idf():
         conn_idf.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
 
 
-# push_idf()
+#push_idf()
 
 
 def pull_idf(query):
@@ -366,32 +364,24 @@ def basic_search(query):
     return static_intersect(query, "question_title_index")
 
 
-query = ["and", "on", "swift"]
+query = ["and", "on", "swift", "the"]
 start_time = time.time()
 print(getScore(pull_idf(query), basic_search(query), query))
 end_time = time.time()
-
 print(end_time-start_time)
 
 '''
-
-
-
-
 data_file = create_json()
 question_title_index = Index("test")
-
 start_time = time.time()
 for line in data_file:
     question_title_index.string_to_word_array(line['Question']['question_title'], line['position'])
 end_time = time.time()
 print(end_time - start_time)
-
 start = time.time()
 for x in range(0, 2):
     question_title_index.intersect(["stop", "new", "list"])
 end = time.time()
-
 print(end - start)
 print(data_file[189])
 '''
