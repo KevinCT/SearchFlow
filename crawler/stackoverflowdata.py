@@ -62,7 +62,7 @@ class QuestionInfo:
             return question_json
         except Exception as e:
             self.dbug.debug_print("Error in Link, for the id " + str(self.question_id) + " Exception " + str(e))
-            time.sleep(2)
+            time.sleep(0.5)
             question_json = {"question_id": self.question_id}
         finally:
             return question_json
@@ -112,7 +112,7 @@ class AnswersInfo:
             self.dbug.debug_print(answer_json)
         except Exception as e:
             self.dbug.debug_print("Error in Link, for the id " + str(self.question_id))
-            time.sleep(2)
+            time.sleep(0.2)
             answer_json = {}
         finally:
             return answer_json

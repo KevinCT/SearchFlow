@@ -1,3 +1,4 @@
+import random
 from itertools import cycle
 
 import requests
@@ -84,7 +85,7 @@ def proxy_from_file(filename):
 
 
 def pool_of_proxy():
-    return cycle(proxy_from_file("proxy_list.txt"))
+    return cycle(random.shuffle(proxy_from_file("proxy_list.txt")))
 
 
 if __name__ == '__main__':
