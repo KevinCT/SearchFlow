@@ -23,7 +23,7 @@ def tfidf(idfDictionary, documents):
     tfidfList = []
     terms = set()
     for document in documents:
-        print(document)
+        #print(document)
         terms.update(documents[document].keys())
     termsDictionary = dict.fromkeys(terms, 0)
     for document in documents:

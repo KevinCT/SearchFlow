@@ -8,8 +8,8 @@ from spellchecker import SpellChecker
 from searchflow.searchengine.scoring import getScore
 from crawler.mongodb import Connection
 
-conn = Connection(db_name="StackOverflow", db_col="Test_Data")
-conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_test")
+conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -282,6 +282,9 @@ def index_to_mongodb():
         conn_title_test.db_col.insert_one({"PostingList": question_title_index.map.get(word).serialize(), "Term": word})
 
 
+# index_to_mongodb()
+
+
 def deserialize_test():
     for i in conn_title_test.db_col.find({}):
         print(deserialize_list(i.get("PostingList")).start.gap)
@@ -297,7 +300,6 @@ def static_intersect(keys, index):
     for key in keys:
         if tag_connection.db_col.count({"TagName": key}, limit=1) != 0:
             data = index_connection.db_col.find_one({"Term": key})
-            print(data)
             if data is not None:
                 temp_node = deserialize_list(data.get("PostingList")).start
                 if temp_node is not None:
@@ -342,7 +344,7 @@ def push_idf():
         conn_idf.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
 
 
-#push_idf()
+# push_idf()
 
 
 def pull_idf(query):
@@ -361,11 +363,15 @@ def basic_search(query):
     # for word in query:
     #    posting_lists.append(deserialize_list(conn_title_test.db_col.find_one({"Term": word}).get("PostingList")))
 
-    return static_intersect(query, "question_title_test")
+    return static_intersect(query, "question_title_index")
 
 
-query = ["and", "on", "swift", "the"]
+query = ["and", "on", "swift"]
+start_time = time.time()
 print(getScore(pull_idf(query), basic_search(query), query))
+end_time = time.time()
+
+print(end_time-start_time)
 
 '''
 
