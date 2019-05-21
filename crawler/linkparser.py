@@ -56,6 +56,14 @@ class LinkParser:
                 s = requests.Session()
                 s.proxies = proxies
                 url_ = requests.get(url)
+                if url_.status_code != 200:
+                    self.dbug.debug_print(f"Error In Status Code: {url_.status_code} URL: {url}")
+                    if url_.status_code == 404:
+                        self.dbug.debug_print(f"Sorry the data was deleted from the page...")
+                        return BeautifulSoup(url_.content, "html.parser")
+                    if url_.status_code == 429:
+                        raise Exception
+                    raise Exception
                 if BeautifulSoup(url_.content, "html.parser").find("body").text == "None":
                     raise Exception
                 return BeautifulSoup(url_.content, "html.parser")

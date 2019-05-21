@@ -85,7 +85,9 @@ def proxy_from_file(filename):
 
 
 def pool_of_proxy():
-    return cycle(random.shuffle(proxy_from_file("proxy_list.txt")))
+    proxy_list = proxy_from_file("proxy_list.txt")
+    random.shuffle(proxy_list)
+    return cycle(proxy_list)
 
 
 if __name__ == '__main__':
