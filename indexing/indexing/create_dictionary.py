@@ -13,6 +13,7 @@ conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_ind
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
+conn_dictionary_2 = Connection(db_name="StackOverflow", db_col="tag_dictionary_2")
 conn_idf = Connection(db_name="StackOverflow", db_col="idf_scores")
 
 
@@ -364,11 +365,14 @@ def basic_search(query):
     return static_intersect(query, "question_title_index")
 
 
-query = ["and", "on", "swift", "the"]
-start_time = time.time()
-print(getScore(pull_idf(query), basic_search(query), query))
-end_time = time.time()
-print(end_time-start_time)
+def push_terms(tags):
+    for tag in tags:
+        conn_dictionary.db_col.insert_one({"TagName": tag})
+
+
+def search(query):
+    getScore(pull_idf(query), basic_search(query), query)
+
 
 '''
 data_file = create_json()
