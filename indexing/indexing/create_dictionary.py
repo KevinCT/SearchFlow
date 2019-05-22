@@ -13,6 +13,7 @@ conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_ind
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
+conn_dictionary_2 = Connection(db_name="StackOverflow", db_col="tag_dictionary_2")
 conn_idf = Connection(db_name="StackOverflow", db_col="idf_scores")
 
 
@@ -362,6 +363,11 @@ def basic_search(query):
     #    posting_lists.append(deserialize_list(conn_title_test.db_col.find_one({"Term": word}).get("PostingList")))
 
     return static_intersect(query, "question_title_index")
+
+
+def push_terms(tags):
+    for tag in tags:
+        conn_dictionary_2.db_col.insert_one({"TagName": tag})
 
 
 query = ["and", "on", "swift", "the"]
