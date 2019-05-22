@@ -1,10 +1,6 @@
 import re
 import time
 
-import pymongo
-from nltk.corpus import wordnet
-from nltk.corpus import words
-from spellchecker import SpellChecker
 from searchflow.searchengine.scoring import getScore
 from crawler.mongodb import Connection
 
@@ -30,58 +26,14 @@ def create_json():
     return data_arr
 
 
-# Do spell check in a different thread
-def spell_check_test():
-    spell = SpellChecker()
-    misspelled = spell.unknown(['jaka', 'is', 'hapenning', 'here'])
-    start = time.time()
-    syns = wordnet.synsets('car')
-    end = time.time()
-    print("first")
-    print(end - start)
-
-    for word in ['jaka', 'is', 'hapenning', 'here']:
-        # Get the one `most likely` answer
-        start = time.time()
-        print(spell.correction(word))
-        end = time.time()
-        print("first")
-        print(end - start)
-        # Get a list of `likely` options
-
-        start = time.time()
-        print(spell.candidates(word))
-        end = time.time()
-        print("end")
-        print(end - start)
-
-    word_list = words.words()
-    # prints 236736
-
-    print(word_list.index('base'))
-
-    # word_list.add(computer science terms)
-
-
-def create_dict():
-    word_list = words.words()
-    dictionary = dict()
-
-    for word in word_list:
-        dictionary[word] = None
-        # print(dictionary[word])
-
-    #for
-
-#create_dict()
-
-
 class Index:
 
     def __init__(self, file):
         self.file = file
         self.map = dict()
-        self.word_list = words.words()
+        self.word_list = []
+        for i in conn_dictionary.db_col.find({}):
+            self.word_list.append(i.get("TagName"))
 
     def update_dict(self, key, posting_list):
         self.map[key] = posting_list
@@ -244,15 +196,6 @@ def test_method():
 
 def clear_db():
     conn.db_col.delete_many({"Question.question_text": None})
-
-
-def add_word_to_dictionary():
-    for word in words.words():
-        #conn_dictionary.insert({"TagName": word}, {"TagName": word})
-        conn_dictionary.db_col.insert_one({"TagName": {word: get_idf()}})
-
-
-# def get_idf():
 
 
 def id_to_url():
