@@ -367,14 +367,12 @@ def basic_search(query):
 
 def push_terms(tags):
     for tag in tags:
-        conn_dictionary_2.db_col.insert_one({"TagName": tag})
+        conn_dictionary.db_col.insert_one({"TagName": tag})
 
 
-query = ["and", "on", "swift", "the"]
-start_time = time.time()
-print(getScore(pull_idf(query), basic_search(query), query))
-end_time = time.time()
-print(end_time-start_time)
+def search(query):
+    getScore(pull_idf(query), basic_search(query), query)
+
 
 '''
 data_file = create_json()
