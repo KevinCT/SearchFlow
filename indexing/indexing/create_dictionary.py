@@ -3,9 +3,10 @@ import time
 
 from searchflow.searchengine.scoring import getScore
 from crawler.mongodb import Connection
+from nltk.corpus import stopwords
 
-conn = Connection(db_name="StackOverflow", db_col="Test_Data")
-conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_index")
+conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -31,9 +32,12 @@ class Index:
     def __init__(self, file):
         self.file = file
         self.map = dict()
-        self.word_list = []
+        self.word_list = set()
+        stop_words = set(stopwords.words('english'))
         for i in conn_dictionary.db_col.find({}):
-            self.word_list.append(i.get("TagName"))
+            word = i.get("TagName")
+            if word not in stop_words:
+                self.word_list.add(word)
 
     def update_dict(self, key, posting_list):
         self.map[key] = posting_list
@@ -189,8 +193,6 @@ def test_method():
     current_score = 0
     while test_a is not None:
         current_score += test_a.gap
-        print(current_score)
-        print(test_a.frequency)
         test_a = test_a.next
 
 
@@ -216,19 +218,22 @@ def index_to_mongodb():
     question_title_index = Index("test")
     start_time = time.time()
     counter = 0
-    for i in conn.db_col.find({}):
-        question_title_index.string_to_word_array(i['Question']['question_title'], counter)
+    cursor = conn.db_col.find({}, no_cursor_timeout=True).batch_size(10)
+    for i in cursor:
+        question_title_index.string_to_word_array(i['Question']['question_text'], counter)
         counter += 1
+        print(counter)
     end_time = time.time()
     print(end_time - start_time)
+    cursor.close()
 
     for word in question_title_index.map.keys():
-        conn_title_test.db_col.insert_one({"PostingList": question_title_index.map.get(word).serialize(), "Term": word})
+        conn_text_test.db_col.insert_one({"PostingList": question_title_index.map.get(word).serialize(), "Term": word})
 
 
 def deserialize_test():
-    for i in conn_title_test.db_col.find({}):
-        print(deserialize_list(i.get("PostingList")).start.gap)
+    for i in conn_text_test.db_col.find({}):
+        deserialize_list(i.get("PostingList")).start.gap
         #print()
 
 
@@ -241,7 +246,6 @@ def static_intersect(keys, index):
     for key in keys:
         if tag_connection.db_col.count({"TagName": key}, limit=1) != 0:
             data = index_connection.db_col.find_one({"Term": key})
-            print(data)
             if data is not None:
                 temp_node = deserialize_list(data.get("PostingList")).start
                 if temp_node is not None:
@@ -254,9 +258,7 @@ def static_intersect(keys, index):
         current_score = elem.gap
         while elem is not None:
             if current_score in doc_scores:
-                temp_dict = doc_scores.get(current_score)
-                if temp_dict is None:
-                    doc_scores[current_score][key] = static_get_score(elem)
+                doc_scores[current_score][key] = static_get_score(elem)
             else:
                 doc_scores[current_score] = dict()
                 doc_scores[current_score][key] = static_get_score(elem)
@@ -280,8 +282,8 @@ def find_idf(posting_node, total_docs):
 
 
 def push_idf():
-    total_docs = conn_title_test.db_col.count()
-    for i in conn_title_test.db_col.find({}):
+    total_docs = conn_text_test.db_col.count()
+    for i in conn_text_test.db_col.find({}):
         idf = find_idf(deserialize_list(i.get("PostingList")).start, total_docs)
         conn_idf.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
 
@@ -305,7 +307,10 @@ def basic_search(query):
     # for word in query:
     #    posting_lists.append(deserialize_list(conn_title_test.db_col.find_one({"Term": word}).get("PostingList")))
 
-    return static_intersect(query, "question_title_index")
+    #test = static_intersect(query, "question_text_index")
+    #print(test)
+    #print("test")
+    return static_intersect(query, "question_text_index")
 
 
 def push_terms(tags):
@@ -315,6 +320,11 @@ def push_terms(tags):
 
 def search(query):
     getScore(pull_idf(query), basic_search(query), query)
+
+
+# index_to_mongodb()
+
+search(["query", "speed"])
 
 
 '''
