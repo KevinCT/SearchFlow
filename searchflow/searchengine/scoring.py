@@ -1,4 +1,5 @@
 import numpy as np
+import queue
 
 #do we consider the whole vector or only the terms from the query?
 def cosineSimilarity(a, b):
@@ -23,18 +24,16 @@ def tfidf(idfDictionary, documents):
     tfidfList = []
     terms = set()
     for document in documents:
-        print(document)
         terms.update(documents[document].keys())
     termsDictionary = dict.fromkeys(terms, 0)
     for document in documents:
         tfDictionaries[document] = (termFrequency(termsDictionary, documents[document]))
-    for tfDictionary in tfDictionaries:
-        tfDictionary = tfDictionaries[tfDictionary]
+    for dictionary in tfDictionaries:
+        tfDictionary = tfDictionaries[dictionary]
         tempDictionary = {}
         for term in tfDictionary:
             tempDictionary[term] = tfDictionary[term] * idfDictionary[term]
-
-        tfidfList.append(tempDictionary)
+        tfidfList.append((dictionary, tempDictionary))
 
     return tfidfList
 
@@ -51,13 +50,16 @@ def getScore(idfDictionary, documents, query):
     documents['query'] = queryDictionary
     tfidfList = tfidf(idfDictionary, documents)
     vectorList = []
-    scoreList = []
-    for dictionary in tfidfList:
-        vectorList.append(list(dictionary.values()))
-    for vector in vectorList[:-1]:
-        scoreList.append(cosineSimilarity(vector, vectorList[-1]))
+    #scoreList = []
+    queryScore = list(tfidfList.pop(-1)[1].values())
+    scoreQueue = queue.PriorityQueue()
 
-    return scoreList
+    for tpl in tfidfList:
+        vectorList.append((tpl[0], list(tpl[1].values())))
+    for tpl in vectorList:
+        #scoreList.append((-cosineSimilarity(tpl[1], queryScore), tpl[0]))
+        scoreQueue.put((-cosineSimilarity(tpl[1], queryScore), tpl[0]))
+    return scoreQueue
 
 
 def test():
@@ -68,7 +70,10 @@ def test():
     documents['doc1'] = dict.fromkeys(doc1.split(), 1)
     documents['doc2'] = dict.fromkeys(doc2.split(), 1)
 
-    print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
-    , documents, ["python", "framework"]))
+    scores = getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0,
+                     'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454,
+                     'bootstrap': 1.6931471805599454}, documents, ["python", "framework"])
+    while True:
+        print(scores.get())
 
 #test()
