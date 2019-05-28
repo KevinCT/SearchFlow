@@ -5,7 +5,7 @@ tasks:
 3. Retrieve data from StackOverflow until Friday 31/06 (Pritom)
 4. Fix frontend compilation errors (Petros, Kevin)
 5. Performance Evaluation (Kevin)
-6. Add custom Google custom search to Frontend (Kevin)
+6. Add custom Google custom search to Frontend (Kevin) - see meetings/10-05-2019
 
 tuesdays 4.00 - 5.30
 
