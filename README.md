@@ -10,7 +10,7 @@ tuesdays 4.00 - 5.30
 
 fridays 4.00 - 6.00
 
-(wednesdays 5.30 - 8.00)
+final meeting wednesday, 12/06/2019 5.30 - 8.00
 
 
 
