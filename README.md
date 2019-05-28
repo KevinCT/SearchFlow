@@ -2,7 +2,7 @@
 
 tasks:
 1. Improve slides for demo -> meetings / "24-05-2019 Searchflow.pptx" (all)
-3. Retrieve data from StackOverflow / analyse issues with TA (Pritom)
+3. Retrieve data from StackOverflow until Friday 31/06 (Pritom)
 4. Fix frontend compilation errors (Petros, Kevin)
 5. Performance Evaluation (Kevin)
 
@@ -14,7 +14,7 @@ fridays 4.00 - 6.00
 
 
 
-coding & data retrieval: week x10x x11x x12x x13x 14 (27/05)
+coding & data retrieval: week x10x x11x x12x x13x x14x (27/05)
 
 demo: week 15 (03/06)
 
