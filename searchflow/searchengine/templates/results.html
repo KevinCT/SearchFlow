@@ -16,10 +16,10 @@
 
   <div id="resultList">
     <dl>
-      {% for question in latest_question_list %}
-        <dt id="title"><a href="http://www.stackoverflow.com">{{question}}</a></dt>
-        <dd id="link"><a href="http://www.stackoverflow.com">http://www.stackoverflow.com</a></dd>
-        <dd id="description">This page shows how to remove the hyperlink underline with CSS by using the text-decoration property. Did you know that removing the underline allows you to ...</dd>
+      {% for title, link, description in latest_question_list %}
+        <dt id="title"><a href="{{link}}">{{title}}</a></dt>
+        <dd id="link"><a href="{{link}}">{{link}}</a></dd>
+        <dd id="description">{{description}}</dd>
       {% endfor %}
     </dl>
      {% else %}

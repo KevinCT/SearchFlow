@@ -1,22 +1,21 @@
 # Searchflow
 
 tasks:
-1. sample user queries (Oliver)
-3. crawl StackOverflow and output as JSON and MongoDB (Pritom)
-4. indexing (Petros)
-5. scoring methods (Kevin) - automate methods according to sample user queries
-4. improve front-end (Kevin)
-
+1. Improve slides for demo -> meetings / "24-05-2019 Searchflow.pptx" (all)
+3. Retrieve data from StackOverflow until Friday 31/06 (Pritom)
+4. Fix frontend compilation errors (Petros, Kevin)
+5. Performance Evaluation (Kevin)
+6. Add custom Google custom search to Frontend (Kevin) - see meetings/10-05-2019
 
 tuesdays 4.00 - 5.30
 
-fridays after class
+fridays 4.00 - 6.00
 
-(wednesdays 5.30 - 8.00)
+final meeting wednesday, 12/06/2019 5.30 - 8.00
 
 
 
-coding & data retrieval: week x10x x11x x12x 13 14 (27/05)
+coding & data retrieval: week x10x x11x x12x x13x x14x (27/05)
 
 demo: week 15 (03/06)
 
