@@ -1,12 +1,12 @@
 import re
 import time
 
-import pymongo
 from nltk.corpus import wordnet
 from nltk.corpus import words
 from spellchecker import SpellChecker
-from searchflow.searchengine.scoring import getScore
+
 from crawler.mongodb import Connection
+from searchflow.searchengine.scoring import getScore
 
 conn = Connection(db_name="StackOverflow", db_col="Test_Data")
 conn_title_test = Connection(db_name="StackOverflow", db_col="question_title_index")
