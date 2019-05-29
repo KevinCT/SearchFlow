@@ -7,7 +7,7 @@ from crawler.linkparser import page_url_creator
 from crawler.mongodb import Connection
 
 db_connection = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
-START_PAGE = 261244
+START_PAGE = 244979
 END_PAGE = 2000
 TOTAL_PAGES = END_PAGE - START_PAGE
 
