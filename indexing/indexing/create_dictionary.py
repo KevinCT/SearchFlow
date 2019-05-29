@@ -88,8 +88,8 @@ class Index:
 
 class PostingList:
 
-    def __init__(self, start_position):
-        self.start = PostingNode(start_position, None, None)
+    def __init__(self, start_position, frequency):
+        self.start = PostingNode(start_position, None, None, frequency)
 
     def update(self, position):
         if position < self.start.gap:
@@ -161,7 +161,8 @@ def deserialize_node(node_dict):
 
 
 def deserialize_list(posting_array):
-    posting_list = PostingList(deserialize_node(posting_array[0]).gap)
+    start_node = deserialize_node(posting_array[0])
+    posting_list = PostingList(start_node.gap, start_node.frequency)
     current_node = posting_list.start
     for i in range(1, len(posting_array) - 1):
         current_node.next = deserialize_node(posting_array[i])
@@ -298,7 +299,8 @@ def pull_idf(query):
         temp = conn_idf.db_col.find_one({"Term": key})
         if temp is not None:
             query_to_idf[key] = temp.get("IDF_Score")
-
+    print("IDF")
+    print(query_to_idf)
     return query_to_idf
 
 
@@ -319,12 +321,19 @@ def push_terms(tags):
 
 
 def search(query):
-    getScore(pull_idf(query), basic_search(query), query)
+    print(basic_search(query))
+    return getScore(pull_idf(query), basic_search(query), query)
 
 
 # index_to_mongodb()
 
-search(["query", "speed"])
+pq = search(["query", "speed"])
+x = pq.get()
+for a in range(0, 100):
+    print(x)
+    x = pq.get()
+
+
 
 
 '''
