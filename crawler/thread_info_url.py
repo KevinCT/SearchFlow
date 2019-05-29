@@ -10,9 +10,9 @@ db_connection = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 
 # this the function invoked by the thread
 def thread_info_url(question_id):
-    debug(thread_info_url, flag=True).debug_print("Thread %s: starting" + threading.current_thread().name)
+    debug(thread_info_url, flag=True).debug_print(f"Thread {threading.current_thread().name}: starting")
     data_process_for_db(question_id=question_id)
-    debug(thread_info_url, flag=True).debug_print("Thread %s: finishing" + threading.current_thread().name)
+    debug(thread_info_url, flag=True).debug_print(f"Thread {threading.current_thread().name}: finishing")
 
 
 # updating the info in the db
