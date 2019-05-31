@@ -3,26 +3,57 @@
 <head>
   {% csrf_token %}
   {% load static %}
+  {% if tag_list %}
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 
 <body>
-    <div id="searchBar">
-      <form method="GET" action="query">
-        <input type="text" name="queryField" placeholder= "Search...">
-      </form>
-    </div>
 
-    <div id="topTags">
-      <form method="GET" action="query">
+  <div id="logo">
+    <img src="../static/logo.png" class="center">
+
+  </div>
+
+  <div id="searchBar">
+    <form method="GET" action="query">
+      <input type="text" name="queryField" placeholder= "Search...">
+        <div id="topTags">
+      {% for tagOne, tagTwo, tagThree, tagFour, tagFive in tag_list %}
+      <span><input type="checkbox" id="tagOne"><label for="tagOne"> {{tagOne}} </label></span>
+      <span><input type="checkbox" id="tagTwo"><label for="tagTwo"> {{tagTwo}} </label></span>
+      <span><input type="checkbox" id="tagThree"><label for="tagThree"> {{tagThree}} </label></span>
+      <span><input type="checkbox" id="tagFour"><label for="tagFour"> {{tagFour}} </label></span>
+      <span><input type="checkbox" id="tagFive"><label for="tagFive"> {{tagFive}} </label></span>
+      {% endfor %}
+      {% else %}
+      <p>No results available.</p>
+      {% endif %}
+      <select name="optionSelector">
+        <option value="relevance">Sort by relevance</option>
+        <option value="question">Sort by question</option>
+        <option value="answer">Sort by answer</option>
+        <option value="newest">Sort by newest</option>
+        <option value="votes">Sort by votes</option>
+
+      </select>
+
+
+
+
+
+
       <!--  <input type="radio" name="action" id="track" value="track" /><label for="track">Track Submission</label><br /> -->
-      <button name = "tagOne" type="button">Java</button>
+      <!--   <button name = "tagOne" type="button">Java</button>
       <button name = "tagTwo" type="button">Python</button>
       <button name = "tagThree" type="button">Machine Learning</button>
       <button name = "tagFour" type="button">Atom</button>
-      <button name = "tagFive" type="button">Django</button>
+      <button name = "tagFive" type="button">Django</button>-->
 
-      </form>
-    </div>
+  </div>
+    </form>
+  </div>
+
+
+
 </body>
 </html>

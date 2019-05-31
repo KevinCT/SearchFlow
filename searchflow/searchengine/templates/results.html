@@ -3,7 +3,7 @@
 <head>
   {% csrf_token %}
   {% load static %}
-  {% if latest_question_list %}
+  {% if result_list %}
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 
@@ -16,7 +16,7 @@
 
   <div id="resultList">
     <dl>
-      {% for title, link, description in latest_question_list %}
+      {% for title, link, description in result_list %}
         <dt id="title"><a href="{{link}}">{{title}}</a></dt>
         <dd id="link"><a href="{{link}}">{{link}}</a></dd>
         <dd id="description">{{description}}</dd>

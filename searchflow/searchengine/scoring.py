@@ -74,8 +74,8 @@ def test():
         print(scores.get())
 
 
-print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
-,["django", "is", "a", "web", "framework", "for", "python"], ["python", "framework"]))
+#print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
+#,["django", "is", "a", "web", "framework", "for", "python"], ["python", "framework"]))
 
 
 #["bootstrap", "is", "a", "popular", "web", "framework"]

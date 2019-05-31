@@ -1,29 +1,57 @@
-input:focus {
-    outline:none;
-}
-
-body {
-}
-
-#topTags{
+#logo {
+  margin-top: 40px;
   text-align: center;
 }
 
-#topTags button {
-  margin-top: 1px;
+#options {
+  text-align: right;
+  margin-right: 325px;
+}
+#topTags select {
+  margin-left: 100px;
+  margin-right: 330px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  color:gray;
+}
+
+#topTags{
+  text-align: right;
+}
+
+#topTags input {
+  display:none;
+}
+
+#topTags input:checked ~ label {
+  border: 1px solid #bcbcbc;
+  background-color: #e2e2e2;
+
+}
+
+#topTags input ~ label {
+  margin-left: 5px;
   padding: 5px;
   border: 1px solid lightgray;
   font-size: 12px;
   border-radius: 10px;
   background-color: white;
   color: gray;
+  font-size: 15px;
+
+}
+
+#topTags input:hover ~ label {
+  background: #e8e8e8;
 }
 
 #searchBar {
   text-align: center;
 }
 #searchBar input {
-  margin-top: 100px;
+  margin-bottom: 10px;
+  margin-top: 50px;
   width: 50%;
   padding: 6px;
   border: 1px solid lightgray;
@@ -40,7 +68,6 @@ body {
   font-size: 17px;
   border-radius: 10px;
   input:focus {outline:none;}
-
 }
 
 #resultList {
