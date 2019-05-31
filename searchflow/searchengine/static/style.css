@@ -4,6 +4,21 @@ input:focus {
 
 body {
 }
+
+#topTags{
+  text-align: center;
+}
+
+#topTags button {
+  margin-top: 1px;
+  padding: 5px;
+  border: 1px solid lightgray;
+  font-size: 12px;
+  border-radius: 10px;
+  background-color: white;
+  color: gray;
+}
+
 #searchBar {
   text-align: center;
 }
@@ -14,8 +29,6 @@ body {
   border: 1px solid lightgray;
   font-size: 17px;
   border-radius: 10px;
-  input:focus {outline:none;}
-
 }
 
 #searchBar2 input {

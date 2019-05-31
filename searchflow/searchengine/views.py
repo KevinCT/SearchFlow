@@ -1,20 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from django.templatetags.static import static
-import json
-from searchengine.scoring import *
+from crawler.extrafunctions import *
 # Create your views here.
 
 def index(request):
     return render(request, 'index.html')
 
 def query(request):
-#    with open(static('searchengine/style.css'), encoding="utf8") as f:
-#        data = [json.loads(line) for line in f]
     if request.method == 'GET':
         query = request.GET.get('queryField', None)
         if query is not None:
+            insertTop(query)
             #method for returning data from backend. getData(query) should return a list of tuples which contains (title, link, description)
             resultList = [(query, "http://www.stackoverflow.com", "This page shows how to remove the hyperlink underline with CSS by using the text-decoration property. Did you know that removing the underline allows you to ...")]
             template = loader.get_template('results.html')
