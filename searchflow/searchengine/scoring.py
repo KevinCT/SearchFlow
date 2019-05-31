@@ -69,10 +69,6 @@ def getDocScore(idfDictionary, documents, query):
             if term in documents[document]:
                 score += documents[document][term]*idfDictionary[term]
         scoreQueue.put((-score, document))
-
-    while True:
-        print(scoreQueue.get())
-
     return scoreQueue
 
 
@@ -87,7 +83,7 @@ def test():
 
     scores = getDocScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0,
                      'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454,
-                     'bootstrap': 1.6931471805599454}, {'doc1': {'python': 1, 'framework': 2}, 'doc2': {'python': 3, 'framework': 1}}, ["python", "framework"])
+                     'bootstrap': 1.6931471805599454}, {'doc1': {'python': 1, 'java': 2, 'framework': 2}, 'doc2': {'python': 3, 'framework': 1}}, ["python", "framework", "h3"])
     while True:
         print(scores.get())
 
