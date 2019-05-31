@@ -84,7 +84,15 @@ class Connection:
         """
         return self.db_col.find({data_type: data}).count() > 0
 
-# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+    def get_data_with_value(self, data_type="", value=""):
+        """"
+        :param data_type: string, The name/type of the data in mongoDB. Ex. Question.question_id, Answer.answer_upvote
+        :param value: int/string etc. is the valuse of the :param data_type . Ex.  56075703
+        """
+        return self.db_col.find_one({data_type: value})
+
+
+conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 # print(conn.data_exist(data_type="Question.question_id", data=56075703))
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:

@@ -7,7 +7,7 @@ nltk.download('punkt')
 from nltk.tokenize import RegexpTokenizer
 
 top_search_db = Connection(db_name="StackOverflow", db_col="top_search")
-
+db = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 
 def topSearch():
     list = []
