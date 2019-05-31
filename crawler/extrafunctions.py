@@ -7,7 +7,7 @@ nltk.download('punkt')
 from nltk.tokenize import RegexpTokenizer
 
 top_search_db = Connection(db_name="StackOverflow", db_col="top_search")
-
+db = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 
 def topSearch():
     list = []
@@ -28,8 +28,3 @@ def insertTop(data):
                 top_search_db.db_col.update_one({'tag_name': i}, {'$set': {'count': info.get("count") + 1}})
             else:
                 top_search_db.db_col.insert_one({"tag_name": i, "count": 1})
-
-
-data = "What is wrong with the java code present here. I need to complete number to text converter as my assignment How can I using this variable? Unable to iterate through POJO MessagePack Convert Float to String without losing precision - Java"
-#insertTop(data)
-#print(topSearch())
