@@ -12,7 +12,6 @@ def cosineSimilarity(a, b):
 
 
 def termFrequency(termsDictionary, document):
-    document = document.split()
     frequencyDictionary = copy.deepcopy(termsDictionary)
     for term in document:
         if term in frequencyDictionary.keys():

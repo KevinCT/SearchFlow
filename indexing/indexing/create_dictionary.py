@@ -6,8 +6,8 @@ import searchflow.searchengine.scoring as sc
 from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
-conn = Connection(db_name="StackOverflow", db_col="Test_Data")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_test_index")
+conn = Connection(db_name="StackOverflow", db_col="Final_Data")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -300,8 +300,6 @@ def pull_idf(query):
         temp = conn_idf.db_col.find_one({"Term": key})
         if temp is not None:
             query_to_idf[key] = temp.get("IDF_Score")
-    print("IDF")
-    print(query_to_idf)
     return query_to_idf
 
 
@@ -326,16 +324,15 @@ def search(query):
     return getScore(pull_idf(query), basic_search(query), query)
 
 
+#pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
 
-pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
-
-x = pq.get()
-for a in range(1, 10):
-    doc_id = connection.db_col.find_one({"DocumentCount": a}).get("Question_ID")
-    doc = conn.db_col.find_one({"_id": ObjectId(doc_id)}).get("Question").get("question_text")
-    print(doc)
-    sc.getScore(pull_idf(["python", "java", "know"]), re.compile('\w+').findall(doc), ["python", "java", "know"])
-    x = pq.get()
+#x = pq.get()
+#for a in range(1, 10):
+#    print(x)
+#    doc_id = connection.db_col.find_one({"DocumentCount": a}).get("Question_ID")
+#    doc = conn.db_col.find_one({"_id": ObjectId(doc_id)}).get("Question").get("question_text")
+#    print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc), ["python", "java", "know"]))
+#    x = pq.get()
 
 
 
