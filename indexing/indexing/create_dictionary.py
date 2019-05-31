@@ -1,7 +1,7 @@
 import re
 import time
 
-from searchflow.searchengine.scoring import getScore
+import searchflow.searchengine.scoring as sc
 from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
@@ -325,14 +325,22 @@ def search(query):
     return getScore(pull_idf(query), basic_search(query), query)
 
 
-id_to_url()
+pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
+
+x = pq.get()
+for a in range(0, 10):
+    sc.getScore(pull_idf(["python", "java", "know"]), conn_idf.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID"))
+    print("test")
+    x = pq.pop()
+
+
+
+
+#id_to_url()
 #index_to_mongodb()
 
 #pq = search(["query", "speed"])
-#x = pq.get()
-#for a in range(0, 100):
-    #print(x)
-    #x = pq.get()
+
 
 
 

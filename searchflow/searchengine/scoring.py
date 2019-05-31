@@ -66,7 +66,8 @@ def getDocScore(idfDictionary, documents, query):
     for document in documents:
         score = 0
         for term in query:
-            score += documents[document][term]*idfDictionary[term]
+            if term in documents[document]:
+                score += documents[document][term]*idfDictionary[term]
         scoreQueue.put((-score, document))
 
     while True:
