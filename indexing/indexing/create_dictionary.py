@@ -1,6 +1,7 @@
 import re
 import time
 
+from bson.objectid import ObjectId
 import searchflow.searchengine.scoring as sc
 from crawler.mongodb import Connection
 from nltk.corpus import stopwords
@@ -204,7 +205,7 @@ def clear_db():
 def id_to_url():
     counter = 0
     for i in conn.db_col.find({}):
-        connection.db_col.insert_one({"Question_ID": i["Question"].get("question_id"), "DocumentCount": counter})
+        connection.db_col.insert_one({"Question_ID": str(i["_id"]), "DocumentCount": counter})
         counter += 1
 
 
@@ -325,13 +326,16 @@ def search(query):
     return getScore(pull_idf(query), basic_search(query), query)
 
 
+
 pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
 
 x = pq.get()
-for a in range(0, 10):
-    sc.getScore(pull_idf(["python", "java", "know"]), conn_idf.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID"))
-    print("test")
-    x = pq.pop()
+for a in range(1, 10):
+    doc_id = connection.db_col.find_one({"DocumentCount": a}).get("Question_ID")
+    doc = conn.db_col.find_one({"_id": ObjectId(doc_id)}).get("Question").get("question_text")
+    print(doc)
+    sc.getScore(pull_idf(["python", "java", "know"]), re.compile('\w+').findall(doc), ["python", "java", "know"])
+    x = pq.get()
 
 
 
