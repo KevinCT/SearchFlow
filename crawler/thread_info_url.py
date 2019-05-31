@@ -33,7 +33,7 @@ if __name__ == '__main__':
     threads = list()
     time1 = time.time()
     while db_connection.db_col.find({'crawled': False}).count() > 0:
-        data_list = db_connection.db_col.find({'crawled': False}).limit(4)
+        data_list = db_connection.db_col.find({'crawled': False}).limit(4).skip(8)
         data = [x['Question'].get('question_id') for x in data_list]
         t1 = threading.Thread(target=thread_info_url, args=(data[0],))
         t2 = threading.Thread(target=thread_info_url, args=(data[1],))
