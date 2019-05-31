@@ -50,15 +50,28 @@ def getScore(idfDictionary, documents, query):
     documents['query'] = queryDictionary
     tfidfList = tfidf(idfDictionary, documents)
     vectorList = []
-    #scoreList = []
+    scoreList = []
     queryScore = list(tfidfList.pop(-1)[1].values())
     scoreQueue = queue.PriorityQueue()
 
     for tpl in tfidfList:
         vectorList.append((tpl[0], list(tpl[1].values())))
     for tpl in vectorList:
-        #scoreList.append((-cosineSimilarity(tpl[1], queryScore), tpl[0]))
+        scoreList.append((-cosineSimilarity(tpl[1], queryScore), tpl[0]))
         scoreQueue.put((-cosineSimilarity(tpl[1], queryScore), tpl[0]))
+    return scoreQueue
+
+def getDocScore(idfDictionary, documents, query):
+    scoreQueue = queue.PriorityQueue()
+    for document in documents:
+        score = 0
+        for term in query:
+            score += documents[document][term]*idfDictionary[term]
+        scoreQueue.put((-score, document))
+
+    while True:
+        print(scoreQueue.get())
+
     return scoreQueue
 
 
@@ -69,11 +82,16 @@ def test():
     documents = {}
     documents['doc1'] = dict.fromkeys(doc1.split(), 1)
     documents['doc2'] = dict.fromkeys(doc2.split(), 1)
+    print(documents)
 
-    scores = getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0,
+    scores = getDocScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0,
                      'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454,
-                     'bootstrap': 1.6931471805599454}, documents, ["python", "framework"])
+                     'bootstrap': 1.6931471805599454}, {'doc1': {'python': 1, 'framework': 2}, 'doc2': {'python': 3, 'framework': 1}}, ["python", "framework"])
     while True:
         print(scores.get())
 
-#test()
+
+
+
+
+test()
