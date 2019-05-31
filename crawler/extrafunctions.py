@@ -5,7 +5,6 @@ from crawler.mongodb import Connection
 nltk.download('stopwords')
 nltk.download('punkt')
 from nltk.tokenize import RegexpTokenizer
-from nltk.corpus import stopwords
 
 top_search_db = Connection(db_name="StackOverflow", db_col="top_search")
 
@@ -18,11 +17,12 @@ def topSearch():
 
 
 def insertTop(data):
-    stop = set(stopwords.words('english'))
+    tag_list = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL").get_distinct_data(
+        data_type="Question.question_tags")
     tokens = RegexpTokenizer(r'\w+').tokenize(data)
     for i in tokens:
         i = i.lower().strip()
-        if i not in stop:
+        if i in tag_list:
             if top_search_db.data_exist(data_type="tag_name", data=i):
                 info = top_search_db.db_col.find_one({"tag_name": i})
                 top_search_db.db_col.update_one({'tag_name': i}, {'$set': {'count': info.get("count") + 1}})
