@@ -23,9 +23,7 @@ def termFrequency(termsDictionary, document):
     return frequencyDictionary
 
 
-def tfidf(idfDictionary, document):
-    termsDictionary = copy.deepcopy(idfDictionary)
-    termsDictionary = dict.fromkeys(termsDictionary, 0)
+def tfidf(idfDictionary, document, termsDictionary):
     tfDictionary = termFrequency(termsDictionary, document)
     tempDictionary = {}
     for term in tfDictionary:
@@ -37,9 +35,9 @@ def tfidf(idfDictionary, document):
 #document is a string containing the text (preprocessed)
 #query is a list of strings containing the terms
 def getScore(idfDictionary, document, query):
-    documentDictionary = tfidf(idfDictionary, document)
-    queryWord = ''.join(query)
-    queryDictionary = tfidf(idfDictionary, queryWord)
+    termsDictionary = dict((term, 0) for term in document)
+    documentDictionary = tfidf(idfDictionary, document, termsDictionary)
+    queryDictionary = tfidf(idfDictionary, query, termsDictionary)
     queryVector = list(queryDictionary.values())
     documentVector = list(documentDictionary.values())
 
@@ -76,8 +74,10 @@ def test():
         print(scores.get())
 
 
-#print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
-#,"bootstrap is a popular web framework", "python framework"))
+print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
+,["django", "is", "a", "web", "framework", "for", "python"], ["python", "framework"]))
 
+
+#["bootstrap", "is", "a", "popular", "web", "framework"]
 
 #test()
