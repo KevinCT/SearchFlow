@@ -1,11 +1,12 @@
 import re
 import time
 
-from searchflow.searchengine.scoring import getScore
+from bson.objectid import ObjectId
+import searchflow.searchengine.scoring as sc
 from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
-conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+conn = Connection(db_name="StackOverflow", db_col="Final_Data")
 conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
@@ -52,9 +53,9 @@ class Index:
         for word in sentence:
             if word in self.word_list:
                 if word in self.map:
-                    self.map[word].update(position)
+                    self.map[word].update(position, 1/len(sentence))
                 else:
-                    self.update_dict(word, PostingList(position))
+                    self.update_dict(word, PostingList(position, 1/len(sentence)))
 
     def intersect(self, keys):
         doc_scores = dict()
@@ -88,19 +89,19 @@ class Index:
 
 class PostingList:
 
-    def __init__(self, start_position):
-        self.start = PostingNode(start_position, None, None)
+    def __init__(self, start_position, frequency=1):
+        self.start = PostingNode(start_position, None, None, frequency)
 
-    def update(self, position):
+    def update(self, position, frequency):
         if position < self.start.gap:
             self.start.prev = PostingNode(position, None, self.start)
             self.start.prev.next = self.start
             self.start.gap = self.start.gap - position
             self.start = self.start.prev
         elif position == self.start.gap:
-            self.start.frequency += 1
+            self.start.frequency += frequency
         else:
-            self.start.update(position)
+            self.start.update(position, frequency)
 
     def serialize(self):
         temp_node = self.start
@@ -120,7 +121,7 @@ class PostingNode:
         self.next = next
         self.frequency = frequency
 
-    def update(self, position):
+    def update(self, position, frequency):
         current_score = self.gap
         current = self
 
@@ -129,22 +130,22 @@ class PostingNode:
             return
 
         if self.gap >= position:
-            self.prev = PostingNode(position, None, current)
+            self.prev = PostingNode(position, None, current, frequency)
             self.gap = current_score - position
             return
 
         while current_score <= position:
             if current_score == position:
-                current.frequency = current.frequency + 1
+                current.frequency = current.frequency + frequency
                 return
             if current.next is not None:
                 current = current.next
                 current_score += current.gap
             else:
-                current.next = PostingNode(position - current_score, current, None)
+                current.next = PostingNode(position - current_score, current, None, frequency)
                 return
 
-        current.prev.next = PostingNode(position - current_score + current.gap, current.prev, current)
+        current.prev.next = PostingNode(position - current_score + current.gap, current.prev, current, frequency)
         current.prev = current.prev.next
         current.gap = current.gap - current.prev.gap
 
@@ -161,7 +162,8 @@ def deserialize_node(node_dict):
 
 
 def deserialize_list(posting_array):
-    posting_list = PostingList(deserialize_node(posting_array[0]).gap)
+    start_node = deserialize_node(posting_array[0])
+    posting_list = PostingList(start_node.gap, start_node.frequency)
     current_node = posting_list.start
     for i in range(1, len(posting_array) - 1):
         current_node.next = deserialize_node(posting_array[i])
@@ -203,7 +205,7 @@ def clear_db():
 def id_to_url():
     counter = 0
     for i in conn.db_col.find({}):
-        connection.db_col.insert_one({str(counter): i["Question"].get("question_id")})
+        connection.db_col.insert_one({"Question_ID": str(i["_id"]), "DocumentCount": counter})
         counter += 1
 
 
@@ -220,7 +222,7 @@ def index_to_mongodb():
     counter = 0
     cursor = conn.db_col.find({}, no_cursor_timeout=True).batch_size(10)
     for i in cursor:
-        question_title_index.string_to_word_array(i['Question']['question_text'], counter)
+        question_title_index.string_to_word_array(i['Question']['question_text'].lower(), counter)
         counter += 1
         print(counter)
     end_time = time.time()
@@ -298,7 +300,6 @@ def pull_idf(query):
         temp = conn_idf.db_col.find_one({"Term": key})
         if temp is not None:
             query_to_idf[key] = temp.get("IDF_Score")
-
     return query_to_idf
 
 
@@ -319,12 +320,30 @@ def push_terms(tags):
 
 
 def search(query):
-    getScore(pull_idf(query), basic_search(query), query)
+    print(basic_search(query))
+    return getScore(pull_idf(query), basic_search(query), query)
 
 
-# index_to_mongodb()
+#pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
 
-search(["query", "speed"])
+#x = pq.get()
+#for a in range(1, 10):
+#    print(x)
+#    doc_id = connection.db_col.find_one({"DocumentCount": a}).get("Question_ID")
+#    doc = conn.db_col.find_one({"_id": ObjectId(doc_id)}).get("Question").get("question_text")
+#    print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc), ["python", "java", "know"]))
+#    x = pq.get()
+
+
+
+
+#id_to_url()
+#index_to_mongodb()
+
+#pq = search(["query", "speed"])
+
+
+
 
 
 '''
