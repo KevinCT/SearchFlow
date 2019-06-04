@@ -7,6 +7,7 @@
   text-align: right;
   margin-right: 325px;
 }
+
 #topTags select {
   margin-left: 100px;
   margin-right: 330px;
@@ -59,7 +60,47 @@
   border-radius: 10px;
 }
 
+#topTags2 select {
+  margin-left: 254px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  color:gray;
+}
+
+#topTags2{
+  margin-left: 45px;
+  text-align: left;
+}
+
+#topTags2 input {
+  display:none;
+}
+
+#topTags2 input:checked ~ label {
+  border: 1px solid #bcbcbc;
+  background-color: #e2e2e2;
+
+}
+
+#topTags2 input ~ label {
+  margin-left: 5px;
+  padding: 5px;
+  border: 1px solid lightgray;
+  font-size: 12px;
+  border-radius: 10px;
+  background-color: white;
+  color: gray;
+  font-size: 15px;
+
+}
+
+#topTags2 input:hover ~ label {
+  background: #e8e8e8;
+}
+
 #searchBar2 input {
+  margin-bottom: 10px;
   margin-left: 50px;
   margin-top: 50px;
   width: 50%;

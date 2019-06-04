@@ -43,7 +43,7 @@ def getScore(idfDictionary, document, query):
 
     return cosineSimilarity(documentVector, queryVector)
 
-
+#document is a dictionary of dictionaries containing the term frequency of each term related to the query
 def getDocScore(idfDictionary, documents, query):
     scoreQueue = queue.PriorityQueue()
     for document in documents:
@@ -57,8 +57,6 @@ def getDocScore(idfDictionary, documents, query):
 
 def test():
 
-
-
     doc1 = "django is a web framework for python"
     doc2 = "bootstrap is a popular web framework"
 
@@ -70,6 +68,10 @@ def test():
     scores = getDocScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0,
                      'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454,
                      'bootstrap': 1.6931471805599454}, {'doc1': {'python': 1, 'java': 2, 'framework': 2}, 'doc2': {'python': 3, 'framework': 1}}, ["python", "framework", "h3"])
+
+
+
+
     while True:
         print(scores.get())
 
