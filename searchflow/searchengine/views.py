@@ -8,27 +8,34 @@ from django.shortcuts import render
 # Create your views here.
 
 def index(request):
+    fullTags = ["Java", "Python", "Android"]
     topTags = getTags()
     template = loader.get_template('index.html')
     context = {
-        'tag_list': topTags
+        'tag_list': topTags,
+        'full_tag_list': fullTags,
+
     }
     return HttpResponse(template.render(context, request))
 
 
 def query(request):
     if request.method == 'GET':
+        fullTags = ["Java", "Python", "Android"]
         topTags = getTags()
         query = request.GET.get('queryField', None)
         option = request.GET.get('optionSelector', None)
         tags = [request.GET.get('tOne'), request.GET.get('tTwo'), request.GET.get('tThree'), request.GET.get('tFour'),
                 request.GET.get('tFive')]
         tags = list(filter(None, tags))
+        tags2 = request.GET.get('tagInput')
+        tags2 = tags2.split(',')
+        tags = tags + tags2
+        print(tags)
 
         insertTop(query)
         #tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
         #method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
-
 
 
         resultList = []
@@ -43,6 +50,8 @@ def query(request):
         context = {
             'users': users,
             'tag_list': topTags,
+            'full_tag_list': fullTags,
+
         }
         return HttpResponse(template.render(context, request))
 

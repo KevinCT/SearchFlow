@@ -5,18 +5,19 @@
   {% load static %}
   {% if tag_list %}
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 </head>
 
 <body>
+  <form id="myform" method="GET" action="query">
   <div id="searchBar2">
-    <form id="myform" method="GET" action="query">
       <input type="text" name="queryField" placeholder= "Search...">
 
-    </form>
   </div>
 
   <div id="topTags2">
+    <input type="hidden" name="tagInput" class="tagInputClass">
     {% for tagOne, tagTwo, tagThree, tagFour, tagFive in tag_list %}
     <span><input type="checkbox" name="tOne" id="tagOne" value="{{ tagOne }}" ><label for="tagOne"> {{tagOne}} </label></span>
     <span><input type="checkbox" name="tTwo" id="tagTwo" value="{{ tagTwo }}"><label for="tagTwo"> {{tagTwo}} </label></span>
@@ -46,9 +47,16 @@
     {% endfor %}
 
   </div>
+</form>
 
 
-
+      <div id="tagBarID">
+      <select name="tagBar" class="tagBarSearch" multiple="multiple">
+        {% for tag in full_tag_list %}
+        <option value={{tag}}>{{tag}}</option>
+        {% endfor %}
+      </select>
+    </div>
 
 
   <!-- <div id="googleSearch">
@@ -67,12 +75,20 @@
 
 </div> -->
 
+<script> $(document).ready(function() {
+    $('.tagBarSearch').select2({});
+});
+var test = $(".tagBarSearch");
+test.on("select2:select", function(event) {
+var values = [];
+// copy all option values from selected
+$(event.currentTarget).find("option:selected").each(function(i, selected){
+  values[i] = $(selected).text();
+});
+$(".tagInputClass").val(values);
 
-
-<script>
-function change(){
-  document.getElementById("myform").submit();
-}
+});
 </script>
+
 </body>
 </html>

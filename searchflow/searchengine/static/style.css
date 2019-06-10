@@ -8,9 +8,8 @@
   margin-right: 325px;
 }
 
-#topTags select {
-  margin-left: 100px;
-  margin-right: 330px;
+#searchBar select {
+  margin-left: 0px;
   padding: 5px;
   border-radius: 10px;
   border: 1px solid lightgray;
@@ -18,7 +17,7 @@
 }
 
 #topTags{
-  text-align: right;
+  text-align: center;
 }
 
 #topTags input {
@@ -163,4 +162,8 @@
 #pagination a:hover:not(.active) {
   background-color: #ddd;
   border-radius: 5px;
+}
+
+#tagBarID {
+  text-align: center;
 }
