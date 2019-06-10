@@ -1,6 +1,7 @@
 import re
 import time
 import queue as q
+import math
 
 from bson.objectid import ObjectId
 import SearchFlow.searchflow.searchengine.scoring as sc
@@ -9,7 +10,7 @@ from nltk.corpus import stopwords
 
 conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
 conn_new_idf = Connection(db_name="StackOverflow", db_col="new_idf")
-conn_text_test = Connection(db_name="StackOverflow", db_col="title_test_index")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -283,11 +284,13 @@ def find_idf(posting_node, total_docs):
     while posting_node.has_next():
         total += 1
         posting_node = posting_node.next
-    return total / total_docs
+    return total_docs / total
 
 
 def push_idf():
-    total_docs = conn_text_test.db_col.count()
+    total_docs = conn.db_col.count()
+    print(total_docs)
+    total_docs = math.log(float(total_docs))
     for i in conn_text_test.db_col.find({}):
         idf = find_idf(deserialize_list(i.get("PostingList")).start, total_docs)
         conn_idf.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
@@ -344,7 +347,7 @@ def search(query):
 
 #id_to_url()
 def get_search(query, docs):
-    pq = sc.getDocScore(pull_idf(re.compile('\w+').findall(query)), basic_search(re.compile('\w+').findall(query)), re.compile('\w+').findall(query))
+    pq = sc.getDocScore(conn_new_idf.db_col.find_one({}), basic_search(re.compile('\w+').findall(query)), re.compile('\w+').findall(query))
 
     x = pq.get(False)
     new_pq = q.PriorityQueue()
@@ -357,7 +360,8 @@ def get_search(query, docs):
         text = re.compile('\w+').findall(doc.get("Question").get("question_text").lower())
         start = time.time()
         #idfs = pull_idf(text)
-        idfs = conn_new_idf.db_col.find({})
+        idfs = conn_new_idf.db_col.find_one({})
+        print(idfs.pop("_id"))
         end = time.time()
         print(end - start)
         score = sc.getScore(idfs, text, ["python", "java", "know"])

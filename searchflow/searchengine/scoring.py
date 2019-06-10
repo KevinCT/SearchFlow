@@ -7,9 +7,7 @@ def cosineSimilarity(a, b):
     dot = np.dot(a, b)
     normalizeA = np.linalg.norm(a)
     normalizeB = np.linalg.norm(b)
-    print(dot)
-    print(a)
-    print(b)
+
     cos = dot / (normalizeA * normalizeB)
     return cos
 
@@ -30,7 +28,7 @@ def tfidf(idfDictionary, document, termsDictionary):
     tfDictionary = termFrequency(termsDictionary, document)
     tempDictionary = {}
     for term in tfDictionary:
-        if (term in tfDictionary) and (term in idfDictionary):
+        if term in idfDictionary:
             tempDictionary[term] = tfDictionary[term] * idfDictionary[term]
     return tempDictionary
 
@@ -39,9 +37,9 @@ def tfidf(idfDictionary, document, termsDictionary):
 #document is a string containing the text (preprocessed)
 #query is a list of strings containing the terms
 def getScore(idfDictionary, document, query):
-    termsDictionary = dict((term, 1) for term in document)
-    documentDictionary = tfidf(idfDictionary, document, termsDictionary)
+    termsDictionary = dict((term, 0) for term in document)
     queryDictionary = tfidf(idfDictionary, query, termsDictionary)
+    documentDictionary = tfidf(idfDictionary, document, termsDictionary)
     queryVector = list(queryDictionary.values())
     documentVector = list(documentDictionary.values())
 
