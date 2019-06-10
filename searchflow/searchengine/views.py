@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from crawler.extrafunctions import *
+from SearchFlow.crawler.extrafunctions import * #remove SearchFlow
 from django.core.paginator import Paginator
 from django.shortcuts import render
+from SearchFlow.indexing.indexing import create_dictionary as cd
+import re
+
 
 # Create your views here.
 
@@ -36,12 +39,16 @@ def query(request):
         insertTop(query)
         #tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
         #method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
-
+        docs = 10
+        results = cd.get_search(query, docs)
 
         resultList = []
-        for i in range (0, 40):
-          resultList.append((query + option + str(i), "http://www.stackoverflow.com", "This page shows how to remove the hyperlink underline with CSS by using the text-decoration property. Did you know that removing the underline allows you to ..."))
-    #    resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
+        doc = results.get()
+        for x in range(0, docs):
+            resultList.append((doc[1].get("Question").get("question_title"), "https://stackoverflow.com/questions/" + str(doc[1].get("Question").get("question_id")), ""))
+            if results.empty() is False:
+                doc = results.get(False)
+        resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
         template = loader.get_template('results.html')
 
         paginator = Paginator(resultList, 10)
