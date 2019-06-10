@@ -6,8 +6,8 @@ import searchflow.searchengine.scoring as sc
 from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
-conn = Connection(db_name="StackOverflow", db_col="Final_Data")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
+conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+conn_text_test = Connection(db_name="StackOverflow", db_col="title_test_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -222,9 +222,10 @@ def index_to_mongodb():
     counter = 0
     cursor = conn.db_col.find({}, no_cursor_timeout=True).batch_size(10)
     for i in cursor:
-        question_title_index.string_to_word_array(i['Question']['question_text'].lower(), counter)
-        counter += 1
-        print(counter)
+        if i['Question']['question_text'] is not None:
+            question_title_index.string_to_word_array(i['Question']['question_text'].lower(), counter)
+            counter += 1
+            print(counter)
     end_time = time.time()
     print(end_time - start_time)
     cursor.close()
@@ -324,14 +325,16 @@ def search(query):
     return getScore(pull_idf(query), basic_search(query), query)
 
 
-#pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
+index_to_mongodb()
+
+# pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
 
 #x = pq.get()
-#for a in range(1, 10):
+#for a in range(2, 10):
 #    print(x)
 #    doc_id = connection.db_col.find_one({"DocumentCount": a}).get("Question_ID")
 #    doc = conn.db_col.find_one({"_id": ObjectId(doc_id)}).get("Question").get("question_text")
-#    print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc), ["python", "java", "know"]))
+#    print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
 #    x = pq.get()
 
 
