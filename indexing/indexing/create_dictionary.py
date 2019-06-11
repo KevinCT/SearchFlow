@@ -349,7 +349,6 @@ def search(query):
 #id_to_url()
 def get_search(query, docs):
     pq = sc.getDocScore(conn_new_idf.db_col.find_one({}), basic_search(re.compile('\w+').findall(query)), re.compile('\w+').findall(query))
-
     x = pq.get(False)
     new_pq = q.PriorityQueue()
     for a in range(0, docs):
@@ -365,8 +364,7 @@ def get_search(query, docs):
      #   print(idfs.pop("_id"))
         end = time.time()
       #  print(end - start)
-        score = sc.getScore(idfs, text, ['The', 'question', 'is', 'how', 'to', 'improve', 'query', 'speed', 'from', '0', '4', 'msec', 'to', 'about', '0', '1'])
-        print(doc)
+        score = sc.getScore(idfs, text, re.compile('\w+').findall(query))
         new_pq.put([-score, a, doc])
         #print(doc)
         #print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
