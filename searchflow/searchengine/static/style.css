@@ -17,6 +17,7 @@
 }
 
 #topTags{
+  margin-left: -250px;
   text-align: center;
 }
 
@@ -166,4 +167,13 @@
 
 #tagBarID {
   text-align: center;
+  margin-top: -25px;
+  margin-left: 405px;
+}
+
+[class^='select2'] {
+  border-radius: 10px !important;
+  border-color: lightgray !important;
+  padding: 0px;
+
 }

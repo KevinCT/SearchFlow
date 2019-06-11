@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-from SearchFlow.crawler.debug import debug #remove SearchFlow
+from crawler.debug import debug #remove SearchFlow
 
 DEFAULT_MONGO_DB_PORT = 27017
 DEFAULT_MONGO_DB_ADDRESS = 'localhost'

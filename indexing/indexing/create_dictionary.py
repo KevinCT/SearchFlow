@@ -4,8 +4,8 @@ import queue as q
 import math
 
 from bson.objectid import ObjectId
-import SearchFlow.searchflow.searchengine.scoring as sc
-from SearchFlow.crawler.mongodb import Connection
+from . import scoring as sc
+from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
 conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
@@ -250,6 +250,7 @@ def static_intersect(keys, index):
     tag_connection = Connection(db_name="StackOverflow", db_col="tag_dictionary")
 
     for key in keys:
+        print(key)
         if tag_connection.db_col.count({"TagName": key}, limit=1) != 0:
             data = index_connection.db_col.find_one({"Term": key})
             if data is not None:
@@ -361,11 +362,12 @@ def get_search(query, docs):
         start = time.time()
         #idfs = pull_idf(text)
         idfs = conn_new_idf.db_col.find_one({})
-        print(idfs.pop("_id"))
+     #   print(idfs.pop("_id"))
         end = time.time()
-        print(end - start)
-        score = sc.getScore(idfs, text, ["python", "java", "know"])
-        new_pq.put([-score, doc])
+      #  print(end - start)
+        score = sc.getScore(idfs, text, ['The', 'question', 'is', 'how', 'to', 'improve', 'query', 'speed', 'from', '0', '4', 'msec', 'to', 'about', '0', '1'])
+        print(doc)
+        new_pq.put([-score, a, doc])
         #print(doc)
         #print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
         x = pq.get()

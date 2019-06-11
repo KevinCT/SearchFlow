@@ -37,8 +37,9 @@ def tfidf(idfDictionary, document, termsDictionary):
 #document is a string containing the text (preprocessed)
 #query is a list of strings containing the terms
 def getScore(idfDictionary, document, query):
-    print(document)
-    print(query)
+   # print(document)
+    #print(query)
+    idfDictionary.pop('_id', None)
     termsDictionary = dict((term, 0) for term in document)
     queryDictionary = tfidf(idfDictionary, query, termsDictionary)
     documentDictionary = tfidf(idfDictionary, document, termsDictionary)
@@ -49,8 +50,10 @@ def getScore(idfDictionary, document, query):
 
 #document is a dictionary of dictionaries containing the term frequency of each term related to the query
 def getDocScore(idfDictionary, documents, query):
-    print(documents)
-    print(query)
+  #  print("---------------------------------------------")
+   # print(documents)
+    #print(query)
+    #print(idfDictionary)
     scoreQueue = queue.PriorityQueue()
     for document in documents:
         score = 0

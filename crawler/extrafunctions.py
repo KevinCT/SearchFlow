@@ -1,6 +1,6 @@
 import nltk
 
-from SearchFlow.crawler.mongodb import Connection #remove SearchFlow
+from crawler.mongodb import Connection #remove SearchFlow
 
 nltk.download('stopwords')
 nltk.download('punkt')

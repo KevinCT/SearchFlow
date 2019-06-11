@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from SearchFlow.crawler.extrafunctions import * #remove SearchFlow
+from crawler.extrafunctions import * #remove SearchFlow
 from django.core.paginator import Paginator
 from django.shortcuts import render
-from SearchFlow.indexing.indexing import create_dictionary as cd
+from indexing.indexing import create_dictionary as cd
 import re
 
 
@@ -39,13 +39,13 @@ def query(request):
         insertTop(query)
         #tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
         #method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
-        docs = 100
+        docs = 2
         results = cd.get_search(query, docs)
 
         resultList = []
         doc = results.get()
         for x in range(0, docs):
-            resultList.append((doc[1].get("Question").get("question_title"), "https://stackoverflow.com/questions/" + str(doc[1].get("Question").get("question_id")), ""))
+            resultList.append((doc[2].get("Question").get("question_title"), "https://stackoverflow.com/questions/" + str(doc[2].get("Question").get("question_id")), ""))
             if results.empty() is False:
                 doc = results.get(False)
         resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
