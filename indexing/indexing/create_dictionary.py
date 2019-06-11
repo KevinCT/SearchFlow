@@ -353,6 +353,7 @@ def get_search(query, docs):
     new_pq = q.PriorityQueue()
     for a in range(0, docs):
         #print(x)
+        #print(x[1])
         doc_id = connection.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID")
         #print(doc_id)
         doc = conn.db_col.find_one({'_id': ObjectId(doc_id)})#.get("Question").get("question_text")
@@ -364,6 +365,7 @@ def get_search(query, docs):
      #   print(idfs.pop("_id"))
         end = time.time()
       #  print(end - start)
+       # print(doc)
         score = sc.getScore(idfs, text, re.compile('\w+').findall(query))
         new_pq.put([-score, a, doc])
         #print(doc)
