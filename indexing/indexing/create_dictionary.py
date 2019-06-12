@@ -1,16 +1,17 @@
+import math
+import queue as q
 import re
 import time
-import queue as q
-import math
 
 from bson.objectid import ObjectId
-from . import scoring as sc
-from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
-conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+from crawler.mongodb import Connection
+from indexing.indexing import scoring as sc
+
+conn = Connection(db_name="StackOverflow", db_col="final_processed_data")
 conn_new_idf = Connection(db_name="StackOverflow", db_col="new_idf")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -210,6 +211,7 @@ def id_to_url():
     for i in conn.db_col.find({}):
         connection.db_col.insert_one({"Question_ID": str(i["_id"]), "DocumentCount": counter})
         counter += 1
+    print(counter)
 
 
 def url_to_id():
@@ -320,7 +322,8 @@ def new_idf_index():
     conn_new_idf.db_col.insert_one(dictionary)
 
 
-#new_idf_index()
+# push_idf()
+# new_idf_index()
 
 
 def basic_search(query):
@@ -346,66 +349,31 @@ def search(query):
 
 #index_to_mongodb()
 
-#id_to_url()
+# id_to_url()
 def get_search(query, docs):
-    pq = sc.getDocScore(conn_new_idf.db_col.find_one({}), basic_search(re.compile('\w+').findall(query)), re.compile('\w+').findall(query))
+    pq = sc.getDocScore(conn_new_idf.db_col.find_one({}), basic_search(re.compile('\w+').findall(query)),
+                        re.compile('\w+').findall(query))
     x = pq.get(False)
     new_pq = q.PriorityQueue()
     for a in range(0, docs):
-        #print(x)
-        #print(x[1])
+        # print(x)
+        print(x[1])
         doc_id = connection.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID")
-        #print(doc_id)
-        doc = conn.db_col.find_one({'_id': ObjectId(doc_id)})#.get("Question").get("question_text")
-        #for c in doc:
+        # print(doc_id)
+        doc = conn.db_col.find_one({'_id': ObjectId(doc_id)})  # .get("Question").get("question_text")
+        # for c in doc:
         text = re.compile('\w+').findall(doc.get("Question").get("question_text").lower())
         start = time.time()
-        #idfs = pull_idf(text)
+        # idfs = pull_idf(text)
         idfs = conn_new_idf.db_col.find_one({})
-     #   print(idfs.pop("_id"))
+        #   print(idfs.pop("_id"))
         end = time.time()
-      #  print(end - start)
-       # print(doc)
+        #  print(end - start)
+        # print(doc)
         score = sc.getScore(idfs, text, re.compile('\w+').findall(query))
         new_pq.put([-score, a, doc])
-        #print(doc)
-        #print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
+        # print(doc)
+        # print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
         x = pq.get()
-        #print(a)
+        # print(a)
     return new_pq
-
-#get_search("python java", )
-
-#doc = new_pq.get()
-
-#while doc is not None:
-#    print(doc[1].get("Question").get("question_title"))
-#    doc = new_pq.get()
-
-
-
-
-#id_to_url()
-#index_to_mongodb()
-
-#pq = search(["query", "speed"])
-
-
-
-
-
-'''
-data_file = create_json()
-question_title_index = Index("test")
-start_time = time.time()
-for line in data_file:
-    question_title_index.string_to_word_array(line['Question']['question_title'], line['position'])
-end_time = time.time()
-print(end_time - start_time)
-start = time.time()
-for x in range(0, 2):
-    question_title_index.intersect(["stop", "new", "list"])
-end = time.time()
-print(end - start)
-print(data_file[189])
-'''

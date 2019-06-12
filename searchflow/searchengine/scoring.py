@@ -1,6 +1,8 @@
-import numpy as np
-import queue
 import copy
+import queue
+
+import numpy as np
+
 
 #do we consider the whole vector or only the terms from the query?
 def cosineSimilarity(a, b):
@@ -47,7 +49,8 @@ def getScore(idfDictionary, document, query):
 
     return cosineSimilarity(documentVector, queryVector)
 
-#document is a dictionary of dictionaries containing the term frequency of each term related to the query
+
+# document is a dictionary of dictionaries containing the term frequency of each term related to the query
 def getDocScore(idfDictionary, documents, query):
     print(documents)
     print(query)
@@ -75,14 +78,10 @@ def test():
                      'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454,
                      'bootstrap': 1.6931471805599454}, {'doc1': {'python': 1, 'java': 2, 'framework': 2}, 'doc2': {'python': 3, 'framework': 1}}, ["python", "framework", "h3"])
 
-
-
-
     while True:
         print(scores.get())
 
-
-#print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
+# print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
 #,["django", "is", "a", "web", "framework", "for", "python"], ["python", "framework"]))
 
 

@@ -1,11 +1,9 @@
-from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.template import loader
-from crawler.extrafunctions import * #remove SearchFlow
-from django.core.paginator import Paginator
-from django.shortcuts import render
+
+from crawler.extrafunctions import *  # remove SearchFlow
 from indexing.indexing import create_dictionary as cd
-import re
 
 
 # Create your views here.
@@ -23,6 +21,7 @@ def index(request):
 
 
 def query(request):
+    print("Hi i am here")
     if request.method == 'GET':
         fullTags = ["Java", "Python", "Android"]
         topTags = getTags()
@@ -36,16 +35,19 @@ def query(request):
         tags = tags + tags2
         print(tags)
 
-        insertTop(query)
-        #tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
-        #method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
-        docs = 100
+        # insertTop(query)
+        # tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
+        # method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
+        docs = 1000
+        print("before query")
         results = cd.get_search(query, docs)
-
+        print("after search")
         resultList = []
         doc = results.get()
         for x in range(0, docs):
-            resultList.append((doc[2].get("Question").get("question_title"), "https://stackoverflow.com/questions/" + str(doc[2].get("Question").get("question_id")), ""))
+            resultList.append((doc[2].get("Question").get("question_title"),
+                               "https://stackoverflow.com/questions/" + str(doc[2].get("Question").get("question_id")),
+                               ""))
             if results.empty() is False:
                 doc = results.get(False)
         resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
@@ -65,17 +67,18 @@ def query(request):
     else:
         return HttpResponse("Something went wrong")
 
+
 #            return listing(request, resultList)
 
 
-#def listing(request, resultList):
+# def listing(request, resultList):
 #    paginator = Paginator(resultList, 10)
 #    page = request.GET.get('page')
 #    users = paginator.get_page(page)
 #    return render(request, 'results.html', {'users': users})
 
 def getTags():
-    backupList = ["java", "python", "c++", "javascript", "android" ]
+    backupList = ["java", "python", "c++", "javascript", "android"]
     topTags = topSearch()
     if len(topTags) >= 5:
         topTags = [tuple(topTags[:5])]

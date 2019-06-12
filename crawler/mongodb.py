@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-from crawler.debug import debug #remove SearchFlow
+from crawler.debug import debug  # remove SearchFlow
 
 DEFAULT_MONGO_DB_PORT = 27017
 DEFAULT_MONGO_DB_ADDRESS = 'localhost'
@@ -91,7 +91,16 @@ class Connection:
         """
         return self.db_col.find_one({data_type: value})
 
-# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+    def get_data_of_question_id(self, question_id="", data_type=""):
+        """"
+        :param question_id: int, The id of the questin in mongoDB. Ex. 56075703
+        :param data_type: string, The name/type of the data in mongoDB. Ex. Question.question_id, Answer.answer_upvote
+        """
+        return self.db_col.find_one({"Question.question_id": question_id})[data_type.split(".")[0]].get(
+            data_type.split(".")[1])
+
+
+conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 # conn.delete_null_text()
 # print(conn.data_exist(data_type="Question.question_id", data=56075703))
 # var = conn.db_col.find({'crawled': 'True'})
