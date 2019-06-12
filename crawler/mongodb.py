@@ -99,8 +99,18 @@ class Connection:
         return self.db_col.find_one({"Question.question_id": question_id})[data_type.split(".")[0]].get(
             data_type.split(".")[1])
 
+    def get_accepted_answer(self, question_id = ""):
+        accepted = False
+        data = self.db_col.find_one({"Question.question_id": question_id})
+        if len(data["Answer"].get("answers"))>0:
+            for x in data["Answer"].get("answers"):
+                accepted = x["answer_accepted"]
+                if accepted:
+                    break
+        return accepted
 
-conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+
+#conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 # conn.delete_null_text()
 # print(conn.data_exist(data_type="Question.question_id", data=56075703))
 # var = conn.db_col.find({'crawled': 'True'})

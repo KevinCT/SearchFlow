@@ -8,14 +8,16 @@ from nltk.corpus import stopwords
 
 from crawler.mongodb import Connection
 from indexing.indexing import scoring as sc
+from crawler.mongodb import *  # remove SearchFlow
 
-conn = Connection(db_name="StackOverflow", db_col="final_processed_data")
+
+conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
 conn_new_idf = Connection(db_name="StackOverflow", db_col="new_idf")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
-connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
+#connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
-conn_dictionary_2 = Connection(db_name="StackOverflow", db_col="tag_dictionary_2")
+#conn_dictionary_2 = Connection(db_name="StackOverflow", db_col="tag_dictionary_2")
 conn_idf = Connection(db_name="StackOverflow", db_col="idf_scores")
 
 
@@ -370,6 +372,16 @@ def get_search(query, docs):
         end = time.time()
         #  print(end - start)
         # print(doc)
+     #   print(conn.get_accepted_answer(doc.get("Question").get("question_id")))
+      #  print("------------")
+      #  print(doc.get("Question").get("question_upvote"))
+       # print("upvotes")
+       # print(doc.get("Question").get("related_questions"))
+        related_questions = doc.get("Question").get("related_questions")
+       # for question in related_questions:
+        #    print(question['related_question'])
+         #   print(question['related_question_id'])
+      #  print(getValue(doc_id, "Question.question_upvote"))
         score = sc.getScore(idfs, text, re.compile('\w+').findall(query))
         new_pq.put([-score, a, doc])
         # print(doc)
