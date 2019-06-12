@@ -21,7 +21,6 @@ def index(request):
 
 
 def query(request):
-    print("Hi i am here")
     if request.method == 'GET':
         fullTags = ["Java", "Python", "Android"]
         topTags = getTags()
@@ -33,15 +32,13 @@ def query(request):
         tags2 = request.GET.get('tagInput')
         tags2 = tags2.split(',')
         tags = tags + tags2
-        print(tags)
+#        print(tags)
 
         # insertTop(query)
         # tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
         # method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
         docs = 100
-        print("before query")
         results = cd.get_search(query, docs, region='title')
-        print("after search")
         resultList = []
         doc = results.get()
         for x in range(0, docs):
