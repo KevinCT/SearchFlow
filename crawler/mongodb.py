@@ -66,7 +66,7 @@ class Connection:
 
     # be sure before you use this method
     def delete_null_text(self):
-        total = self.db_col.delete_many({{"crawled": True, "Question.question_text": None}})
+        total = self.db_col.delete_many({"crawled": True, "Question.question_text": None})
         self.dbug.debug_print("total deleted items: " + str(total))
         return total.deleted_count
 
@@ -91,8 +91,8 @@ class Connection:
         """
         return self.db_col.find_one({data_type: value})
 
-
-conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+# conn.delete_null_text()
 # print(conn.data_exist(data_type="Question.question_id", data=56075703))
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:

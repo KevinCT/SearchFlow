@@ -1,13 +1,12 @@
 import re
 import time
 
-from bson.objectid import ObjectId
-import searchflow.searchengine.scoring as sc
-from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
-conn = Connection(db_name="StackOverflow", db_col="Final_Data")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
+from crawler.mongodb import Connection
+
+conn = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_code_final_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -220,11 +219,13 @@ def index_to_mongodb():
     question_title_index = Index("test")
     start_time = time.time()
     counter = 0
-    cursor = conn.db_col.find({}, no_cursor_timeout=True).batch_size(10)
+    cursor = conn.db_col.find({}, no_cursor_timeout=True).batch_size(100)
     for i in cursor:
-        question_title_index.string_to_word_array(i['Question']['question_text'].lower(), counter)
-        counter += 1
-        print(counter)
+        if i['Question']['question_text'] is not None:
+            string = ' '.join(map(str, i['Question']['question_code']))
+            question_title_index.string_to_word_array(string.lower(), counter)
+            counter += 1
+            print(counter)
     end_time = time.time()
     print(end_time - start_time)
     cursor.close()
