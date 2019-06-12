@@ -1,12 +1,16 @@
 import re
 import time
+import queue as q
+import math
 
+from bson.objectid import ObjectId
+from . import scoring as sc
+from crawler.mongodb import Connection
 from nltk.corpus import stopwords
 
-from crawler.mongodb import Connection
-
-conn = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_code_final_index")
+conn = Connection(db_name="StackOverflow", db_col="Bigger_Test_Data")
+conn_new_idf = Connection(db_name="StackOverflow", db_col="new_idf")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_index")
 connection = Connection(db_name="StackOverflow", db_col="id_to_url")
 connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
@@ -219,11 +223,10 @@ def index_to_mongodb():
     question_title_index = Index("test")
     start_time = time.time()
     counter = 0
-    cursor = conn.db_col.find({}, no_cursor_timeout=True).batch_size(100)
+    cursor = conn.db_col.find({}, no_cursor_timeout=True).batch_size(10)
     for i in cursor:
         if i['Question']['question_text'] is not None:
-            string = ' '.join(map(str, i['Question']['question_code']))
-            question_title_index.string_to_word_array(string.lower(), counter)
+            question_title_index.string_to_word_array(i['Question']['question_text'].lower(), counter)
             counter += 1
             print(counter)
     end_time = time.time()
@@ -247,6 +250,7 @@ def static_intersect(keys, index):
     tag_connection = Connection(db_name="StackOverflow", db_col="tag_dictionary")
 
     for key in keys:
+        print(key)
         if tag_connection.db_col.count({"TagName": key}, limit=1) != 0:
             data = index_connection.db_col.find_one({"Term": key})
             if data is not None:
@@ -281,11 +285,13 @@ def find_idf(posting_node, total_docs):
     while posting_node.has_next():
         total += 1
         posting_node = posting_node.next
-    return total / total_docs
+    return total_docs / total
 
 
 def push_idf():
-    total_docs = conn_text_test.db_col.count()
+    total_docs = conn.db_col.count()
+    print(total_docs)
+    total_docs = math.log(float(total_docs))
     for i in conn_text_test.db_col.find({}):
         idf = find_idf(deserialize_list(i.get("PostingList")).start, total_docs)
         conn_idf.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
@@ -298,10 +304,23 @@ def pull_idf(query):
     query_to_idf = dict()
 
     for key in query:
-        temp = conn_idf.db_col.find_one({"Term": key})
-        if temp is not None:
-            query_to_idf[key] = temp.get("IDF_Score")
+        temp = conn_idf.db_col.find({"Term": key}).limit(1)
+        for word in temp:
+            if word is not None:
+                query_to_idf[key] = word.get("IDF_Score")
     return query_to_idf
+
+
+def new_idf_index():
+    dictionary = dict()
+
+    for term in conn_idf.db_col.find({}):
+        dictionary[term["Term"]] = term["IDF_Score"]
+
+    conn_new_idf.db_col.insert_one(dictionary)
+
+
+#new_idf_index()
 
 
 def basic_search(query):
@@ -325,15 +344,43 @@ def search(query):
     return getScore(pull_idf(query), basic_search(query), query)
 
 
-#pq = sc.getDocScore(pull_idf(["python", "java", "know"]), basic_search(["python", "java", "know"]), ["python", "java", "know"])
+#index_to_mongodb()
 
-#x = pq.get()
-#for a in range(1, 10):
-#    print(x)
-#    doc_id = connection.db_col.find_one({"DocumentCount": a}).get("Question_ID")
-#    doc = conn.db_col.find_one({"_id": ObjectId(doc_id)}).get("Question").get("question_text")
-#    print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc), ["python", "java", "know"]))
-#    x = pq.get()
+#id_to_url()
+def get_search(query, docs):
+    pq = sc.getDocScore(conn_new_idf.db_col.find_one({}), basic_search(re.compile('\w+').findall(query)), re.compile('\w+').findall(query))
+    x = pq.get(False)
+    new_pq = q.PriorityQueue()
+    for a in range(0, docs):
+        #print(x)
+        #print(x[1])
+        doc_id = connection.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID")
+        #print(doc_id)
+        doc = conn.db_col.find_one({'_id': ObjectId(doc_id)})#.get("Question").get("question_text")
+        #for c in doc:
+        text = re.compile('\w+').findall(doc.get("Question").get("question_text").lower())
+        start = time.time()
+        #idfs = pull_idf(text)
+        idfs = conn_new_idf.db_col.find_one({})
+     #   print(idfs.pop("_id"))
+        end = time.time()
+      #  print(end - start)
+       # print(doc)
+        score = sc.getScore(idfs, text, re.compile('\w+').findall(query))
+        new_pq.put([-score, a, doc])
+        #print(doc)
+        #print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
+        x = pq.get()
+        #print(a)
+    return new_pq
+
+#get_search("python java", )
+
+#doc = new_pq.get()
+
+#while doc is not None:
+#    print(doc[1].get("Question").get("question_title"))
+#    doc = new_pq.get()
 
 
 
