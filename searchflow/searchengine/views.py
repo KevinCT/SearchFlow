@@ -32,7 +32,7 @@ def query(request):
         tags2 = request.GET.get('tagInput')
         tags2 = tags2.split(',')
         tags = tags + tags2
-#        print(tags)
+        #        print(tags)
 
         # insertTop(query)
         # tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
