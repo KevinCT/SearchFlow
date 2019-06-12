@@ -32,8 +32,8 @@ def tfidf(idfDictionary, document, query, termsDictionary):
     for term in tfDictionary:
         if term in idfDictionary:
             tempDictionary[term] = tfDictionary[term] * idfDictionary[term]
-        elif term in document and term in query:
-            tempDictionary[term] = 0
+    #   elif term in document and term in query:
+    #      tempDictionary[term] = 0
     return tempDictionary
 
 
@@ -41,18 +41,21 @@ def tfidf(idfDictionary, document, query, termsDictionary):
 # query is a list of strings containing the terms
 def getScore(idfDictionary, document, query):
     idfDictionary.pop('_id', None)
-    # print("-------------------getScore-----------------------")
-    # print(query)
-    # print(document)
+    print("-------------------getScore-----------------------")
+    print(query)
+    print(document)
     termsDictionary = dict((term, 0) for term in document)
     queryDictionary = tfidf(idfDictionary, query, query, termsDictionary)
     documentDictionary = tfidf(idfDictionary, document, query, termsDictionary)
+    print(documentDictionary)
+    print(queryDictionary)
     # print(documentDictionary)
     # print("QUERY")
     # print({x:y for x,y in queryDictionary.items() if y!=0})
     queryVector = list(queryDictionary.values())
     documentVector = list(documentDictionary.values())
     score = cosineSimilarity(documentVector, queryVector)
+    print(score)
     # temp fix since rare terms are not added to idf in db
     # for term in termsDictionary:
     #     if term not in idfDictionary:

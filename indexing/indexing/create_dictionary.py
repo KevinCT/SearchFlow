@@ -377,7 +377,7 @@ def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn
     new_pq = q.PriorityQueue()
     for a in range(0, docs):
         # print(x)
-        print(x[1])
+        # print(x[1])
         doc_id = id_url.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID")
         # print(doc_id)
         doc = data_conn.db_col.find_one({'_id': ObjectId(doc_id)})  # .get("Question").get("question_text")

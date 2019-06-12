@@ -25,6 +25,7 @@ def query(request):
         fullTags = ["Java", "Python", "Android"]
         topTags = getTags()
         query = request.GET.get('queryField', None)
+        query = str(query).lower()
         option = request.GET.get('optionSelector', None)
         tags = [request.GET.get('tOne'), request.GET.get('tTwo'), request.GET.get('tThree'), request.GET.get('tFour'),
                 request.GET.get('tFive')]
