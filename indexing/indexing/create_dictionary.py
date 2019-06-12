@@ -9,14 +9,22 @@ from nltk.corpus import stopwords
 from crawler.mongodb import Connection
 from indexing.indexing import scoring as sc
 
-conn = Connection(db_name="StackOverflow", db_col="final_processed_data")
-conn_new_idf = Connection(db_name="StackOverflow", db_col="new_idf")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
-connection = Connection(db_name="StackOverflow", db_col="id_to_url")
-connection_url = Connection(db_name="StackOverflow", db_col="url_to_id")
+# question_text_real_final_index - question text of "without code"
+# question_text_real_index  - question title of "without code"
+
+
+conn_title = Connection(db_name="StackOverflow", db_col="final_processed_data")
+conn_new_idf_title = Connection(db_name="StackOverflow", db_col="new_idf")
+conn_title_test = Connection(db_name="StackOverflow", db_col="question_text_index")
+connection_title = Connection(db_name="StackOverflow", db_col="id_to_url")
 conn_dictionary = Connection(db_name="StackOverflow", db_col="tag_dictionary")
-conn_dictionary_2 = Connection(db_name="StackOverflow", db_col="tag_dictionary_2")
-conn_idf = Connection(db_name="StackOverflow", db_col="idf_scores")
+conn_idf_title = Connection(db_name="StackOverflow", db_col="idf_scores")
+
+conn = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
+conn_new_idf = Connection(db_name="Index", db_col="new_idf")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
+connection = Connection(db_name="Index", db_col="id_to_url")
+conn_idf = Connection(db_name="Index", db_col="idf_scores")
 
 
 def create_json():
@@ -206,12 +214,16 @@ def clear_db():
     conn.db_col.delete_many({"Question.question_text": None})
 
 
-def id_to_url():
+def id_to_url(id_url=connection, top_conn=conn):
     counter = 0
-    for i in conn.db_col.find({}):
-        connection.db_col.insert_one({"Question_ID": str(i["_id"]), "DocumentCount": counter})
+    for i in top_conn.db_col.find({}):
+        id_url.db_col.insert_one({"Question_ID": str(i["_id"]), "DocumentCount": counter})
         counter += 1
     print(counter)
+
+
+# id_to_url(connection_title, conn_title)
+#id_to_url()
 
 
 def url_to_id():
@@ -248,7 +260,7 @@ def deserialize_test():
 def static_intersect(keys, index):
     doc_scores = dict()
     term_posting = dict()
-    index_connection = Connection(db_name="StackOverflow", db_col=index)
+    index_connection = index
     tag_connection = Connection(db_name="StackOverflow", db_col="tag_dictionary")
 
     for key in keys:
@@ -290,15 +302,16 @@ def find_idf(posting_node, total_docs):
     return total_docs / total
 
 
-def push_idf():
-    total_docs = conn.db_col.count()
+def push_idf(idf_conn=conn_idf, top_conn=conn, index=conn_text_test):
+    total_docs = top_conn.db_col.count()
     print(total_docs)
     total_docs = math.log(float(total_docs))
-    for i in conn_text_test.db_col.find({}):
+    for i in index.db_col.find({}):
         idf = find_idf(deserialize_list(i.get("PostingList")).start, total_docs)
-        conn_idf.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
+        idf_conn.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
 
 
+#push_idf(conn_idf_title, conn_title, conn_title_test)
 #push_idf()
 
 
@@ -313,20 +326,20 @@ def pull_idf(query):
     return query_to_idf
 
 
-def new_idf_index():
+def new_idf_index(new_idf=conn_new_idf, old_idf=conn_idf):
     dictionary = dict()
 
-    for term in conn_idf.db_col.find({}):
+    for term in old_idf.db_col.find({}):
         dictionary[term["Term"]] = term["IDF_Score"]
 
-    conn_new_idf.db_col.insert_one(dictionary)
+    new_idf.db_col.insert_one(dictionary)
 
 
-# push_idf()
+# new_idf_index(conn_new_idf_title, conn_idf_title)
 # new_idf_index()
 
 
-def basic_search(query):
+def basic_search(query, index):
     # posting_lists = []
     # for word in query:
     #    posting_lists.append(deserialize_list(conn_title_test.db_col.find_one({"Term": word}).get("PostingList")))
@@ -334,7 +347,7 @@ def basic_search(query):
     #test = static_intersect(query, "question_text_index")
     #print(test)
     #print("test")
-    return static_intersect(query, "question_text_index")
+    return static_intersect(query, index)
 
 
 def push_terms(tags):
@@ -350,22 +363,29 @@ def search(query):
 #index_to_mongodb()
 
 # id_to_url()
-def get_search(query, docs):
-    pq = sc.getDocScore(conn_new_idf.db_col.find_one({}), basic_search(re.compile('\w+').findall(query)),
+def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn=conn_new_idf, data_conn=conn,
+               id_url=connection, region="text"):
+    if region == "title":
+        index = conn_title_test
+        area = "question_title"
+        idf_conn = conn_new_idf_title
+        id_url = connection_title
+        data_conn = conn_title
+    pq = sc.getDocScore(idf_conn.db_col.find_one({}), basic_search(re.compile('\w+').findall(query), index),
                         re.compile('\w+').findall(query))
     x = pq.get(False)
     new_pq = q.PriorityQueue()
     for a in range(0, docs):
         # print(x)
         print(x[1])
-        doc_id = connection.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID")
+        doc_id = id_url.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID")
         # print(doc_id)
-        doc = conn.db_col.find_one({'_id': ObjectId(doc_id)})  # .get("Question").get("question_text")
+        doc = data_conn.db_col.find_one({'_id': ObjectId(doc_id)})  # .get("Question").get("question_text")
         # for c in doc:
-        text = re.compile('\w+').findall(doc.get("Question").get("question_text").lower())
+        text = re.compile('\w+').findall(doc.get("Question").get(area).lower())
         start = time.time()
         # idfs = pull_idf(text)
-        idfs = conn_new_idf.db_col.find_one({})
+        idfs = idf_conn.db_col.find_one({})
         #   print(idfs.pop("_id"))
         end = time.time()
         #  print(end - start)

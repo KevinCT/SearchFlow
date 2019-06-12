@@ -54,10 +54,10 @@ def getScore(idfDictionary, document, query):
     documentVector = list(documentDictionary.values())
     score = cosineSimilarity(documentVector, queryVector)
     # temp fix since rare terms are not added to idf in db
-    for term in termsDictionary:
-        if term not in idfDictionary:
-            if term in query:
-                score += 0.05
+    # for term in termsDictionary:
+    #     if term not in idfDictionary:
+    #         if term in query:
+    #             score += 0.05
 
     return score
 
@@ -65,9 +65,9 @@ def getScore(idfDictionary, document, query):
 # document is a dictionary of dictionaries containing the term frequency of each term related to the query
 def getDocScore(idfDictionary, documents, query):
     idfDictionary.pop('_id', None)
-    #  print("-------------------getDocScore-----------------------")
-    #  print(documents)
-    #  print(query)
+    print("-------------------getDocScore-----------------------")
+    print(documents)
+    print(query)
     scoreQueue = queue.PriorityQueue()
     for document in documents:
         score = 0
