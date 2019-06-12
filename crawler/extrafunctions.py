@@ -26,7 +26,3 @@ def insertTop(data):
                 top_search_db.db_col.update_one({'tag_name': i}, {'$set': {'count': info.get("count") + 1}})
             else:
                 top_search_db.db_col.insert_one({"tag_name": i, "count": 1})
-
-
-def getValue(question_id, data_type):
-    return Connection(db_col="Bigger_Test_Data",db_name="StackOverflow").get_data_of_question_id(question_id, data_type)
