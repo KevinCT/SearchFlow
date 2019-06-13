@@ -26,6 +26,18 @@ conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_
 connection = Connection(db_name="Index", db_col="id_to_url")
 conn_idf = Connection(db_name="Index", db_col="idf_scores")
 
+conn_tag = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
+conn_new_idf_tag = Connection(db_name="Index_tag", db_col="new_idf")
+conn_text_test_tag = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
+connection_tag = Connection(db_name="Index_tag", db_col="id_to_url")
+conn_idf_tag = Connection(db_name="Index_tag", db_col="idf_scores")
+
+conn_code = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
+conn_new_idf_code = Connection(db_name="Index_code", db_col="new_idf")
+conn_text_test_code = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
+connection_code = Connection(db_name="Index_code", db_col="id_to_url")
+conn_idf_code = Connection(db_name="Index_code", db_col="idf_scores")
+
 
 def create_json():
     data = {}
@@ -371,6 +383,19 @@ def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn
         idf_conn = conn_new_idf_title
         id_url = connection_title
         data_conn = conn_title
+    elif region == "tag":
+        index = conn_text_test_tag
+        area = "question_tags"
+        idf_conn = conn_new_idf_tag
+        id_url = connection_tag
+        data_conn = conn_tag
+    elif region == "code":
+        index = conn_text_test_code
+        area = "question_code"
+        idf_conn = conn_new_idf_code
+        id_url = connection_code
+        data_conn = conn_code
+
     pq = sc.getDocScore(idf_conn.db_col.find_one({}), basic_search(re.compile('\w+').findall(query), index),
                         re.compile('\w+').findall(query))
     x = pq.get(False)
