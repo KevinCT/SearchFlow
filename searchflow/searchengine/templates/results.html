@@ -3,96 +3,80 @@
 <head>
   {% csrf_token %}
   {% load static %}
-    {% if tag_list %}
+  {% if tag_list %}
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
 </head>
 
 <body>
-<form id="myform" method="GET" action="query">
-    <div id="searchBar2">
-        <input type="text" name="queryField" placeholder="Search...">
+  <form id="myform" method="GET" action="query">
 
+      <div id="logo2">
+      <img src="../static/logo.png" class="center">
     </div>
+  <div id="searchBar2">
+      <input type="text" name="queryField" placeholder= "Search...">
 
-    <div id="topTags2">
-        <input type="hidden" name="tagInput" class="tagInputClass">
-        {% for tagOne, tagTwo, tagThree, tagFour, tagFive in tag_list %}
-        <span><input type="checkbox" name="tOne" id="tagOne" value="{{ tagOne }}"><label
-                for="tagOne"> {{tagOne}} </label></span>
-        <span><input type="checkbox" name="tTwo" id="tagTwo" value="{{ tagTwo }}"><label
-                for="tagTwo"> {{tagTwo}} </label></span>
-        <span><input type="checkbox" name="tThree" id="tagThree" value="{{ tagThree }}"><label for="tagThree"> {{tagThree}} </label></span>
-        <span><input type="checkbox" name="tFour" id="tagFour" value="{{ tagFour }}"><label
-                for="tagFour"> {{tagFour}} </label></span>
-        <span><input type="checkbox" name="tFive" id="tagFive" value="{{ tagFive }}"><label
-                for="tagFive"> {{tagFive}} </label></span>
-        {% endfor %}
-        {% else %}
-        <p>No tags available.</p>
-        {% endif %}
-        <select name="optionSelector" onchange="change()">
-            <option value="relevance">Sort by relevance</option>
-            <option value="question">Sort by question</option>
-            <option value="answer">Sort by answer</option>
-            <option value="newest">Sort by newest</option>
-            <option value="votes">Sort by votes</option>
-        </select>
-    </div>
+  </div>
 
-    <div id="resultList">
-        {% for title, link, description in users.object_list %}
-        <dl>
-            <dt id="title"><a href="{{link}}">{{title}}</a></dt>
-            <dd id="link"><a href="{{link}}">{{link}}</a></dd>
-            <dd id="description">{{description}}</dd>
-        </dl>
-        {% endfor %}
+  <div id="topTags2">
+    <input type="hidden" name="tagInput" class="tagInputClass">
+    {% for tagOne, tagTwo, tagThree, tagFour, tagFive in tag_list %}
+    <span><input type="checkbox" name="tOne" id="tagOne" value="{{ tagOne }}" ><label for="tagOne"> {{tagOne}} </label></span>
+    <span><input type="checkbox" name="tTwo" id="tagTwo" value="{{ tagTwo }}"><label for="tagTwo"> {{tagTwo}} </label></span>
+    <span><input type="checkbox" name="tThree" id="tagThree" value="{{ tagThree }}"><label for="tagThree"> {{tagThree}} </label></span>
+    <span><input type="checkbox" name="tFour" id="tagFour" value="{{ tagFour }}"><label for="tagFour"> {{tagFour}} </label></span>
+    <span><input type="checkbox" name="tFive" id="tagFive" value="{{ tagFive }}"><label for="tagFive"> {{tagFive}} </label></span>
+    {% endfor %}
+    {% else %}
+    <p>No tags available.</p>
+    {% endif %}
+    <select name="optionSelector" onchange="change()">
+      <option value="relevance">Sort by relevance</option>
+      <option value="question">Sort by question</option>
+      <option value="answer">Sort by answer</option>
+      <option value="newest">Sort by newest</option>
+      <option value="votes">Sort by votes</option>
+    </select>
+  </div>
 
-    </div>
+  <div id="resultList">
+    {% for title, link, description in users.object_list %}
+    <form action="questionView" method="GET">
+    <button type="Search"></button>
+  </form>
+
+    <dl>
+      <dt id="title"><a href="{{link}}">{{title}}</a></dt>
+      <dd id="link"><a href="{{link}}">{{link}}</a></dd>
+      <dd id="description">{{description}}</dd>
+    </dl>
+    {% endfor %}
+
+  </div>
 </form>
 
 
-<div id="tagBarID">
-    <select name="tagBar" class="tagBarSearch" multiple="multiple">
-        {% for tag in full_tag_list %}
-        <option value={{tag}}>{{tag}}</option>
-        {% endfor %}
-    </select>
-</div>
 
 
-<!-- <div id="googleSearch">
-<script>
-(function() {
-var cx = '011809301518290707489:iidi8bhbtce';
-var gcse = document.createElement('script');
-gcse.type = 'text/javascript';
-gcse.async = true;
-gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-var s = document.getElementsByTagName('script')[0];
-s.parentNode.insertBefore(gcse, s);
+  <!-- <div id="googleSearch">
+  <script>
+  (function() {
+  var cx = '011809301518290707489:iidi8bhbtce';
+  var gcse = document.createElement('script');
+  gcse.type = 'text/javascript';
+  gcse.async = true;
+  gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(gcse, s);
 })();
 </script>
 <gcse:search></gcse:search>
 
 </div> -->
 
-<script> $(document).ready(function () {
-    $('.tagBarSearch').select2({});
-});
-var test = $(".tagBarSearch");
-test.on("select2:select", function (event) {
-    var values = [];
-// copy all option values from selected
-    $(event.currentTarget).find("option:selected").each(function (i, selected) {
-        values[i] = $(selected).text();
-    });
-    $(".tagInputClass").val(values);
 
-});
-</script>
 
 </body>
 </html>
