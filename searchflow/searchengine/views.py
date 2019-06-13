@@ -35,10 +35,11 @@ def query(request):
         tags = tags + tags2
         #        print(tags)
 
-        # insertTop(query)
+        insertTop(query)  # inserting the query terms in the db, helps to find a top searched term
         # tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
         # method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
-        docs = 100
+
+        docs = 50
         results = cd.get_search(query, docs, region='title')
         resultList = []
         doc = results.get()
