@@ -24,6 +24,8 @@ def question_view(request):
     print("test")
     template = loader.get_template('page.html')
     context = {
+        'answer_list': [('test', 'test', 'test')]
+
     }
     return HttpResponse(template.render(context, request))
 def query(request):

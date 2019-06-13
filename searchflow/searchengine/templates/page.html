@@ -3,7 +3,7 @@
 <head>
   {% csrf_token %}
   {% load static %}
-  {% if tag_list %}
+  {% if answer_list %}
   <link rel="stylesheet" type="text/css" href="{% static 'pageStyle.css' %}">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
@@ -51,7 +51,7 @@ Caused by: java.lang.ClassNotFoundException: Could not load requested class : co
 <div id="answer" class="w3-container">
   <div id="answer"><h5>Answer</h5></div>
   <hr align="left"/>
-  {% for title, question, code in tag_list %}
+  {% for title, question, code in answer_list %}
   <div id="question">{{title}}<p></p>
     <div id="code">
       <pre><code>
