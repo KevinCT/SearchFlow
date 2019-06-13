@@ -22,6 +22,10 @@ def index(request):
 
 def question_view(request):
     print("test")
+    template = loader.get_template('page.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
 def query(request):
     if request.method == 'GET':
         fullTags = ["Java", "Python", "Android"]
