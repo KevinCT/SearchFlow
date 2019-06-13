@@ -20,8 +20,8 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def questionView(request):
-    print("gets here")
+def question_view(request):
+    print("test")
 def query(request):
     if request.method == 'GET':
         fullTags = ["Java", "Python", "Android"]

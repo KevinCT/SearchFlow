@@ -41,11 +41,13 @@
     </select>
   </div>
 
+</form>
+
+<form id="form" method="GET" action="question_view">
+
   <div id="resultList">
     {% for title, link, description in users.object_list %}
-    <form action="questionView" method="GET">
-    <button type="Search"></button>
-  </form>
+    <button type="submit" name="submit" value="not" class="btn btn-success" id="showdata" >Show Data</button>
 
     <dl>
       <dt id="title"><a href="{{link}}">{{title}}</a></dt>
