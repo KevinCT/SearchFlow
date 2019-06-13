@@ -23,7 +23,7 @@ class Connection:
             self.client = MongoClient("mongodb://" + db_address + ":" + str(db_port) + "/")
             self.db_name = self.client[db_name]
             self.db_col = self.db_name[db_col]
-            self.dbug = debug(name=self.__class__, flag=True)
+            self.dbug = debug(name=self.__class__, flag=False)
         except Exception as e:
             self.dbug.debug_print("MongoDB Connection error: " + e)
 

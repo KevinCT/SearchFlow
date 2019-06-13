@@ -19,7 +19,7 @@ from crawler.mongodb import Connection
 class StackOverflowInfo:
 
     def __init__(self, question_id):
-        self.dbug = debug(name=self.__class__, flag=True)
+        self.dbug = debug(name=self.__class__, flag=False)
         self.question_id = question_id
         self.page_soup = LinkParser().link_info(url=question_url_creator(self.question_id))
 
