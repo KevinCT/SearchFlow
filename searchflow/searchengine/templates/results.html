@@ -37,15 +37,17 @@
       <option value="question">Sort by question</option>
       <option value="answer">Sort by answer</option>
       <option value="newest">Sort by newest</option>
-      <option value="votes">Sort by votes</option>
+
     </select>
   </div>
 
+</form>
+
+<form id="form" method="GET" action="question_view">
+
   <div id="resultList">
     {% for title, link, description in users.object_list %}
-    <form action="questionView" method="GET">
-    <button type="Search"></button>
-  </form>
+    <button type="submit" name="submit" value="not" class="btn btn-success" id="showdata" >Show Data</button>
 
     <dl>
       <dt id="title"><a href="{{link}}">{{title}}</a></dt>
@@ -56,7 +58,6 @@
 
   </div>
 </form>
-
 
 
 
