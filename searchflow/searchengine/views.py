@@ -52,9 +52,13 @@ def query(request):
         resultList = []
         doc = results.get()
         for x in range(0, docs):
+            print(query.split())
+            sentance_text, start_pos, end_pos = get_sentense(str(doc[2].get("Question").get("question_text")),
+                                                             query.split())
+
             resultList.append((doc[2].get("Question").get("question_title"),
                                "https://stackoverflow.com/questions/" + str(doc[2].get("Question").get("question_id")),
-                               ""))
+                               sentance_text, start_pos, end_pos))
             if results.empty() is False:
                 doc = results.get(False)
         resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
@@ -95,3 +99,16 @@ def getTags():
             topTags.append(backupList[i])
         topTags = [tuple(topTags[:5])]
     return topTags
+
+
+def get_sentense(text, phrase):
+    for x in phrase:
+        if x in text:
+            index = str(text).index(x)
+            end = index + len(x) + min(len(text), 50)
+            if (index - 60) < 0:
+                start = 0
+            else:
+                start = index - 50
+            return text[start:end], index, index + len(x)
+    return "", 0, 0

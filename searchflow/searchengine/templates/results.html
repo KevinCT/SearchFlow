@@ -46,7 +46,7 @@
 <form id="form" method="GET" action="question_view">
 
   <div id="resultList">
-    {% for title, link, description in users.object_list %}
+      {% for title, link, description, start_pos, end_pos in users.object_list %}
     <button type="submit" name="submit" value="not" class="btn btn-success" id="showdata" >Show Data</button>
 
     <dl>
