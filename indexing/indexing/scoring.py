@@ -39,11 +39,14 @@ def tfidf(idfDictionary, document, query, termsDictionary):
 
 # document is a string containing the text (preprocessed)
 # query is a list of strings containing the terms
-def getScore(idfDictionary, document, query):
+def getScore(idfDictionary, document, query, area, data_tuple):
     idfDictionary.pop('_id', None)
     print("-------------------getScore-----------------------")
     print(query)
     print(document)
+    if area == 'question_tags':
+        return getTagScore()
+
     termsDictionary = dict((term, 0) for term in document)
     queryDictionary = tfidf(idfDictionary, query, query, termsDictionary)
     documentDictionary = tfidf(idfDictionary, document, query, termsDictionary)
@@ -102,6 +105,31 @@ def test():
 
     while True:
         print(scores.get())
+
+# views, upvotes, related_questions, accepted_answer
+def getTagScore(document, query, data_tuple):
+    score = 0
+    length = len(query)
+    for term in query:
+        if term in document:
+            score += 1
+
+    if score == length and score == len(document):
+        score += 1000
+    elif score == length:
+        score += 500
+    score += data_tuple[0] + data_tuple[1]
+    if data_tuple[3]:
+        score += 100
+    return score
+
+
+
+
+
+
+
+
 
 # print(getScore( {'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0, 'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454, 'bootstrap': 1.6931471805599454}
 # ,["django", "is", "a", "web", "framework", "for", "python"], ["python", "framework"]))
