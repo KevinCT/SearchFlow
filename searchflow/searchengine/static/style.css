@@ -181,12 +181,3 @@
 
 #searchBar button{
 }
-
-[class^='select2'] {
-  border-radius: 10px !important;
-  border-color: lightgray !important;
-  padding: 0px;
-
-}
-
-

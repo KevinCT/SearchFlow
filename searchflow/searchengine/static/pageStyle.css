@@ -9,13 +9,13 @@
 
 #code{
   max-height: 200px;
-  border-radius: 5px;
+  border-radius: 2px;
   border: 1px solid gray;
-  background: lightgray;
-  width:75%;
-  margin-left: 100px;
   margin-bottom: 5px;
-  overflow: scroll;
+  background: #e8e8e8;
+  overflow:auto;
+  resize: both;
+  width: auto;
 
 }
 
@@ -29,4 +29,27 @@
 
 hr {
   width: 50%;
+}
+
+#related_question hr {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 98%;
+}
+
+#related_question {
+  padding: 1px;
+  font-size: 12px;
+  text-align: left;
+  width: 40%;
+  margin-left: 800px;
+  margin-top: -370px;
+  border-radius: 2px;
+  border: 1px solid lightgray;
+  overflow:auto;
+  max-height: 400px;
+}
+
+#related {
+  margin-left: 20px;
 }
