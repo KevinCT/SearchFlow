@@ -47,15 +47,13 @@
 
   <div id="resultList">
       {% for title, link, description, start_pos, end_pos in users.object_list %}
-    <button type="submit" name="submit" value="not" class="btn btn-success" id="showdata" >Show Data</button>
-
     <dl>
       <dt id="title"><a href="{{link}}">{{title}}</a></dt>
       <dd id="link"><a href="{{link}}">{{link}}</a></dd>
       <dd id="description">{{description}}</dd>
     </dl>
+    <button type="submit" name="submit" value="not" class="btnStyle" id="showdata" >Show Question</button>
     {% endfor %}
-
   </div>
 </form>
 

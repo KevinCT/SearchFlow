@@ -179,5 +179,7 @@
   margin-left: 405px;
 }
 
-#searchBar button{
+button.btnStyle {
+  background: white;
+  border-radius: 5px;
 }
