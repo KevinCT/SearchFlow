@@ -32,12 +32,12 @@
     {% else %}
     <p>No tags available.</p>
     {% endif %}
-    <select name="optionSelector" onchange="change()">
-      <option value="relevance">Sort by relevance</option>
-      <option value="question">Sort by question</option>
-      <option value="answer">Sort by answer</option>
-      <option value="newest">Sort by newest</option>
-      <option value="votes">Sort by votes</option>
+    <select name="optionSelector" class="optionSelectorSearch">
+      <option value="question_text">Sort by relevance</option>
+      <option value="question_text">Sort by question</option>
+      <option value="title">Sort by title</option>
+      <option value="code">Sort by code</option>
+      <option value="tag">Sort by tag</option>
     </select>
   </div>
 

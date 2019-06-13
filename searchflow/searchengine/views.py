@@ -41,8 +41,8 @@ def query(request):
         # tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
         # method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
 
-        docs = 50
-        results = cd.get_search(query, docs, region='title')
+        docs = 20
+        results = cd.get_search(query, docs, region=option)
         resultList = []
         doc = results.get()
         for x in range(0, docs):
