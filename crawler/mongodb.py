@@ -113,9 +113,9 @@ class Connection:
         return accepted
 
 
-conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
+# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
 # conn.delete_null_text()
-print(conn.get_accepted_answer(question_id=56087901))
+# print(conn.get_accepted_answer(question_id=56087901))
 # var = conn.db_col.find({'crawled': 'True'})
 # for x in var:
 #     print(x['question_id'])

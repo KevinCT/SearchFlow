@@ -1,0 +1,32 @@
+#title{
+  width: 50%;
+  font-size: 12px;
+}
+
+#question{
+  width: 50%;
+}
+
+#code{
+  max-height: 200px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  background: lightgray;
+  width:75%;
+  margin-left: 100px;
+  margin-bottom: 5px;
+  overflow: scroll;
+
+}
+
+#container{
+  font-size: 12px;
+}
+
+#answer {
+  font-size: 12px;
+}
+
+hr {
+  width: 50%;
+}
