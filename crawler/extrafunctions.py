@@ -7,10 +7,10 @@ nltk.download('punkt')
 from nltk.tokenize import RegexpTokenizer
 import csv
 
-
 top_search_db = Connection(db_name="StackOverflow", db_col="top_search")
 db = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
 tag_db = Connection(db_name="StackOverflow", db_col="tag_dictionary")
+
 
 def topSearch():
     list = []

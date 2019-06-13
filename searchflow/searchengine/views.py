@@ -1,3 +1,4 @@
+import os
 import time
 
 from django.core.paginator import Paginator
@@ -37,7 +38,13 @@ def query(request):
         topTags = getTags()
         query = request.GET.get('queryField', None)
         query = str(query).lower()
+        print(predict_title_code(query))
+
         option = request.GET.get('optionSelector', None)
+        if option == "classifier":
+            option = predict_title_code(query)
+            option = str(option).lower()
+
         tags = [request.GET.get('tOne'), request.GET.get('tTwo'), request.GET.get('tThree'), request.GET.get('tFour'),
                 request.GET.get('tFive')]
         tags = list(filter(None, tags))
@@ -111,3 +118,11 @@ def get_sentence(text, phrase):
                 start = index - 50
             return text[start:end], index, index + len(x)
     return "", 0, 0
+
+
+def predict_title_code(data):
+    print(os.getcwd())
+    loaded_model = pickle.load(open(os.getcwd() + "\\searchengine\\finalized_model.sav", 'rb'))
+    data = [data]
+    result = loaded_model.predict(data)
+    return result[0]
