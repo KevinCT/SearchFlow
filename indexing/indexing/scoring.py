@@ -45,7 +45,7 @@ def getScore(idfDictionary, document, query, area, data_tuple):
     print(query)
     print(document)
     if area == 'question_tags':
-        return getTagScore()
+        return getTagScore(document, query, data_tuple)
 
     termsDictionary = dict((term, 0) for term in document)
     queryDictionary = tfidf(idfDictionary, query, query, termsDictionary)
