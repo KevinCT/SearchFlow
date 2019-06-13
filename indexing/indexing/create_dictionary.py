@@ -28,13 +28,13 @@ conn_idf = Connection(db_name="Index", db_col="idf_scores")
 
 conn_tag = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
 conn_new_idf_tag = Connection(db_name="Index_tag", db_col="new_idf")
-conn_text_test_tag = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
+conn_text_test_tag = Connection(db_name="StackOverflow", db_col="question_tag_final_index")
 connection_tag = Connection(db_name="Index_tag", db_col="id_to_url")
 conn_idf_tag = Connection(db_name="Index_tag", db_col="idf_scores")
 
 conn_code = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
 conn_new_idf_code = Connection(db_name="Index_code", db_col="new_idf")
-conn_text_test_code = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
+conn_text_test_code = Connection(db_name="StackOverflow", db_col="question_code_final_index")
 connection_code = Connection(db_name="Index_code", db_col="id_to_url")
 conn_idf_code = Connection(db_name="Index_code", db_col="idf_scores")
 
@@ -407,7 +407,11 @@ def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn
         # print(doc_id)
         doc = data_conn.db_col.find_one({'_id': ObjectId(doc_id)})  # .get("Question").get("question_text")
         # for c in doc:
-        text = re.compile('\w+').findall(doc.get("Question").get(area).lower())
+        if area == 'question_code' or area == 'question_tags':
+            print('got here')
+            text = re.compile('\w+').findall(' '.join(str(v) for v in doc.get("Question").get(area)).lower())
+        else:
+            text = re.compile('\w+').findall(doc.get("Question").get(area).lower())
         start = time.time()
         # idfs = pull_idf(text)
         idfs = idf_conn.db_col.find_one({})
