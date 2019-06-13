@@ -22,7 +22,7 @@ conn_idf_title = Connection(db_name="StackOverflow", db_col="idf_scores")
 
 conn = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
 conn_new_idf = Connection(db_name="Index", db_col="new_idf")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")  # properties().email
 connection = Connection(db_name="Index", db_col="id_to_url")
 conn_idf = Connection(db_name="Index", db_col="idf_scores")
 
