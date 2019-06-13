@@ -55,23 +55,24 @@ def query(request):
         resultList = []
         doc = results.get()
         for x in range(0, docs):
-            print(query.split())
-            sentance_text, start_pos, end_pos = get_sentence(str(doc[2].get("Question").get("question_text")),
+            sentence_text, start_pos, end_pos = get_sentence(str(doc[2].get("Question").get("question_text")),
                                                              query.split())
 
             resultList.append((doc[2].get("Question").get("question_title"),
                                "https://stackoverflow.com/questions/" + str(doc[2].get("Question").get("question_id")),
-                               sentance_text, start_pos, end_pos))
+                               sentence_text, start_pos, end_pos))
             if results.empty() is False:
                 doc = results.get(False)
         # resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
         template = loader.get_template('results.html')
         final_time = time.time() - start_time
         print("Time: ", final_time)
+
         save_result_list = []
         for r in resultList:
             save_result_list.append(r[1])
         save_to_excel_performance(save_result_list, query, option, final_time, flag=False)
+
         paginator = Paginator(resultList, docs)
         page = request.GET.get('page')
         users = paginator.get_page(page)

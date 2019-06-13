@@ -32,7 +32,16 @@ def insertTop(data):
                 top_search_db.db_col.insert_one({"tag_name": i, "count": 1})
 
 
+
 def save_to_excel_performance(results, query, query_type, time, flag):
+    """
+    :param results: list
+    :param query: string
+    :param query_type: string
+    :param time: string
+    :param flag: boolean
+    :return: a file
+    """
     if flag:
         punc = [".", ",", "?"]
         for x in punc:

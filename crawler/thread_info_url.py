@@ -52,4 +52,5 @@ if __name__ == '__main__':
 
         for index, thread in enumerate(threads):
             thread.join()
-    print("Final Time:", time.time() - time1)
+
+    debug(thread_info_url, flag=False).debug_print(f"Final Time: {time.time() - time1} ")

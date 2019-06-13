@@ -105,19 +105,5 @@ class Connection:
         if data["Answer"].get("total_answers") > 0:
             print(data["Answer"]["answers"][0].get("answer_accepted"))
 
-        # if len(data["Answer"].get("answers")) > 0:
-        #     for x in data["Answer"].get("answers"):
-        #         accepted = x["answer_accepted"]
-        #         if accepted:
-        #             break
         return accepted
 
-
-# conn = Connection(db_name="StackOverflow", db_col="Multi_Thread_URL")
-# conn.delete_null_text()
-# print(conn.get_accepted_answer(question_id=56087901))
-# var = conn.db_col.find({'crawled': 'True'})
-# for x in var:
-#     print(x['question_id'])
-#     x["crawled"] = "False"
-#     # conn.db_col.update_one({"question_id": x['question_id']}, {"$set": {"crawled":"True"}})
