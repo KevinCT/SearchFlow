@@ -95,8 +95,7 @@ All the test functions are here
 def Test_question_id_extractor():
     # expecting list of numbers as output
     lp = LinkParser()
-    lp.question_id_extractor(page_url="https://stackoverflow.com/questions?sort=newest&page=10000")
-
+    print(lp.question_id_extractor(page_url="https://stackoverflow.com/questions?sort=newest&page=10000"))
 
 def Test_url_link_status(url="https://stackoverflow.com/questions/42310364/"):
     # expecting True as output
@@ -106,3 +105,6 @@ def Test_url_link_status(url="https://stackoverflow.com/questions/42310364/"):
 def Test_question_url_creator(question_id=2063184):
     # expecting url as output
     print(question_url_creator(question_id))
+
+
+Test_question_id_extractor()

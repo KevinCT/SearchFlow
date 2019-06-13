@@ -16,7 +16,9 @@
       <img src="../static/logo.png" class="center">
     </div>
   <div id="searchBar2">
-      <input type="text" name="queryField" placeholder= "Search...">
+    {% for query in query_list %}
+    <input type="text" name="queryField" value="{{query}}">
+    {% endfor %}
 
   </div>
 
@@ -33,7 +35,7 @@
     <p>No tags available.</p>
     {% endif %}
     <select name="optionSelector" class="optionSelectorSearch">
-      <option value="question_text">Sort by relevance</option>
+      <option value="classifier">Sort by AI</option>
       <option value="question_text">Sort by question</option>
       <option value="title">Sort by title</option>
       <option value="code">Sort by code</option>
@@ -46,13 +48,13 @@
 <form id="form" method="GET" action="question_view">
 
   <div id="resultList">
-      {% for title, link, description, start_pos, end_pos in users.object_list %}
+    {% for title, link, description, start_pos, end_pos in result.object_list %}
     <dl>
       <dt id="title"><a href="{{link}}">{{title}}</a></dt>
       <dd id="link"><a href="{{link}}">{{link}}</a></dd>
       <dd id="description">{{description}}</dd>
     </dl>
-    <button type="submit" name="submit" value="not" class="btnStyle" id="showdata" >Show Question</button>
+    <button type="submit" name="questionSubmit" value="{{link}}" class="btnStyle" id="showdata">Show Question</button>
     {% endfor %}
   </div>
 </form>

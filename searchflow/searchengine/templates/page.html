@@ -3,44 +3,29 @@
 <head>
   {% csrf_token %}
   {% load static %}
-  {% if answer_list %}
+  {% if question_list %}
+  {% if related_question_list %}
+
+
   <link rel="stylesheet" type="text/css" href="{% static 'pageStyle.css' %}">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 </head>
 <body>
   <div id="container" class="w3-container">
+    {% for title, question, code in question_list %}
   <div id="page">
-  <div id="title"><h4>Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</h4></div>
+    <div id="title"><h4>{{title}}</h4></div>
   <hr align="left" />
-  <div id="question"><p>I use a LocalContainerEntityManagerFactoryBean to setting up a JPA EntityManagerFactory. Among the scanned entities I scan with setPackagesToScan I have a User entity that implement spring security interface UserDetails.</p>
+    <div id="question"><p>{{question}}</p>
     <div id="code">
-      <pre><code>Caused by: org.hibernate.boot.registry.classloading.spi.ClassLoadingException: Unable to load class [com.medkhelifi.model.entities.User]
-    at org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl.classForName(ClassLoaderServiceImpl.java:354)
-    at org.hibernate.boot.model.source.internal.annotations.AnnotationMetadataSourceProcessorImpl.<init>(AnnotationMetadataSourceProcessorImpl.java:105)
-    at org.hibernate.boot.model.process.spi.MetadataBuildingProcess$1.<init>(MetadataBuildingProcess.java:156)
-    at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:150)
-    at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:904)
-    at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:935)
-    at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:57)
-    at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
-    at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:390)
-    at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:377)
-    at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
-    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1821)
-    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1758)
-    ... 11 more
-Caused by: java.lang.ClassNotFoundException: Could not load requested class : com.medkhelifi.model.entities.User
-    at org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl$AggregatedClassLoader.findClass(ClassLoaderServiceImpl.java:342)
-    at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-    at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-    at java.lang.Class.forName0(Native Method)
-    at java.lang.Class.forName(Class.java:348)
-    at org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl.classForName(ClassLoaderServiceImpl.java:351)
-    ... 23 more
-
+      <pre><code>{{code}}
     }</code></pre>
       </div>
+      {% endfor %}
+      {% else %}
+      <p>No tags available.</p>
+      {% endif %}
   </div>
 
 
@@ -48,17 +33,12 @@ Caused by: java.lang.ClassNotFoundException: Could not load requested class : co
     <div id="related"><h5>Related Questions</h5></div>
     <hr align="left"/>
       <dl>
-        <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-          <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-            <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-              <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-                <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-                  <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-                    <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-                      <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-                        <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
-
-        <dd id="link"><a href="https://stackoverflow.com/questions/56087969/how-to-pass-context-or-generate-test-case-for-context-in-botium-cli">Could not load requested class exception for a class implementing Spring Security UserDetailsxx§</a>
+        {% for link, title in related_question_list %}
+        <dd id="link"><a href="{{link}}">{{title}}</a>
+          {% endfor %}
+          {% else %}
+          <p>No tags available.</p>
+          {% endif %}
   </dd>
       </dl>
   </div>
@@ -70,19 +50,12 @@ Caused by: java.lang.ClassNotFoundException: Could not load requested class : co
 <div id="answer" class="w3-container">
   <div id="answer"><h5>Answer</h5></div>
   <hr align="left"/>
-  {% for title, question, code in answer_list %}
-  <div id="question">{{title}}<p></p>
-    <div id="code">
-      <pre><code>
-{{code}}
-    </code></pre>
-      </div>
+  {% for answer in answer_list %}
+  <div id="answer">{{answer}}<p></p>
   </div>
   <hr align="left"/>
   {% endfor %}
-  {% else %}
-  <p>No tags available.</p>
-  {% endif %}
+
 </div>
 
 

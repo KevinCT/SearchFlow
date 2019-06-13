@@ -5,6 +5,9 @@
 
 #question{
   width: 50%;
+    overflow: auto;
+    max-height: 250px;
+
 }
 
 #code{
@@ -15,16 +18,18 @@
   background: #e8e8e8;
   overflow:auto;
   resize: both;
-  width: auto;
+    width: 50%;
 
 }
 
 #container{
   font-size: 12px;
+    width: 50%;
 }
 
 #answer {
   font-size: 12px;
+    width: 50%;
 }
 
 hr {
@@ -42,8 +47,8 @@ hr {
   font-size: 12px;
   text-align: left;
   width: 40%;
-  margin-left: 800px;
-  margin-top: -370px;
+    margin-left: 500px;
+    margin-top: -180px;
   border-radius: 2px;
   border: 1px solid lightgray;
   overflow:auto;

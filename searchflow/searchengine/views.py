@@ -1,4 +1,5 @@
 import os
+import pickle
 import time
 
 from django.core.paginator import Paginator
@@ -6,39 +7,54 @@ from django.http import HttpResponse
 from django.template import loader
 
 from crawler.extrafunctions import *  # remove SearchFlow
+from crawler.mongodb import Connection
 from indexing.indexing import create_dictionary as cd
 
 
 # Create your views here.
 
 def index(request):
-    fullTags = ["Java", "Python", "Android"]
     topTags = getTags()
     template = loader.get_template('index.html')
     context = {
         'tag_list': topTags,
-        'full_tag_list': fullTags,
 
     }
     return HttpResponse(template.render(context, request))
 
 
 def question_view(request):
-    print("test")
+    doc = request.GET.get('questionSubmit', None)
+    doc = str(doc).split("/")[-1:]
+    data = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code").get_data_with_value(
+        data_type="Question.question_id", value=int(doc[0].strip()))
+    question_text = (data.get("Question").get("question_text"))
+    question_title = data.get("Question").get("question_title")
+    question_code = data.get("Question").get("question_code")
+    question_related = data.get("Question").get("related_questions")
+    questionList = [(question_title, question_text, question_code)]
+    related_question_list = []
+    for question in question_related:
+        related_question_list.append(("https://stackoverflow.com/questions/" + str(question.get('related_question_id')),
+                                      question.get('related_question')))
+    all_answers = []
+    for x in data["Answer"].get("answers"):
+        all_answers.append(x.get('answer'))
     template = loader.get_template('page.html')
     context = {
-        'answer_list': [('test', 'test', 'test')]
+        'answer_list': all_answers,
+        'question_list': questionList,
+        'related_question_list': related_question_list,
 
     }
     return HttpResponse(template.render(context, request))
+
 def query(request):
     start_time = time.time()
     if request.method == 'GET':
-        fullTags = ["Java", "Python", "Android"]
         topTags = getTags()
         query = request.GET.get('queryField', None)
         query = str(query).lower()
-        print(predict_title_code(query))
 
         option = request.GET.get('optionSelector', None)
         if option == "classifier":
@@ -48,10 +64,18 @@ def query(request):
         tags = [request.GET.get('tOne'), request.GET.get('tTwo'), request.GET.get('tThree'), request.GET.get('tFour'),
                 request.GET.get('tFive')]
         tags = list(filter(None, tags))
-        tags2 = request.GET.get('tagInput')
-        tags2 = tags2.split(',')
-        tags = tags + tags2
-        #        print(tags)
+        if option == 'tag':
+            for tag in tags:
+                query = query + tag
+
+        if query == '':
+            template = loader.get_template('index.html')
+            context = {
+                'tag_list': topTags,
+            }
+            return HttpResponse(template.render(context, request))
+
+
 
         insertTop(query)  # inserting the query terms in the db, helps to find a top searched term
         # tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
@@ -70,7 +94,6 @@ def query(request):
                                sentence_text, start_pos, end_pos))
             if results.empty() is False:
                 doc = results.get(False)
-        # resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
         template = loader.get_template('results.html')
         final_time = time.time() - start_time
         print("Time: ", final_time)
@@ -82,11 +105,12 @@ def query(request):
 
         paginator = Paginator(resultList, docs)
         page = request.GET.get('page')
-        users = paginator.get_page(page)
+        result = paginator.get_page(page)
         context = {
-            'users': users,
+            'result': result,
             'tag_list': topTags,
-            'full_tag_list': fullTags,
+            'query_list': [query],
+
         }
         return HttpResponse(template.render(context, request))
 
