@@ -9,17 +9,10 @@ from crawler.linkparser import question_url_creator
 from crawler.mongodb import Connection
 
 
-# import platform
-# import sys
-# if platform.system().lower() in ['linux', 'darwin']:
-#     # sys.setdefaultencoding() does not exist, here!
-#     reload(sys)  # Reload does the trick!
-#     sys.setdefaultencoding('UTF8')
-
 class StackOverflowInfo:
 
     def __init__(self, question_id):
-        self.dbug = debug(name=self.__class__, flag=True)
+        self.dbug = debug(name=self.__class__, flag=False)
         self.question_id = question_id
         self.page_soup = LinkParser().link_info(url=question_url_creator(self.question_id))
 

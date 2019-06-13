@@ -5,6 +5,8 @@ from crawler.mongodb import Connection  # remove SearchFlow
 nltk.download('stopwords')
 nltk.download('punkt')
 from nltk.tokenize import RegexpTokenizer
+import csv
+
 
 top_search_db = Connection(db_name="StackOverflow", db_col="top_search")
 db = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
@@ -28,3 +30,28 @@ def insertTop(data):
                 top_search_db.db_col.update_one({'tag_name': i}, {'$set': {'count': info.get("count") + 1}})
             else:
                 top_search_db.db_col.insert_one({"tag_name": i, "count": 1})
+
+
+
+def save_to_excel_performance(results, query, query_type, time, flag):
+    """
+    :param results: list
+    :param query: string
+    :param query_type: string
+    :param time: string
+    :param flag: boolean
+    :return: a file
+    """
+    if flag:
+        punc = [".", ",", "?"]
+        for x in punc:
+            if str(query).find(x):
+                query = str(query).replace(x, "_")
+        with open(query + '.csv', 'w', encoding="utf8", newline="") as writeFile:
+            writer = csv.writer(writeFile)
+            writer.writerow([query])
+            for x in results:
+                writer.writerow([x])
+                writer.writerow([query_type])
+            writer.writerow([time])
+        writeFile.close()

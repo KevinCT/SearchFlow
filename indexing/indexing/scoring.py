@@ -41,24 +41,24 @@ def tfidf(idfDictionary, document, query, termsDictionary):
 # query is a list of strings containing the terms
 def getScore(idfDictionary, document, query, area, data_tuple):
     idfDictionary.pop('_id', None)
-    print("-------------------getScore-----------------------")
-    print(query)
-    print(document)
+    # print("-------------------getScore-----------------------")
+    # print(query)
+    # print(document)
     if area == 'question_tags':
-        return getTagScore()
+        return getTagScore(document, query, data_tuple)
 
     termsDictionary = dict((term, 0) for term in document)
     queryDictionary = tfidf(idfDictionary, query, query, termsDictionary)
     documentDictionary = tfidf(idfDictionary, document, query, termsDictionary)
-    print(documentDictionary)
-    print(queryDictionary)
+    # print(documentDictionary)
+    # print(queryDictionary)
     # print(documentDictionary)
     # print("QUERY")
     # print({x:y for x,y in queryDictionary.items() if y!=0})
     queryVector = list(queryDictionary.values())
     documentVector = list(documentDictionary.values())
     score = cosineSimilarity(documentVector, queryVector)
-    print(score)
+    # print(score)
     # temp fix since rare terms are not added to idf in db
     # for term in termsDictionary:
     #     if term not in idfDictionary:
@@ -71,9 +71,9 @@ def getScore(idfDictionary, document, query, area, data_tuple):
 # document is a dictionary of dictionaries containing the term frequency of each term related to the query
 def getDocScore(idfDictionary, documents, query):
     idfDictionary.pop('_id', None)
-    print("-------------------getDocScore-----------------------")
-    print(documents)
-    print(query)
+    # print("-------------------getDocScore-----------------------")
+    # print(documents)
+    # print(query)
     scoreQueue = queue.PriorityQueue()
     for document in documents:
         score = 0
@@ -91,7 +91,7 @@ def test():
     documents = {}
     documents['doc3'] = dict.fromkeys(doc1.split(), 1)
     documents['doc4'] = dict.fromkeys(doc2.split(), 1)
-    print(documents)
+    # print(documents)
 
     scores = getDocScore({'a': 1.0, 'framework': 1.0, 'is': 1.0, 'django': 1.6931471805599454, 'web': 1.0,
                           'for': 1.6931471805599454, 'python': 1.6931471805599454, 'popular': 1.6931471805599454,

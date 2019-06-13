@@ -9,10 +9,6 @@ from nltk.corpus import stopwords
 from crawler.mongodb import Connection
 from indexing.indexing import scoring as sc
 
-# question_text_real_final_index - question text of "without code"
-# question_text_real_index  - question title of "without code"
-
-
 conn_title = Connection(db_name="StackOverflow", db_col="final_processed_data")
 conn_new_idf_title = Connection(db_name="StackOverflow", db_col="new_idf")
 conn_title_test = Connection(db_name="StackOverflow", db_col="question_text_index")
@@ -22,7 +18,7 @@ conn_idf_title = Connection(db_name="StackOverflow", db_col="idf_scores")
 
 conn = Connection(db_name="StackOverflow", db_col="final_processed_data_without_code")
 conn_new_idf = Connection(db_name="Index", db_col="new_idf")
-conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")  # properties().email
+conn_text_test = Connection(db_name="StackOverflow", db_col="question_text_real_final_index")
 connection = Connection(db_name="Index", db_col="id_to_url")
 conn_idf = Connection(db_name="Index", db_col="idf_scores")
 
@@ -106,7 +102,6 @@ class Index:
 
         return doc_scores
 
-    # return tf-idf score of element
     def get_score(self, elem):
         return elem.frequency
 
@@ -181,7 +176,6 @@ class PostingNode:
 
 
 def deserialize_node(node_dict):
-    # print(node_dict.get("gap"))
     return PostingNode(node_dict.get("gap"), None, None, node_dict.get("frequency"))
 
 
@@ -234,17 +228,6 @@ def id_to_url(id_url=connection, top_conn=conn):
     print(counter)
 
 
-# id_to_url(connection_title, conn_title)
-#id_to_url()
-
-
-def url_to_id():
-    counter = 0
-    for i in conn.db_col.find({}):
-        connection_url.db_col.insert_one({str(i["Question"].get("question_id")): counter})
-        counter += 1
-
-
 def index_to_mongodb():
     question_title_index = Index("test")
     start_time = time.time()
@@ -266,7 +249,6 @@ def index_to_mongodb():
 def deserialize_test():
     for i in conn_text_test.db_col.find({}):
         deserialize_list(i.get("PostingList")).start.gap
-        #print()
 
 
 def static_intersect(keys, index):
@@ -283,9 +265,7 @@ def static_intersect(keys, index):
                 temp_node = deserialize_list(data.get("PostingList")).start
                 if temp_node is not None:
                     term_posting[key] = temp_node
-                    #   list_score.append(temp_node.gap)
 
-    # could use a max heap for ranking
     for key in term_posting.keys():
         elem = term_posting[key]
         current_score = elem.gap
@@ -323,10 +303,6 @@ def push_idf(idf_conn=conn_idf, top_conn=conn, index=conn_text_test):
         idf_conn.db_col.insert_one({"Term": i.get("Term"), "IDF_Score": idf})
 
 
-#push_idf(conn_idf_title, conn_title, conn_title_test)
-#push_idf()
-
-
 def pull_idf(query):
     query_to_idf = dict()
 
@@ -347,18 +323,7 @@ def new_idf_index(new_idf=conn_new_idf, old_idf=conn_idf):
     new_idf.db_col.insert_one(dictionary)
 
 
-# new_idf_index(conn_new_idf_title, conn_idf_title)
-# new_idf_index()
-
-
 def basic_search(query, index):
-    # posting_lists = []
-    # for word in query:
-    #    posting_lists.append(deserialize_list(conn_title_test.db_col.find_one({"Term": word}).get("PostingList")))
-
-    #test = static_intersect(query, "question_text_index")
-    #print(test)
-    #print("test")
     return static_intersect(query, index)
 
 
@@ -366,13 +331,6 @@ def push_terms(tags):
     for tag in tags:
         conn_dictionary.db_col.insert_one({"TagName": tag})
 
-
-def search(query):
-    print(basic_search(query))
-    return getScore(pull_idf(query), basic_search(query), query)
-
-
-#index_to_mongodb()
 
 # id_to_url()
 def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn=conn_new_idf, data_conn=conn,
@@ -401,28 +359,19 @@ def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn
     x = pq.get(False)
     new_pq = q.PriorityQueue()
     for a in range(0, docs):
-        # print(x)
-        # print(x[1])
         doc_id = id_url.db_col.find_one({"DocumentCount": x[1]}).get("Question_ID")
-        # print(doc_id)
         doc = data_conn.db_col.find_one({'_id': ObjectId(doc_id)})  # .get("Question").get("question_text")
-        # for c in doc:
         if area == 'question_code' or area == 'question_tags':
             print('got here')
             text = re.compile('\w+').findall(' '.join(str(v) for v in doc.get("Question").get(area)).lower())
         else:
             text = re.compile('\w+').findall(doc.get("Question").get(area).lower())
-        start = time.time()
-        # idfs = pull_idf(text)
+
         idfs = idf_conn.db_col.find_one({})
-        #   print(idfs.pop("_id"))
-        end = time.time()
-        #  print(end - start)
-        # print(doc)
         views =doc.get("Question").get("question_views")
         upvotes = doc.get("Question").get("question_upvote")
         related_questions = doc.get("Question").get("related_questions")
-        answers = doc.get("Answer").get("total_answer")
+        answers = doc.get("Answer").get("total_answers")
         if answers > 0:
             accepted_answer = doc.get("Answer")["answers"][0].get("answer_accepted")
         else:
@@ -434,8 +383,5 @@ def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn
 
         score = sc.getScore(idfs, text, re.compile('\w+').findall(query), area, data_tuple)
         new_pq.put([-score, a, doc])
-        # print(doc)
-        # print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
         x = pq.get()
-        # print(a)
     return new_pq

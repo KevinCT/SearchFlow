@@ -1,3 +1,5 @@
+import time
+
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.template import loader
@@ -29,6 +31,7 @@ def question_view(request):
     }
     return HttpResponse(template.render(context, request))
 def query(request):
+    start_time = time.time()
     if request.method == 'GET':
         fullTags = ["Java", "Python", "Android"]
         topTags = getTags()
@@ -52,13 +55,23 @@ def query(request):
         resultList = []
         doc = results.get()
         for x in range(0, docs):
+            sentence_text, start_pos, end_pos = get_sentence(str(doc[2].get("Question").get("question_text")),
+                                                             query.split())
+
             resultList.append((doc[2].get("Question").get("question_title"),
                                "https://stackoverflow.com/questions/" + str(doc[2].get("Question").get("question_id")),
-                               ""))
+                               sentence_text, start_pos, end_pos))
             if results.empty() is False:
                 doc = results.get(False)
-        resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
+        # resultListBlock = [resultList[i * 10:(i + 1) * 10] for i in range((len(resultList) + 10 - 1) // 10)]
         template = loader.get_template('results.html')
+        final_time = time.time() - start_time
+        print("Time: ", final_time)
+
+        save_result_list = []
+        for r in resultList:
+            save_result_list.append(r[1])
+        save_to_excel_performance(save_result_list, query, option, final_time, flag=False)
 
         paginator = Paginator(resultList, docs)
         page = request.GET.get('page')
@@ -67,22 +80,12 @@ def query(request):
             'users': users,
             'tag_list': topTags,
             'full_tag_list': fullTags,
-
         }
         return HttpResponse(template.render(context, request))
 
     else:
         return HttpResponse("Something went wrong")
 
-
-#            return listing(request, resultList)
-
-
-# def listing(request, resultList):
-#    paginator = Paginator(resultList, 10)
-#    page = request.GET.get('page')
-#    users = paginator.get_page(page)
-#    return render(request, 'results.html', {'users': users})
 
 def getTags():
     backupList = ["java", "python", "c++", "javascript", "android"]
@@ -95,3 +98,16 @@ def getTags():
             topTags.append(backupList[i])
         topTags = [tuple(topTags[:5])]
     return topTags
+
+
+def get_sentence(text, phrase):
+    for x in phrase:
+        if x in text:
+            index = str(text).index(x)
+            end = index + len(x) + min(len(text), 50)
+            if (index - 60) < 0:
+                start = 0
+            else:
+                start = index - 50
+            return text[start:end], index, index + len(x)
+    return "", 0, 0

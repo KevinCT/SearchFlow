@@ -39,7 +39,7 @@ class LinkParser:
     """
 
     def __init__(self):
-        self.dbug = debug(name=self.__class__, flag=True)
+        self.dbug = debug(name=self.__class__, flag=False)
 
     def link_info(self, url):
         """"
