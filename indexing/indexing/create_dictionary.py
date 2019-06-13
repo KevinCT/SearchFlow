@@ -419,7 +419,20 @@ def get_search(query, docs, index=conn_text_test, area="question_text", idf_conn
         end = time.time()
         #  print(end - start)
         # print(doc)
-        score = sc.getScore(idfs, text, re.compile('\w+').findall(query))
+        views =doc.get("Question").get("question_views")
+        upvotes = doc.get("Question").get("question_upvote")
+        related_questions = doc.get("Question").get("related_questions")
+        answers = doc.get("Answer").get("total_answer")
+        if answers > 0:
+            accepted_answer = doc.get("Answer")["answers"][0].get("answer_accepted")
+        else:
+            accepted_answer = False
+
+        data_tuple = (views, upvotes, related_questions, accepted_answer)
+
+
+
+        score = sc.getScore(idfs, text, re.compile('\w+').findall(query), area, data_tuple)
         new_pq.put([-score, a, doc])
         # print(doc)
         # print(sc.getScore(conn_idf.db_col.find({}), re.compile('\w+').findall(doc.lower()), ["python", "java", "know"]))
