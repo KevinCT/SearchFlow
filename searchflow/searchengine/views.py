@@ -81,11 +81,11 @@ def query(request):
         # tags is a list of tags, option is the way the result should be sorted(e.g. by answer, question, date..)
         # method for returning data from backend required here. getData(query, tags, option) should return a list of tuples which contains (title, link, description)
 
-        docs = 20
+        docs = 1000
         results = cd.get_search(query, docs, region=option)
         resultList = []
         doc = results.get()
-        for x in range(0, docs):
+        for x in range(0, 20):
             sentence_text, start_pos, end_pos = get_sentence(str(doc[2].get("Question").get("question_text")),
                                                              query.split())
 
@@ -101,7 +101,7 @@ def query(request):
         save_result_list = []
         for r in resultList:
             save_result_list.append(r[1])
-        save_to_excel_performance(save_result_list, query, option, final_time, flag=False)
+        save_to_excel_performance(save_result_list, query, option, final_time, flag=True)
 
         paginator = Paginator(resultList, docs)
         page = request.GET.get('page')
