@@ -1,4 +1,5 @@
 # Searchflow
 
+This is an search engine project based on the data of StackOverflow. We have retrived 400,000+ documents from Stackoverflow.com and indexed them in differnt catagories. We have also made a simple UI.
 
-Report https://ittuberlin-my.sharepoint.com/:w:/g/personal/3966997776182438_msopseudo_tu-berlin_de/ETqUkhh4kmdKsVsh8_YhDPwB0imtVNsD5L_BYesE-orlBQ?e=S3ag1w
+Read the whole description here - https://github.com/KevinCT/SearchFlow/blob/master/Searchflow.pdf
